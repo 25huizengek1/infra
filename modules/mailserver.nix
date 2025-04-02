@@ -1,9 +1,14 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   domain = "omeduostuurcentenneef.nl";
 in
-{
+rec {
   mailserver = {
     enable = true;
     fqdn = "mail.${domain}";
@@ -40,5 +45,40 @@ in
       $config['smtp_user'] = "%u";
       $config['smtp_pass'] = "%p";
     '';
+  };
+
+  services.nginx.virtualHosts."webmail.${domain}".forceSSL = false;
+
+  services.radicale =
+    with lib;
+    let
+      mailAccounts = mailserver.loginAccounts;
+      htpasswd = pkgs.writeText "radicale.users" (
+        concatStrings (
+          flip mapAttrsToList mailAccounts (mail: user: mail + ":" + builtins.readFile user.hashedPasswordFile + "\n")
+        )
+      );
+    in
+    {
+      enable = true;
+      config = ''
+        [auth]
+        type = htpasswd
+        htpasswd_filename = ${htpasswd}
+        htpasswd_encryption = bcrypt
+      '';
+    };
+
+  services.nginx.virtualHosts."calendar.${domain}" = {
+    forceSSL = false;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://localhost:5232/";
+      extraConfig = ''
+        proxy_set_header  X-Script-Name /;
+        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass_header Authorization;
+      '';
+    };
   };
 }
