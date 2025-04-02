@@ -32,7 +32,10 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ (__: _: self.packages.${system}) ];
+        overlays = [
+          (final: super: self.packages.${system})
+          (final: super: { nginxStable = super.nginxStable.override { openssl = super.pkgs.libressl; }; } )
+        ];
       };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -40,6 +43,7 @@
       flake =
         let
           osConfig = nixpkgs.lib.nixosSystem {
+            inherit pkgs;
             inherit system;
 
             specialArgs = {

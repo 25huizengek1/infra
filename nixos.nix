@@ -10,6 +10,7 @@
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
     ./containers/portainer.nix
+    ./modules/nginx.nix
   ];
 
   nix.settings.experimental-features = [
@@ -32,11 +33,14 @@
     hostName = hostname;
     domain = "omeduostuurcentenneef.nl";
 
-    firewall.allowedTCPPorts = [
-      80
-      443
-      22
-    ];
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [
+        80
+        443
+        22
+      ];
+    };
   };
 
   services.openssh.enable = true;
@@ -76,10 +80,7 @@
     };
   };
 
-  services.cockpit = {
-    enable = true;
-    openFirewall = true;
-  };
+  services.cockpit.enable = true;
 
   programs.nh = {
     enable = true;
@@ -87,6 +88,5 @@
     clean.extraArgs = "--keep-since 4d --keep 3";
   };
 
-  nixpkgs.config.allowUnfree = true;
   system.stateVersion = "25.05";
 }
