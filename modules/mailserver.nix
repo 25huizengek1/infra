@@ -21,7 +21,7 @@ in
     };
   };
 
-  sops.secrets."omeduostuurcentenneef.nl.mail.key" = {
+  sops.secrets."${domain}.mail.key" = {
     format = "binary";
     owner = "opendkim";
     group = "opendkim";
@@ -34,7 +34,7 @@ in
 
   services.roundcube = {
     enable = true;
-    hostName = "webmail.omeduostuurcentenneef.nl";
+    hostName = "webmail.${domain}";
     extraConfig = ''
       $config['smtp_server'] = "tls://${config.mailserver.fqdn}";
       $config['smtp_user'] = "%u";

@@ -1,11 +1,37 @@
-{ ... }:
+{ lib, pkgs, ... }:
 
+let
+  domain = "omeduostuurcentenneef.nl";
+in
 {
   security.acme.acceptTerms = true;
-  security.acme.defaults.email = "security@omeduostuurcentenneef.nl";
+  security.acme.defaults.email = "security@${domain}";
 
   services.nginx = {
     enable = true;
+
+    commonHttpConfig =
+      let
+        realIpsFromList = lib.strings.concatMapStringsSep "\n" (x: "set_real_ip_from  ${x};");
+        fileToList = x: lib.strings.splitString "\n" (builtins.readFile x);
+        cfipv4 = fileToList (
+          pkgs.fetchurl {
+            url = "https://www.cloudflare.com/ips-v4";
+            sha256 = "0ywy9sg7spafi3gm9q5wb59lbiq0swvf0q3iazl0maq1pj1nsb7h";
+          }
+        );
+        cfipv6 = fileToList (
+          pkgs.fetchurl {
+            url = "https://www.cloudflare.com/ips-v6";
+            sha256 = "1ad09hijignj6zlqvdjxv7rjj8567z357zfavv201b9vx3ikk7cy";
+          }
+        );
+      in
+      ''
+        ${realIpsFromList cfipv4}
+        ${realIpsFromList cfipv6}
+        real_ip_header CF-Connecting-IP;
+      '';
 
     recommendedBrotliSettings = true;
     recommendedGzipSettings = true;
@@ -14,22 +40,22 @@
     recommendedTlsSettings = true;
     recommendedZstdSettings = true;
 
-    virtualHosts."portainer.omeduostuurcentenneef.nl" = {
+    sslCiphers = "AES256+EECDH:AES256+EDH:!aNULL";
+
+    virtualHosts."portainer.${domain}" = {
       enableACME = true;
-      forceSSL = true;
       locations."/" = {
-        proxyPass = "https://127.0.0.1:9943/";
-        extraConfig = "proxy_ssl_server_name on;proxy_pass_header Authorization;";
+        proxyPass = "https://127.0.0.1:9443/";
       };
     };
 
-    virtualHosts."cockpit.omeduostuurcentenneef.nl" = {
+    virtualHosts."cockpit.${domain}" = {
       enableACME = true;
-      forceSSL = true;
       locations."/" = {
         proxyPass = "https://127.0.0.1:9090/";
-        extraConfig = "proxy_ssl_server_name on;proxy_pass_header Authorization;";
       };
     };
+
+    virtualHosts."webmail.${domain}".forceSSL = false;
   };
 }
