@@ -31,4 +31,14 @@ in
 
     path = "${config.mailserver.dkimKeyDirectory}/omeduostuurcentenneef.nl.mail.key";
   };
+
+  services.roundcube = {
+    enable = true;
+    hostName = "webmail.omeduostuurcentenneef.nl";
+    extraConfig = ''
+      $config['smtp_server'] = "tls://${config.mailserver.fqdn}";
+      $config['smtp_user'] = "%u";
+      $config['smtp_pass'] = "%p";
+    '';
+  };
 }
