@@ -15,6 +15,13 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -24,6 +31,8 @@
       disko,
       flake-parts,
       nixos-facter-modules,
+      sops-nix,
+      simple-nixos-mailserver,
       ...
     }@inputs:
     let
@@ -34,7 +43,7 @@
         config.allowUnfree = true;
         overlays = [
           (final: super: self.packages.${system})
-          (final: super: { nginxStable = super.nginxStable.override { openssl = super.pkgs.libressl; }; } )
+          (final: super: { nginxStable = super.nginxStable.override { openssl = super.pkgs.libressl; }; })
         ];
       };
     in
@@ -56,6 +65,8 @@
               ./nixos.nix
               nixos-facter-modules.nixosModules.facter
               { config.facter.reportPath = ./facter.json; }
+              sops-nix.nixosModules.sops
+              simple-nixos-mailserver.nixosModule
             ];
           };
         in

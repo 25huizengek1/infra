@@ -1,4 +1,9 @@
-{ ... }: {
+{ ... }:
+
+{
+  security.acme.acceptTerms = true;
+  security.acme.defaults.email = "security@omeduostuurcentenneef.nl";
+
   services.nginx = {
     enable = true;
 

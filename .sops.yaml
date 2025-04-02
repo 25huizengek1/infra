@@ -1,0 +1,10 @@
+keys:
+  - &server age1tfcfat3y9uekdw8u2ln4az4uqfznk25ntarte34292rz0zw3zy6qjcqqth
+  - &laptop age17ajces2ka639rq9am5c707nz0qgqste5a25hky5mcraargryvp7s6esm7p
+
+creation_rules:
+  - path_regex: secrets/[^/]+.secret
+    key_groups:
+      - age:
+          - *server
+          - *laptop

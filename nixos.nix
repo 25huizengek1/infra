@@ -4,6 +4,7 @@
   hostname,
   ...
 }:
+
 {
   imports = [
     ./disk-config.nix
@@ -11,6 +12,7 @@
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
     ./containers/portainer.nix
     ./modules/nginx.nix
+    ./modules/mailserver.nix
   ];
 
   nix.settings.experimental-features = [
