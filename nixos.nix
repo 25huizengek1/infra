@@ -9,6 +9,7 @@
     ./disk-config.nix
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
+    ./containers/portainer.nix
   ];
 
   nix.settings.experimental-features = [
@@ -64,6 +65,7 @@
 
   virtualisation = {
     containers.enable = true;
+    oci-containers.backend = "podman";
 
     podman = {
       enable = true;
