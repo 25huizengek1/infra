@@ -55,7 +55,24 @@
     vscode-fhs
     wget
     zip
+
+    # Podman
+    dive
+    podman-compose
+    podman-tui
   ];
+
+  virtualisation = {
+    containers.enable = true;
+
+    podman = {
+      enable = true;
+      autoPrune.enable = true;
+      dockerCompat = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
 
   programs.nh = {
     enable = true;
