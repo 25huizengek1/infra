@@ -74,6 +74,11 @@
     };
   };
 
+  services.cockpit = {
+    enable = true;
+    openFirewall = true;
+  };
+
   programs.nh = {
     enable = true;
     clean.enable = true;
