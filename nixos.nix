@@ -47,8 +47,10 @@
   environment.systemPackages = with pkgs; [
     curl
     gcc
+    gh
     git
     gnutar
+    nodejs_23
     unzip
     wget
     zip
