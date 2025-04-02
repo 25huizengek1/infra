@@ -52,6 +52,7 @@
     gnutar
     nodejs_23
     unzip
+    vscode-fhs
     wget
     zip
   ];
@@ -62,5 +63,6 @@
     clean.extraArgs = "--keep-since 4d --keep 3";
   };
 
+  nixpkgs.config.allowUnfree = true;
   system.stateVersion = "25.05";
 }
