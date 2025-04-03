@@ -47,8 +47,6 @@ rec {
     '';
   };
 
-  services.nginx.virtualHosts."webmail.${domain}".forceSSL = false;
-
   services.radicale =
     with lib;
     let

@@ -42,7 +42,18 @@ in
 
     sslCiphers = "AES256+EECDH:AES256+EDH:!aNULL";
 
+    virtualHosts."${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      root = ./webroot;
+
+      locations."/" = {
+        tryFiles = "$uri $uri/ =404";
+      };
+    };
+
     virtualHosts."portainer.${domain}" = {
+      forceSSL = true;
       enableACME = true;
       locations."/" = {
         proxyPass = "https://127.0.0.1:9443/";
@@ -50,12 +61,11 @@ in
     };
 
     virtualHosts."cockpit.${domain}" = {
+      forceSSL = true;
       enableACME = true;
       locations."/" = {
         proxyPass = "https://127.0.0.1:9090/";
       };
     };
-
-    virtualHosts."webmail.${domain}".forceSSL = false;
   };
 }
