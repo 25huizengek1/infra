@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   services.grafana = {
@@ -44,6 +44,30 @@
         }
       ))
     ];
+  };
+
+  services.influxdb2 = {
+    enable = true;
+    provision.initialSetup.tokenFile = config.sops.influxdb-key.path;
+  };
+
+  sops.secrets.influxdb-key = {
+    format = "binary";
+    sopsFile = ../secrets/influxdb-key.secret;
+    
+    owner = "influxdb2";
+    group = "influxdb2";
+    mode = "0600";
+  };
+
+  services.telegraf = {
+    enable = true;
+    extraConfig = {
+      outputs.influxdb = {
+        urls = [ "http://localhost:8086" ];
+        database = "telegraf";
+      };
+    };
   };
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "grafana" ];

@@ -94,5 +94,14 @@ in
         proxyWebsockets = true;
       };
     };
+
+    virtualHosts."influx.${domain}" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:8086";
+        proxyWebsockets = true;
+      };
+    };
   };
 }
