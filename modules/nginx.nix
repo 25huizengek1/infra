@@ -73,7 +73,7 @@ in
       forceSSL = true;
       enableACME = true;
       locations."/" = {
-        proxyPass = "https://127.0.0.1:8080/";
+        proxyPass = "http://127.0.0.1:8080/";
         proxyWebsockets = true;
       };
     };
