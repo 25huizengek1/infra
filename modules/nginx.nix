@@ -65,6 +65,16 @@ in
       enableACME = true;
       locations."/" = {
         proxyPass = "https://127.0.0.1:9090/";
+        proxyWebsockets = true;
+      };
+    };
+
+    virtualHosts."jenkins.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "https://127.0.0.1:8080/";
+        proxyWebsockets = true;
       };
     };
   };
