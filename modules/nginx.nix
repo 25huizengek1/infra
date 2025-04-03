@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 
 let
   domain = "omeduostuurcentenneef.nl";
@@ -74,6 +74,23 @@ in
       enableACME = true;
       locations."/" = {
         proxyPass = "https://127.0.0.1:8080/";
+        proxyWebsockets = true;
+      };
+    };
+
+    virtualHosts."prometheus.${domain}" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
+      };
+    };
+
+    virtualHosts."grafana.${domain}" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://unix:${config.services.grafana.settings.server.socket}";
         proxyWebsockets = true;
       };
     };

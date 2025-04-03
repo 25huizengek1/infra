@@ -14,6 +14,7 @@
     ./containers/jenkins.nix
     ./modules/nginx.nix
     ./modules/mailserver.nix
+    ./modules/monitoring.nix
   ];
 
   nix.settings.experimental-features = [
