@@ -12,6 +12,7 @@
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
     ./containers/portainer.nix
     ./containers/jenkins.nix
+    ./modules/cockpit.nix
     ./modules/nginx.nix
     ./modules/mailserver.nix
     ./modules/monitoring.nix
@@ -35,7 +36,7 @@
 
   networking = {
     hostName = hostname;
-    domain = "omeduostuurcentenneef.nl";
+    domain = (import ./const.nix).domain;
 
     firewall = {
       enable = true;
@@ -83,8 +84,6 @@
       defaultNetwork.settings.dns_enabled = true;
     };
   };
-
-  services.cockpit.enable = true;
 
   programs.nh = {
     enable = true;

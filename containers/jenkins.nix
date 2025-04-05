@@ -1,6 +1,8 @@
 { config, lib, ... }:
 
 let
+  domain = (import ../const.nix).domain;
+  port = 8080;
   master = {
     jenkins-master = {
       image = "jenkins/jenkins:2.492.3-jdk17";
@@ -12,8 +14,8 @@ let
         "${config.sops.secrets.id_jenkins_agent.path}:/secrets/id_jenkins_agent"
       ];
       ports = [
-        "8080:8080"
-        "50000:50000"
+        "127.0.0.1:${toString port}:8080"
+        "127.0.0.1:50000:50000"
       ];
       environment = {
         "DOCKER_HOST" = "unix:///var/run/docker.sock";
@@ -50,5 +52,14 @@ in
   sops.secrets.id_jenkins_agent = {
     format = "binary";
     sopsFile = ../secrets/jenkins_agent.secret;
+  };
+
+  services.nginx.virtualHosts."jenkins.${domain}" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:${toString port}/";
+      proxyWebsockets = true;
+    };
   };
 }

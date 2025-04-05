@@ -1,14 +1,12 @@
 {
-  pkgs,
-  lib,
   config,
   ...
 }:
 
 let
-  domain = "omeduostuurcentenneef.nl";
+  domain = (import ../const.nix).domain;
 in
-rec {
+{
   mailserver = {
     enable = true;
     fqdn = "mail.${domain}";
@@ -17,7 +15,7 @@ rec {
 
     loginAccounts = {
       "bart@${domain}" = {
-        hashedPasswordFile = "${pkgs.writeText "bart.passwd" "$2b$05$gRrfXQkzrZzx1w.ouJKeoOLMt7UFTQR8fBgZ/rjOy2HcMYY8XgV2K"}";
+        hashedPasswordFile = config.sops.secrets.bart-email-password.path;
         aliases = [
           "postmaster@${domain}"
           "security@${domain}"
@@ -37,6 +35,11 @@ rec {
     path = "${config.mailserver.dkimKeyDirectory}/omeduostuurcentenneef.nl.mail.key";
   };
 
+  sops.secrets.bart-email-password = {
+    format = "binary";
+    sopsFile = ../secrets/bart-email-password.secret;
+  };
+
   services.roundcube = {
     enable = true;
     hostName = "webmail.${domain}";
@@ -45,38 +48,5 @@ rec {
       $config['smtp_user'] = "%u";
       $config['smtp_pass'] = "%p";
     '';
-  };
-
-  services.radicale =
-    with lib;
-    let
-      mailAccounts = mailserver.loginAccounts;
-      htpasswd = pkgs.writeText "radicale.users" (
-        concatStrings (
-          flip mapAttrsToList mailAccounts (mail: user: mail + ":" + builtins.readFile user.hashedPasswordFile + "\n")
-        )
-      );
-    in
-    {
-      enable = true;
-      config = ''
-        [auth]
-        type = htpasswd
-        htpasswd_filename = ${htpasswd}
-        htpasswd_encryption = bcrypt
-      '';
-    };
-
-  services.nginx.virtualHosts."calendar.${domain}" = {
-    forceSSL = false;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://localhost:5232/";
-      extraConfig = ''
-        proxy_set_header  X-Script-Name /;
-        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass_header Authorization;
-      '';
-    };
   };
 }

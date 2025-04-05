@@ -1,7 +1,7 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, ... }:
 
 let
-  domain = "omeduostuurcentenneef.nl";
+  domain = (import ../const.nix).domain;
 in
 {
   security.acme.acceptTerms = true;
@@ -49,58 +49,6 @@ in
 
       locations."/" = {
         tryFiles = "$uri $uri/ =404";
-      };
-    };
-
-    virtualHosts."portainer.${domain}" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "https://127.0.0.1:9443/";
-      };
-    };
-
-    virtualHosts."cockpit.${domain}" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "https://127.0.0.1:9090/";
-        proxyWebsockets = true;
-      };
-    };
-
-    virtualHosts."jenkins.${domain}" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:8080/";
-        proxyWebsockets = true;
-      };
-    };
-
-    virtualHosts."prometheus.${domain}" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
-      };
-    };
-
-    virtualHosts."grafana.${domain}" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://unix:${config.services.grafana.settings.server.socket}";
-        proxyWebsockets = true;
-      };
-    };
-
-    virtualHosts."influx.${domain}" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://localhost:8086";
-        proxyWebsockets = true;
       };
     };
   };

@@ -3,7 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
+
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
     srvos = {
@@ -16,7 +18,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -32,7 +34,7 @@
       flake-parts,
       nixos-facter-modules,
       sops-nix,
-      simple-nixos-mailserver,
+      nixos-mailserver,
       ...
     }@inputs:
     let
@@ -66,7 +68,7 @@
               nixos-facter-modules.nixosModules.facter
               { config.facter.reportPath = ./facter.json; }
               sops-nix.nixosModules.sops
-              simple-nixos-mailserver.nixosModule
+              nixos-mailserver.nixosModule
             ];
           };
         in
