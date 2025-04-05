@@ -42,6 +42,7 @@
       hostname = "bart-server";
       pkgs = import nixpkgs {
         inherit system;
+        config.android_sdk.accept_license = true;
         config.allowUnfree = true;
         overlays = [
           (final: super: self.packages.${system})

@@ -12,6 +12,7 @@
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
     ./containers/portainer.nix
     ./containers/jenkins.nix
+    ./modules/android.nix
     ./modules/cockpit.nix
     ./modules/nginx.nix
     ./modules/mailserver.nix
