@@ -17,7 +17,6 @@
     ./modules/mailserver.nix
     ./modules/monitoring.nix
     ./modules/nginx.nix
-    ./modules/remote.nix
     ./modules/tailscale.nix
   ];
 
