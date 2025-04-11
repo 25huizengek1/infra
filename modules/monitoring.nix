@@ -70,10 +70,27 @@ rec {
 
   services.influxdb2 = {
     enable = true;
+
     settings = {
       http-bind-address = "127.0.0.1:8086";
     };
-    provision.initialSetup.tokenFile = config.sops.influxdb-key.path;
+
+    provision = {
+      enable = false; # TODO: auto-provisioning
+      initialSetup.tokenFile = config.sops.influxdb-key.path;
+      organizations.org = {
+        description = "Main org";
+        buckets.nginx = {
+          description = "Nginx bucket";
+          retention = 7;
+        };
+        auths.telegraf = {
+          description = "Telegraf";
+          writeBuckets = [ "nginx" ];
+          tokenFile = config.sops.secrets.telegraf-token.path;
+        };
+      };
+    };
   };
 
   sops.secrets.influxdb-key = {
@@ -82,6 +99,20 @@ rec {
 
     owner = "influxdb2";
     group = "influxdb2";
+    mode = "0600";
+  };
+
+  sops.secrets.telegraf-token = {
+    format = "binary";
+    sopsFile = ../secrets/telegraf-token.secret;
+  };
+
+  sops.secrets.telegraf-env = {
+    format = "binary";
+    sopsFile = ../secrets/telegraf-env.secret;
+
+    owner = "telegraf";
+    group = "telegraf";
     mode = "0600";
   };
 
@@ -96,10 +127,18 @@ rec {
 
   services.telegraf = {
     enable = true;
+    environmentFiles = [ config.sops.secrets.telegraf-env.path ];
+
     extraConfig = {
-      outputs.influxdb = {
+      inputs.nginx = {
+        urls = [ "http://localhost/server_status" ];
+      };
+
+      outputs.influxdb_v2 = {
         urls = [ "http://${services.influxdb2.settings.http-bind-address}" ];
-        database = "telegraf";
+        token = "$TELEGRAF_TOKEN";
+        organization = "org";
+        bucket = "nginx";
       };
     };
   };

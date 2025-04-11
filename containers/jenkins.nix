@@ -62,4 +62,12 @@ in
       proxyWebsockets = true;
     };
   };
+
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "jenkins";
+      metrics_path = "/prometheus";
+      static_configs = [ { targets = [ "127.0.0.1:${toString port}" ]; } ];
+    }
+  ];
 }

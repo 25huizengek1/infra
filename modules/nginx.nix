@@ -56,6 +56,10 @@ in
       locations."/" = {
         tryFiles = "$uri $uri/ =404";
       };
+
+      locations."/metrics" = {
+        extraConfig = "stub_status;";
+      };
     };
   };
 }
