@@ -79,6 +79,8 @@
 
           nixosConfigurations.default = osConfig;
           nixosConfigurations.${hostname} = osConfig;
+
+          packages.${system}.headscale-admin = pkgs.callPackage ./pkgs/headscale-admin.nix {};
         };
       imports = [
 

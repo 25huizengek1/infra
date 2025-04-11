@@ -7,8 +7,14 @@ in
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "security@${domain}";
 
+  security.pam.services.nginx.setEnvironment = false;
+  systemd.services.nginx.serviceConfig = {
+    SupplementaryGroups = [ "shadow" ];
+  };
+
   services.nginx = {
     enable = true;
+    additionalModules = [ pkgs.nginxModules.pam ];
 
     commonHttpConfig =
       let

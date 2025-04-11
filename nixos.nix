@@ -14,9 +14,11 @@
     ./containers/jenkins.nix
     ./modules/android.nix
     ./modules/cockpit.nix
-    ./modules/nginx.nix
     ./modules/mailserver.nix
     ./modules/monitoring.nix
+    ./modules/nginx.nix
+    ./modules/remote.nix
+    ./modules/tailscale.nix
   ];
 
   nix.settings.experimental-features = [

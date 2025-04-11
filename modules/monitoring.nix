@@ -24,6 +24,7 @@ rec {
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "grafana" ];
 
+  # TODO: add headscale /metrics
   services.prometheus = {
     enable = true;
 
