@@ -20,11 +20,11 @@ in
       proxyPass = "http://${config.services.headscale.address}:${toString config.services.headscale.port}";
       proxyWebsockets = true;
     };
-    locations."/admin" = {
-      root = pkgs.headscale-admin;
-      tryFiles = "$uri $uri/ =404";
+    locations."/admin/" = {
+      alias = "${pkgs.headscale-admin}/";
+      index = "index.html";
     };
   };
-
-  # TODO: add tailscale client / SOPS keys
+  
+  services.tailscale.enable = true;
 }
