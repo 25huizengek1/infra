@@ -24,7 +24,6 @@ rec {
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "grafana" ];
 
-  # TODO: add headscale /metrics
   services.prometheus = {
     enable = true;
 
@@ -57,6 +56,15 @@ rec {
           ];
         }
       ))
+    ];
+
+    scrapeConfigs = [
+      {
+        job_name = "minio-job";
+        metrics_path = "/minio/v2/metrics/cluster";
+        scheme = "https";
+        static_configs = [ { targets = [ "minio-api.${domain}" ]; } ];
+      }
     ];
   };
 

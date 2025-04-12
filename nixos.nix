@@ -15,7 +15,9 @@
     ./modules/android.nix
     ./modules/cockpit.nix
     ./modules/mailserver.nix
+    ./modules/minio.nix
     ./modules/monitoring.nix
+    ./modules/nextcloud.nix
     ./modules/nginx.nix
     ./modules/tailscale.nix
   ];
@@ -54,6 +56,7 @@
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKO4+0nbySi9L5GSXTExGCWdkZBqi5WEqYB9fr4LwKyh bart@bart-laptop"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFm9ztfxLjeY83Gj+OMduKHbV7jtKRq0lQ8z1c7e+Bog bart@DESKTOP-4RGERMM"
   ];
 
   environment.systemPackages = with pkgs; [
