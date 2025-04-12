@@ -90,6 +90,8 @@
     };
   };
 
+  services.redis.package = pkgs.valkey; # Based
+
   programs.nh = {
     enable = true;
     clean.enable = true;
