@@ -16,6 +16,7 @@ in
     configureRedis = true;
     hostName = "cloud.${domain}";
     https = true;
+    maxUploadSize = "5G";
 
     extraApps = {
       inherit (config.services.nextcloud.package.packages.apps)
