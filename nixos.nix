@@ -19,6 +19,7 @@
     ./modules/monitoring.nix
     ./modules/nextcloud.nix
     ./modules/nginx.nix
+    ./modules/remotebuild.nix
     ./modules/tailscale.nix
   ];
 
