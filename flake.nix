@@ -24,6 +24,11 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    headplane = {
+      url = "github:tale/headplane?ref=next";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -35,6 +40,7 @@
       nixos-facter-modules,
       sops-nix,
       nixos-mailserver,
+      headplane,
       ...
     }@inputs:
     let
@@ -47,6 +53,7 @@
         overlays = [
           (final: super: self.packages.${system})
           (final: super: { nginxStable = super.nginxStable.override { openssl = super.pkgs.libressl; }; })
+          headplane.overlays.default
         ];
       };
     in
@@ -79,8 +86,6 @@
 
           nixosConfigurations.default = osConfig;
           nixosConfigurations.${hostname} = osConfig;
-
-          packages.${system}.headscale-admin = pkgs.callPackage ./pkgs/headscale-admin.nix {};
         };
       imports = [
 
