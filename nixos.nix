@@ -13,6 +13,7 @@
     ./containers/portainer.nix
     ./containers/jenkins.nix
     ./modules/android.nix
+    ./modules/attic.nix
     ./modules/cockpit.nix
     ./modules/mailserver.nix
     ./modules/minio.nix
@@ -21,6 +22,7 @@
     ./modules/nginx.nix
     ./modules/remotebuild.nix
     ./modules/tailscale.nix
+    ./modules/weblate.nix
   ];
 
   nix.settings.experimental-features = [
@@ -68,7 +70,7 @@
     gh
     git
     gnutar
-    nodejs_23
+    nodejs_24
     unzip
     vscode-fhs
     wget

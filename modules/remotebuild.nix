@@ -1,20 +1,20 @@
-{ ... }:
+{ inputs, lib, ... }:
 
 {
-  users.users.remotebuild = {
-    isNormalUser = true;
-    createHome = false;
-    group = "remotebuild";
+  imports = [
+    inputs.srvos.nixosModules.roles-nix-remote-builder
+  ];
 
+  roles.nix-remote-builder.schedulerPublicKeys = [ (lib.readFile ./remotebuild.pub) ];
+
+  users.users.nix-remote-builder = {
+    createHome = false;
     openssh.authorizedKeys.keyFiles = [ ./remotebuild.pub ];
   };
-
-  users.groups.remotebuild = {};
 
   nix = {
     nrBuildUsers = 64;
     settings = {
-      trusted-users = [ "remotebuild" ];
       min-free = 10 * 1024 * 1024;
       max-free = 200 * 1024 * 1024;
       max-jobs = "auto";

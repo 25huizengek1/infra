@@ -1,3 +1,3 @@
 {
-  domain = "omeduostuurcentenneef.nl";
+  domain = "vitune.app";
 }

@@ -29,6 +29,11 @@
       url = "github:tale/headplane?ref=next";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    treefmt = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -41,6 +46,7 @@
       sops-nix,
       nixos-mailserver,
       headplane,
+      treefmt,
       ...
     }@inputs:
     let
@@ -87,8 +93,23 @@
           nixosConfigurations.default = osConfig;
           nixosConfigurations.${hostname} = osConfig;
         };
-      imports = [
 
+      imports = [
+        treefmt.flakeModule
       ];
+
+      perSystem =
+        { system, ... }:
+        {
+          treefmt = {
+            programs.nixfmt.enable = true;
+            programs.deadnix = {
+              enable = true;
+              no-lambda-arg = true;
+              no-lambda-pattern-names = true;
+              no-underscore = true;
+            };
+          };
+        };
     };
 }

@@ -39,7 +39,7 @@ in
       objectstore.s3 = {
         enable = true;
         bucket = "nextcloud";
-        autocreate = false;
+        verify_bucket_exists = false;
         key = accessKey;
         secretFile = config.sops.secrets.nextcloud-s3-secret.path;
         hostname = "minio-api.${domain}";
@@ -77,6 +77,7 @@ in
     owner = "nextcloud";
     group = "nextcloud";
     mode = "0600";
+    restartUnits = [ "nextcloud.service" ];
   };
 
   sops.secrets.nextcloud-admin-pass = {
@@ -102,7 +103,9 @@ in
       metrics_path = "/metrics";
       static_configs = [
         {
-          targets = [ "${config.services.prometheus.exporters.nextcloud.listenAddress}:${toString config.services.prometheus.exporters.nextcloud.port}" ];
+          targets = [
+            "${config.services.prometheus.exporters.nextcloud.listenAddress}:${toString config.services.prometheus.exporters.nextcloud.port}"
+          ];
         }
       ];
     }

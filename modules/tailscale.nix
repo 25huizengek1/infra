@@ -1,11 +1,17 @@
-{ config, pkgs, inputs, lib, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
 
 let
   domain = (import ../const.nix).domain;
   vhost = "headscale";
   fqdn = "${vhost}.${domain}";
 
-  format = pkgs.formats.yaml {};
+  format = pkgs.formats.yaml { };
 
   settings = lib.recursiveUpdate config.services.headscale.settings {
     acme_email = "/dev/null";
@@ -78,7 +84,6 @@ in
     };
   };
 
-
   systemd.services.headplane.environment = {
     "HEADPLANE_LOAD_ENV_OVERRIDES" = "true";
   };
@@ -92,7 +97,8 @@ in
     owner = "headscale";
     group = "headscale";
     mode = "0600";
+    restartUnits = [ "headscale.service" ];
   };
-  
+
   services.tailscale.enable = true;
 }

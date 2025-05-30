@@ -108,6 +108,7 @@ rec {
     owner = "influxdb2";
     group = "influxdb2";
     mode = "0600";
+    restartUnits = [ "influxdb2.service" ];
   };
 
   sops.secrets.telegraf-token = {
@@ -122,6 +123,7 @@ rec {
     owner = "telegraf";
     group = "telegraf";
     mode = "0600";
+    restartUnits = [ "telegraf.service" ];
   };
 
   services.nginx.virtualHosts."influx.${domain}" = {

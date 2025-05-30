@@ -20,6 +20,7 @@ in
     owner = "minio";
     group = "minio";
     mode = "0600";
+    restartUnits = [ "minio.service" ];
   };
 
   services.nginx.virtualHosts."minio-api.${domain}" = {
