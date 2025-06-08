@@ -3,7 +3,10 @@
     format = "binary";
     sopsFile = ../secrets/email-passwords/alertmanager.enc.secret;
 
-    restartUnits = [ "postfix-setup.service" "dovecot2.service" ];
+    restartUnits = [
+      "postfix-setup.service"
+      "dovecot2.service"
+    ];
   };
 
   sops.secrets.alertmanager-email-password = {
@@ -20,21 +23,30 @@
     format = "binary";
     sopsFile = ../secrets/email-passwords/bart.enc.secret;
 
-    restartUnits = [ "postfix-setup.service" "dovecot2.service" ];
+    restartUnits = [
+      "postfix-setup.service"
+      "dovecot2.service"
+    ];
   };
 
   sops.secrets.nextcloud-email-password-encrypted = {
     format = "binary";
     sopsFile = ../secrets/email-passwords/nextcloud.enc.secret;
 
-    restartUnits = [ "postfix-setup.service" "dovecot2.service" ];
+    restartUnits = [
+      "postfix-setup.service"
+      "dovecot2.service"
+    ];
   };
 
   sops.secrets.weblate-email-password-encrypted = {
     format = "binary";
     sopsFile = ../secrets/email-passwords/weblate.enc.secret;
 
-    restartUnits = [ "postfix-setup.service" "dovecot2.service" ];
+    restartUnits = [
+      "postfix-setup.service"
+      "dovecot2.service"
+    ];
   };
 
   sops.secrets.weblate-email-password = {

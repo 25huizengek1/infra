@@ -153,7 +153,7 @@ in
       enable = lib.mkEnableOption "Weblate service";
 
       package = lib.mkPackageOption pkgs "weblate" { };
-      
+
       gunicornPackage = lib.mkPackageOption python.pkgs "gunicorn" { };
 
       localDomain = lib.mkOption {

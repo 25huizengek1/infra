@@ -61,7 +61,9 @@ in
         scheme = "http";
         static_configs = [
           {
-            targets = [ "${config.services.prometheus.alertmanager.listenAddress}:${toString config.services.prometheus.alertmanager.port}" ];
+            targets = [
+              "${config.services.prometheus.alertmanager.listenAddress}:${toString config.services.prometheus.alertmanager.port}"
+            ];
           }
         ];
       }
@@ -100,9 +102,11 @@ in
     scrapeConfigs = [
       {
         job_name = "nginx";
-        static_configs = [{
-          targets = [ "localhost:${toString config.services.prometheus.exporters.nginx.port}" ];
-        }];
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.nginx.port}" ];
+          }
+        ];
       }
     ];
   };

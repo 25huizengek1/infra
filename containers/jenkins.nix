@@ -77,9 +77,11 @@ in
     }
     {
       job_name = "jenkins-anubis";
-      static_configs = [{
-        targets = [ config.services.anubis.instances.jenkins.settings.METRICS_BIND ];
-      }];
+      static_configs = [
+        {
+          targets = [ config.services.anubis.instances.jenkins.settings.METRICS_BIND ];
+        }
+      ];
     }
   ];
 }

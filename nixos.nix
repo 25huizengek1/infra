@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   inputs,
   hostname,
   ...
@@ -32,6 +33,9 @@
   ];
 
   nix.channel.enable = false;
+  nix.gc.automatic = lib.mkForce false;
+
+  nixpkgs.hostPlatform.system = "x86_64-linux";
 
   boot.loader.grub = {
     enable = true;

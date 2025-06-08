@@ -21,7 +21,8 @@ in
     };
   };
 
-  services.nginx.virtualHosts.${config.services.weblate.localDomain}.locations."/".proxyPass = lib.mkForce "http://unix://${config.services.anubis.instances.weblate.settings.BIND}";
+  services.nginx.virtualHosts.${config.services.weblate.localDomain}.locations."/".proxyPass =
+    lib.mkForce "http://unix://${config.services.anubis.instances.weblate.settings.BIND}";
   systemd.services.anubis-weblate.serviceConfig.SupplementaryGroups = [ "weblate" ];
   services.anubis.instances.weblate.settings = {
     TARGET = "unix://${config.services.weblate.unixSocket}";
@@ -32,9 +33,11 @@ in
   services.prometheus.scrapeConfigs = [
     {
       job_name = "weblate-anubis";
-      static_configs = [{
-        targets = [ config.services.anubis.instances.weblate.settings.METRICS_BIND ];
-      }];
+      static_configs = [
+        {
+          targets = [ config.services.anubis.instances.weblate.settings.METRICS_BIND ];
+        }
+      ];
     }
   ];
 

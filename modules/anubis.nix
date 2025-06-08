@@ -2,7 +2,8 @@
 
 let
   domain = (import ../const.nix).domain;
-in {
+in
+{
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "anubis" ];
   services.anubis.defaultOptions.settings = {
     DIFFICULTY = 4;
