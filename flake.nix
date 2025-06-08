@@ -96,7 +96,6 @@
         };
 
       imports = [
-        treefmt.flakeModule
         ./parts/treefmt.nix
         ./parts/systems.nix
       ];
