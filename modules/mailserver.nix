@@ -22,15 +22,24 @@ in
           "security@${domain}"
           "root@${domain}"
           "development@${domain}"
+          "anubis@${domain}"
         ];
       };
       "weblate@${domain}".hashedPasswordFile = config.sops.secrets.weblate-email-password-encrypted.path;
+      "cloud@${domain}".hashedPasswordFile = config.sops.secrets.cloud-email-password-encrypted.path;
     };
+
+    stateVersion = 1;
   };
 
   sops.secrets.weblate-email-password-encrypted = {
     format = "binary";
     sopsFile = ../secrets/weblate-email-password.enc.secret;
+  };
+
+  sops.secrets.cloud-email-password-encrypted = {
+    format = "binary";
+    sopsFile = ../secrets/cloud-email-password.enc.secret;
   };
 
   sops.secrets."omeduostuurcentenneef.nl.mail.key" = {

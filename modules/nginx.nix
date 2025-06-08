@@ -45,6 +45,7 @@ in
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
     recommendedZstdSettings = true;
+    statusPage = true;
 
     sslCiphers = "AES256+EECDH:AES256+EDH:!aNULL";
 
@@ -55,10 +56,6 @@ in
 
       locations."/" = {
         tryFiles = "$uri $uri/ =404";
-      };
-
-      locations."/metrics" = {
-        extraConfig = "stub_status;";
       };
     };
   };

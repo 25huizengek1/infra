@@ -26,11 +26,21 @@ in
         contacts
         calendar
         tasks
-        whiteboard
+        forms
+        impersonate
+        mail
+        polls
         ;
+      notify_push = pkgs.nextcloud-notify_push.app;
     };
 
-    phpOptions."opcache.interned_strings_buffer" = "23";
+    phpOptions = {
+      "opcache.memory_consumption" = "128";
+      "opcache.interned_strings_buffer" = "25";
+      "opcache.max_accelerated_files" = "4000";
+      "opcache.revalidate_freq" = "60";
+      "opcache.enable_cli" = "1";
+    };
 
     config = {
       adminpassFile = config.sops.secrets.nextcloud-admin-pass.path;
@@ -63,6 +73,12 @@ in
       "OC\\Preview\\XBitmap"
       "OC\\Preview\\HEIC"
     ];
+
+    notify_push = {
+      enable = true;
+      dbtype = "pgsql";
+      bendDomainToLocalhost = true;
+    };
   };
 
   services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {

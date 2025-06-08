@@ -58,9 +58,15 @@ in
     forceSSL = true;
     enableACME = true;
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString port}/";
+      proxyPass = "http://unix://${config.services.anubis.instances.jenkins.settings.BIND}";
       proxyWebsockets = true;
     };
+  };
+
+  services.anubis.instances.jenkins.settings = {
+    TARGET = "http://127.0.0.1:${toString port}/";
+    METRICS_BIND = "127.0.0.1:16108"; # Prometheus can't scrape Unix sockets
+    METRICS_BIND_NETWORK = "tcp";
   };
 
   services.prometheus.scrapeConfigs = [
@@ -68,6 +74,12 @@ in
       job_name = "jenkins";
       metrics_path = "/prometheus";
       static_configs = [ { targets = [ "127.0.0.1:${toString port}" ]; } ];
+    }
+    {
+      job_name = "jenkins-anubis";
+      static_configs = [{
+        targets = [ config.services.anubis.instances.jenkins.settings.METRICS_BIND ];
+      }];
     }
   ];
 }

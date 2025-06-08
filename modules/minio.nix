@@ -40,4 +40,13 @@ in
       proxyWebsockets = true;
     };
   };
+
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "minio-job";
+      metrics_path = "/minio/v2/metrics/cluster";
+      scheme = "https";
+      static_configs = [ { targets = [ "minio-api.${domain}" ]; } ];
+    }
+  ];
 }

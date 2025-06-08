@@ -35,6 +35,8 @@ rec {
     ];
     globalConfig.scrape_interval = "15s";
 
+    exporters.nginx.enable = true;
+
     ruleFiles = [
       (pkgs.writeText "up.rules" (
         builtins.toJSON {
@@ -60,10 +62,10 @@ rec {
 
     scrapeConfigs = [
       {
-        job_name = "minio-job";
-        metrics_path = "/minio/v2/metrics/cluster";
-        scheme = "https";
-        static_configs = [ { targets = [ "minio-api.${domain}" ]; } ];
+        job_name = "nginx";
+        static_configs = [{
+          targets = [ "localhost:${toString config.services.prometheus.exporters.nginx.port}" ];
+        }];
       }
     ];
   };
@@ -71,85 +73,12 @@ rec {
   services.nginx.virtualHosts."prometheus.${domain}" = {
     enableACME = true;
     forceSSL = true;
+    listenAddresses = [
+      "100.64.0.2" # TODO: refactor
+    ];
+
     locations."/" = {
       proxyPass = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
-    };
-  };
-
-  services.influxdb2 = {
-    enable = true;
-
-    settings = {
-      http-bind-address = "127.0.0.1:8086";
-    };
-
-    provision = {
-      enable = false; # TODO: auto-provisioning
-      initialSetup.tokenFile = config.sops.influxdb-key.path;
-      organizations.org = {
-        description = "Main org";
-        buckets.nginx = {
-          description = "Nginx bucket";
-          retention = 7;
-        };
-        auths.telegraf = {
-          description = "Telegraf";
-          writeBuckets = [ "nginx" ];
-          tokenFile = config.sops.secrets.telegraf-token.path;
-        };
-      };
-    };
-  };
-
-  sops.secrets.influxdb-key = {
-    format = "binary";
-    sopsFile = ../secrets/influxdb-key.secret;
-
-    owner = "influxdb2";
-    group = "influxdb2";
-    mode = "0600";
-    restartUnits = [ "influxdb2.service" ];
-  };
-
-  sops.secrets.telegraf-token = {
-    format = "binary";
-    sopsFile = ../secrets/telegraf-token.secret;
-  };
-
-  sops.secrets.telegraf-env = {
-    format = "binary";
-    sopsFile = ../secrets/telegraf-env.secret;
-
-    owner = "telegraf";
-    group = "telegraf";
-    mode = "0600";
-    restartUnits = [ "telegraf.service" ];
-  };
-
-  services.nginx.virtualHosts."influx.${domain}" = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/" = {
-      proxyPass = "http://${services.influxdb2.settings.http-bind-address}";
-      proxyWebsockets = true;
-    };
-  };
-
-  services.telegraf = {
-    enable = true;
-    environmentFiles = [ config.sops.secrets.telegraf-env.path ];
-
-    extraConfig = {
-      inputs.nginx = {
-        urls = [ "http://localhost/server_status" ];
-      };
-
-      outputs.influxdb_v2 = {
-        urls = [ "http://${services.influxdb2.settings.http-bind-address}" ];
-        token = "$TELEGRAF_TOKEN";
-        organization = "org";
-        bucket = "nginx";
-      };
     };
   };
 }

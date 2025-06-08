@@ -33,6 +33,19 @@ in
     settings = {
       server_url = "https://${fqdn}:443";
       dns.base_domain = "tailnet.${domain}";
+      dns.nameservers.global = [
+        "8.8.8.8"
+        "8.8.4.4"
+        "1.1.1.1"
+        "1.0.0.1"
+      ];
+      dns.extra_records = [
+        {
+          type = "A";
+          name = "prometheus.${domain}";
+          value = "100.64.0.2";
+        }
+      ];
       policy.mode = "database";
     };
   };

@@ -13,8 +13,8 @@
     ./containers/portainer.nix
     ./containers/jenkins.nix
     ./modules/android.nix
+    ./modules/anubis.nix
     ./modules/attic.nix
-    ./modules/cockpit.nix
     ./modules/mailserver.nix
     ./modules/minio.nix
     ./modules/monitoring.nix
