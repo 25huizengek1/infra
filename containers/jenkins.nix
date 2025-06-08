@@ -1,7 +1,11 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  const,
+  ...
+}:
 
 let
-  domain = (import ../const.nix).domain;
   port = 8080;
   master = {
     jenkins-master = {
@@ -54,7 +58,7 @@ in
     sopsFile = ../secrets/jenkins_agent.secret;
   };
 
-  services.nginx.virtualHosts."jenkins.${domain}" = {
+  services.nginx.virtualHosts."jenkins.${const.domain}" = {
     forceSSL = true;
     enableACME = true;
     locations."/" = {

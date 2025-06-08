@@ -15,8 +15,7 @@
     ./containers/jenkins.nix
     ./modules/android.nix
     ./modules/anubis.nix
-    ./modules/attic.nix
-    ./modules/mailserver.nix
+    ./modules/mailserver
     ./modules/minio.nix
     ./modules/monitoring.nix
     ./modules/nextcloud.nix

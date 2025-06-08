@@ -62,6 +62,7 @@
           headplane.overlays.default
         ];
       };
+      const = import ./const.nix;
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ system ];
@@ -74,6 +75,7 @@
             specialArgs = {
               inherit inputs;
               inherit hostname;
+              inherit const;
             };
 
             modules = [

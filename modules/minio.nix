@@ -1,9 +1,8 @@
-{ config, ... }:
+{ config, const, ... }:
 
 let
   listenAddress = "127.0.0.1:22677";
   consoleAddress = "127.0.0.1:22678";
-  domain = (import ../const.nix).domain;
 in
 {
   services.minio = {
@@ -23,7 +22,7 @@ in
     restartUnits = [ "minio.service" ];
   };
 
-  services.nginx.virtualHosts."minio-api.${domain}" = {
+  services.nginx.virtualHosts."minio-api.${const.domain}" = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
@@ -32,7 +31,7 @@ in
     };
   };
 
-  services.nginx.virtualHosts."minio.${domain}" = {
+  services.nginx.virtualHosts."minio.${const.domain}" = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
@@ -46,7 +45,7 @@ in
       job_name = "minio-job";
       metrics_path = "/minio/v2/metrics/cluster";
       scheme = "https";
-      static_configs = [ { targets = [ "minio-api.${domain}" ]; } ];
+      static_configs = [ { targets = [ "minio-api.${const.domain}" ]; } ];
     }
   ];
 }

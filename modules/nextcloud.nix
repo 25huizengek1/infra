@@ -1,13 +1,11 @@
-# TODO: add email server when port 25 is unrestricted
 {
   config,
   pkgs,
+  const,
   ...
 }:
 
 let
-  inherit (import ../const.nix) domain;
-
   accessKey = "NgalcVZhiekAgzIMFxxj";
 in
 {
@@ -15,7 +13,7 @@ in
     enable = true;
     package = pkgs.nextcloud31;
     configureRedis = true;
-    hostName = "cloud.${domain}";
+    hostName = "cloud.${const.domain}";
     https = true;
     maxUploadSize = "5G";
     database.createLocally = true;
@@ -52,7 +50,7 @@ in
         verify_bucket_exists = false;
         key = accessKey;
         secretFile = config.sops.secrets.nextcloud-s3-secret.path;
-        hostname = "minio-api.${domain}";
+        hostname = "minio-api.${const.domain}";
         useSsl = true;
         port = 443;
         usePathStyle = true;
@@ -110,7 +108,7 @@ in
     username = "root";
     passwordFile = config.sops.secrets.nextcloud-admin-pass.path;
     listenAddress = "127.0.0.1";
-    url = "https://cloud.${domain}";
+    url = "https://cloud.${const.domain}";
   };
 
   services.prometheus.scrapeConfigs = [

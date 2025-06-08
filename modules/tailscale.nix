@@ -3,13 +3,13 @@
   pkgs,
   inputs,
   lib,
+  const,
   ...
 }:
 
 let
-  domain = (import ../const.nix).domain;
   vhost = "headscale";
-  fqdn = "${vhost}.${domain}";
+  fqdn = "${vhost}.${const.domain}";
 
   format = pkgs.formats.yaml { };
 
@@ -32,7 +32,7 @@ in
     port = 41916;
     settings = {
       server_url = "https://${fqdn}:443";
-      dns.base_domain = "tailnet.${domain}";
+      dns.base_domain = "tailnet.${const.domain}";
       dns.nameservers.global = [
         "8.8.8.8"
         "8.8.4.4"
@@ -42,7 +42,7 @@ in
       dns.extra_records = [
         {
           type = "A";
-          name = "prometheus.${domain}";
+          name = "prometheus.${const.domain}";
           value = "100.64.0.2";
         }
       ];
@@ -88,7 +88,7 @@ in
     };
   };
 
-  services.nginx.virtualHosts."headplane.${domain}" = {
+  services.nginx.virtualHosts."headplane.${const.domain}" = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {

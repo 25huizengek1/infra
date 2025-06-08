@@ -1,7 +1,7 @@
 {
   sops.secrets.alertmanager-email-password-encrypted = {
     format = "binary";
-    sopsFile = ../secrets/email-passwords/alertmanager.enc.secret;
+    sopsFile = ../../secrets/email-passwords/alertmanager.enc.secret;
 
     restartUnits = [
       "postfix-setup.service"
@@ -15,13 +15,13 @@
     group = "alertmanager";
     mode = "0600";
 
-    sopsFile = ../secrets/email-passwords/alertmanager.secret;
+    sopsFile = ../../secrets/email-passwords/alertmanager.secret;
     restartUnits = [ "alertmanager.service" ];
   };
 
   sops.secrets.bart-email-password-encrypted = {
     format = "binary";
-    sopsFile = ../secrets/email-passwords/bart.enc.secret;
+    sopsFile = ../../secrets/email-passwords/bart.enc.secret;
 
     restartUnits = [
       "postfix-setup.service"
@@ -31,7 +31,7 @@
 
   sops.secrets.nextcloud-email-password-encrypted = {
     format = "binary";
-    sopsFile = ../secrets/email-passwords/nextcloud.enc.secret;
+    sopsFile = ../../secrets/email-passwords/nextcloud.enc.secret;
 
     restartUnits = [
       "postfix-setup.service"
@@ -41,7 +41,7 @@
 
   sops.secrets.weblate-email-password-encrypted = {
     format = "binary";
-    sopsFile = ../secrets/email-passwords/weblate.enc.secret;
+    sopsFile = ../../secrets/email-passwords/weblate.enc.secret;
 
     restartUnits = [
       "postfix-setup.service"
@@ -51,7 +51,7 @@
 
   sops.secrets.weblate-email-password = {
     format = "binary";
-    sopsFile = ../secrets/email-passwords/weblate.secret;
+    sopsFile = ../../secrets/email-passwords/weblate.secret;
 
     owner = "weblate";
     group = "weblate";

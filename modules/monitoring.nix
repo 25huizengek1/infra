@@ -1,21 +1,23 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  const,
+  ...
+}:
 
 # Ideally, multiple servers in a cluster should monitor each other. But why do this when you can also NOT do that
 
-let
-  domain = (import ../const.nix).domain;
-in
 {
   services.grafana = {
     enable = true;
     settings.server = {
-      domain = "grafana.${domain}";
-      root_url = "https://grafana.${domain}";
+      domain = "grafana.${const.domain}";
+      root_url = "https://grafana.${const.domain}";
       protocol = "socket";
     };
   };
 
-  services.nginx.virtualHosts."grafana.${domain}" = {
+  services.nginx.virtualHosts."grafana.${const.domain}" = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
@@ -37,9 +39,9 @@ in
       listenAddress = "127.0.0.1";
       configuration = {
         global = {
-          smtp_from = "Alerting <alerts@${domain}>";
-          smtp_smarthost = "${domain}:587";
-          smtp_auth_username = "alerts@${domain}";
+          smtp_from = "Alerting <alerts@${const.domain}>";
+          smtp_smarthost = "${const.domain}:587";
+          smtp_auth_username = "alerts@${const.domain}";
           smtp_auth_password_file = config.sops.secrets.alertmanager-email-password.path;
         };
         receivers = [
@@ -47,7 +49,7 @@ in
             name = "admin";
             email_configs = [
               {
-                to = "root@${domain}";
+                to = "root@${const.domain}";
               }
             ];
           }
@@ -70,7 +72,7 @@ in
     ];
 
     extraFlags = [
-      "--web.external-url=https://prometheus.${domain}/"
+      "--web.external-url=https://prometheus.${const.domain}/"
     ];
     globalConfig.scrape_interval = "15s";
 
@@ -111,7 +113,7 @@ in
     ];
   };
 
-  services.nginx.virtualHosts."prometheus.${domain}" = {
+  services.nginx.virtualHosts."prometheus.${const.domain}" = {
     enableACME = true;
     forceSSL = true;
     listenAddresses = [

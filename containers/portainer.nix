@@ -1,7 +1,6 @@
-{ ... }:
+{ const, ... }:
 
 let
-  domain = (import ../const.nix).domain;
   port = 9443;
 in
 {
@@ -18,7 +17,7 @@ in
     privileged = true;
   };
 
-  services.nginx.virtualHosts."portainer.${domain}" = {
+  services.nginx.virtualHosts."portainer.${const.domain}" = {
     forceSSL = true;
     enableACME = true;
     locations."/" = {

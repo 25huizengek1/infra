@@ -1,22 +1,24 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  const,
+  ...
+}:
 
-let
-  domain = (import ../const.nix).domain;
-in
 {
   disabledModules = [ "services/web-apps/weblate.nix" ];
   imports = [ ./patched-nixos/weblate.nix ];
 
   services.weblate = {
     enable = true;
-    localDomain = "weblate.${domain}";
+    localDomain = "weblate.${const.domain}";
     siteTitle = "ViTune Weblate";
     djangoSecretKeyFile = config.sops.secrets.weblate-django-key.path;
     smtp = {
       enable = true;
-      host = domain;
-      from = "Weblate Email Services <weblate@${domain}>";
-      user = "weblate@${domain}";
+      host = const.domain;
+      from = "Weblate Email Services <weblate@${const.domain}>";
+      user = "weblate@${const.domain}";
       passwordFile = config.sops.secrets.weblate-email-password.path;
     };
   };
