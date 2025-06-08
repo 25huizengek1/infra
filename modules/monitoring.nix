@@ -40,7 +40,7 @@ in
           smtp_from = "Alerting <alerts@${domain}>";
           smtp_smarthost = "${domain}:587";
           smtp_auth_username = "alerts@${domain}";
-          smtp_auth_password_file = config.sops.secrets.alertmanager-smtp-password.path;
+          smtp_auth_password_file = config.sops.secrets.alertmanager-email-password.path;
         };
         receivers = [
           {

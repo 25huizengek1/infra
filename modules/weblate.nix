@@ -47,14 +47,4 @@ in
     mode = "0600";
     restartUnits = [ "weblate.service" ];
   };
-
-  sops.secrets.weblate-email-password = {
-    format = "binary";
-    sopsFile = ../secrets/weblate-email-password.secret;
-
-    owner = "weblate";
-    group = "weblate";
-    mode = "0600";
-    restartUnits = [ "weblate.service" ];
-  };
 }

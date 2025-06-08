@@ -8,15 +8,23 @@ let
   domain = (import ../const.nix).domain;
 in
 {
+  imports = [ ./passwords.nix ];
+
   mailserver = {
     enable = true;
     fqdn = domain;
     certificateScheme = "acme-nginx";
-    domains = [ domain "omeduostuurcentenneef.nl" ];
+    domains = [ domain ];
+
+    dmarcReporting = {
+      enable = true;
+      inherit domain;
+      organizationName = domain;
+    };
 
     loginAccounts = {
       "bart@${domain}" = {
-        hashedPasswordFile = config.sops.secrets.bart-email-password.path;
+        hashedPasswordFile = config.sops.secrets.bart-email-password-encrypted.path;
         aliases = [
           "postmaster@${domain}"
           "security@${domain}"
@@ -25,39 +33,25 @@ in
           "anubis@${domain}"
         ];
       };
-      "weblate@${domain}".hashedPasswordFile = config.sops.secrets.weblate-email-password-encrypted.path;
-      "cloud@${domain}".hashedPasswordFile = config.sops.secrets.cloud-email-password-encrypted.path;
-      "alerts@${domain}".hashedPasswordFile = config.sops.secrets.alertmanager-smtp-password-encrypted.path;
+      "weblate@${domain}" = {
+        hashedPasswordFile = config.sops.secrets.weblate-email-password-encrypted.path;
+        sendOnly = true;
+      };
+      "cloud@${domain}" = {
+        hashedPasswordFile = config.sops.secrets.nextcloud-email-password-encrypted.path;
+        sendOnly = true;
+      };
+      "alerts@${domain}" = {
+        hashedPasswordFile = config.sops.secrets.alertmanager-email-password-encrypted.path;
+        sendOnly = true;
+      };
+    };
+
+    forwards = {
+      "bart@${domain}" = "25huizengek1@gmail.com";
     };
 
     stateVersion = 1;
-  };
-
-  sops.secrets.weblate-email-password-encrypted = {
-    format = "binary";
-    sopsFile = ../secrets/weblate-email-password.enc.secret;
-  };
-
-  sops.secrets.alertmanager-smtp-password-encrypted = {
-    format = "binary";
-    sopsFile = ../secrets/alertmanager-smtp-password.enc.secret;
-  };
-
-  sops.secrets.cloud-email-password-encrypted = {
-    format = "binary";
-    sopsFile = ../secrets/cloud-email-password.enc.secret;
-  };
-
-  sops.secrets."omeduostuurcentenneef.nl.mail.key" = {
-    format = "binary";
-    owner = "rspamd";
-    group = "rspamd";
-    mode = "0600";
-
-    sopsFile = ../secrets/omeduostuurcentenneef.nl.mail.private.secret;
-
-    path = "${config.mailserver.dkimKeyDirectory}/omeduostuurcentenneef.nl.mail.key";
-    restartUnits = [ "rspamd.service" ];
   };
 
   sops.secrets."vitune.app.mail.key" = {
@@ -72,26 +66,6 @@ in
     restartUnits = [ "rspamd.service" ];
   };
 
-  sops.secrets.bart-email-password = {
-    format = "binary";
-    sopsFile = ../secrets/bart-email-password.secret;
-  };
-
-  sops.secrets.weblate-email-password = {
-    format = "binary";
-    sopsFile = ../secrets/weblate-email-password.secret;
-  };
-
-  sops.secrets.alertmanager-smtp-password = {
-    format = "binary";
-    owner = "alertmanager";
-    group = "alertmanager";
-    mode = "0600";
-
-    sopsFile = ../secrets/alertmanager-smtp-password.secret;
-    restartUnits = [ "alertmanager.service" ];
-  };
-
   services.roundcube = {
     enable = true;
     hostName = "webmail.${domain}";
@@ -101,30 +75,6 @@ in
       $config['smtp_pass'] = "%p";
     '';
   };
-
-  services.postsrsd = {
-    enable = false; # TODO
-    domains = [ domain ];
-    secretsFile = config.sops.secrets.postsrsd-secret.path;
-  };
-
-#  services.postfix.config = {
-#    sender_canonical_maps = "socketmap:unix:/run/postsrsd/socket:forward";
-#    sender_canonical_classes = "envelope_sender";
-
-#    recipient_canonical_maps = "socketmap:unix:/run/postsrsd/socket:forward";
-#    recipient_canonical_classes = "envelope_recipient, header_recipient";
-#  };
-
-#  sops.secrets.postsrsd-secret = {
-#    format = "binary";
-#    owner = config.services.postsrsd.user;
-#    group = config.services.postsrsd.user;
-#    mode = "0600";
-
-#    sopsFile = ../secrets/postsrsd-secret.secret;
-#    restartUnits = [ "postsrsd.service" ];
-#  };
 
   services.postfix.config.inet_protocols = "ipv4";
 
