@@ -38,66 +38,15 @@
 
   outputs =
     {
-      self,
-      nixpkgs,
-      disko,
       flake-parts,
-      nixos-facter-modules,
-      sops-nix,
-      nixos-mailserver,
-      headplane,
-      treefmt,
       ...
     }@inputs:
-    let
-      system = "x86_64-linux";
-      hostname = "bart-server";
-      pkgs = import nixpkgs {
-        inherit system;
-        config.android_sdk.accept_license = true;
-        config.allowUnfree = true;
-        overlays = [
-          (final: super: self.packages.${system})
-          (final: super: { nginxStable = super.nginxStable.override { openssl = super.pkgs.libressl; }; })
-          headplane.overlays.default
-        ];
-      };
-      const = import ./const.nix;
-    in
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      flake =
-        let
-          osConfig = nixpkgs.lib.nixosSystem {
-            inherit pkgs;
-            inherit system;
-
-            specialArgs = {
-              inherit inputs;
-              inherit hostname;
-              inherit const;
-            };
-
-            modules = [
-              disko.nixosModules.disko
-              ./nixos.nix
-              nixos-facter-modules.nixosModules.facter
-              { config.facter.reportPath = ./facter.json; }
-              sops-nix.nixosModules.sops
-              nixos-mailserver.nixosModule
-            ];
-          };
-        in
-        {
-          inherit inputs;
-          inherit pkgs;
-
-          nixosConfigurations.default = osConfig;
-          nixosConfigurations.${hostname} = osConfig;
-        };
-
+    {
       imports = [
         ./parts/treefmt.nix
         ./parts/systems.nix
+        ./parts/pkgs.nix
+        ./parts/nixos.nix
       ];
     };
 }
