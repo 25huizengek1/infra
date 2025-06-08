@@ -27,6 +27,7 @@ in
       };
       "weblate@${domain}".hashedPasswordFile = config.sops.secrets.weblate-email-password-encrypted.path;
       "cloud@${domain}".hashedPasswordFile = config.sops.secrets.cloud-email-password-encrypted.path;
+      "alerts@${domain}".hashedPasswordFile = config.sops.secrets.alertmanager-smtp-password-encrypted.path;
     };
 
     stateVersion = 1;
@@ -35,6 +36,11 @@ in
   sops.secrets.weblate-email-password-encrypted = {
     format = "binary";
     sopsFile = ../secrets/weblate-email-password.enc.secret;
+  };
+
+  sops.secrets.alertmanager-smtp-password-encrypted = {
+    format = "binary";
+    sopsFile = ../secrets/alertmanager-smtp-password.enc.secret;
   };
 
   sops.secrets.cloud-email-password-encrypted = {
@@ -74,6 +80,16 @@ in
   sops.secrets.weblate-email-password = {
     format = "binary";
     sopsFile = ../secrets/weblate-email-password.secret;
+  };
+
+  sops.secrets.alertmanager-smtp-password = {
+    format = "binary";
+    owner = "alertmanager";
+    group = "alertmanager";
+    mode = "0600";
+
+    sopsFile = ../secrets/alertmanager-smtp-password.secret;
+    restartUnits = [ "alertmanager.service" ];
   };
 
   services.roundcube = {

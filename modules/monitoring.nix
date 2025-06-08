@@ -1,9 +1,11 @@
 { pkgs, config, ... }:
 
+# Ideally, multiple servers in a cluster should monitor each other. But why do this when you can also NOT do that
+
 let
   domain = (import ../const.nix).domain;
 in
-rec {
+{
   services.grafana = {
     enable = true;
     settings.server = {
@@ -30,6 +32,41 @@ rec {
     listenAddress = "127.0.0.1";
     port = 7070;
 
+    alertmanager = {
+      enable = true;
+      listenAddress = "127.0.0.1";
+      configuration = {
+        global = {
+          smtp_from = "Alerting <alerts@${domain}>";
+          smtp_smarthost = "${domain}:587";
+          smtp_auth_username = "alerts@${domain}";
+          smtp_auth_password_file = config.sops.secrets.alertmanager-smtp-password.path;
+        };
+        receivers = [
+          {
+            name = "admin";
+            email_configs = [
+              {
+                to = "root@${domain}";
+              }
+            ];
+          }
+        ];
+        route.receiver = "admin";
+      };
+    };
+
+    alertmanagers = [
+      {
+        scheme = "http";
+        static_configs = [
+          {
+            targets = [ "${config.services.prometheus.alertmanager.listenAddress}:${toString config.services.prometheus.alertmanager.port}" ];
+          }
+        ];
+      }
+    ];
+
     extraFlags = [
       "--web.external-url=https://prometheus.${domain}/"
     ];
@@ -49,7 +86,7 @@ rec {
                   expr = ''
                     up == 0
                   '';
-                  for = "10m";
+                  for = "1m";
                   labels.severity = "warning";
                   annotations.summary = "scrape job {{ $labels.job }} is failing on {{ $labels.instance }}";
                 }
