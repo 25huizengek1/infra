@@ -2,7 +2,7 @@
   description = "Bart Oostveen's Nix server infra configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -26,7 +26,7 @@
     };
 
     headplane = {
-      url = "github:tale/headplane?ref=v0.6.0";
+      url = "github:tale/headplane/v0.6.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
