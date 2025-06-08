@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
 
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
@@ -38,15 +39,9 @@
 
   outputs =
     {
+      import-tree,
       flake-parts,
       ...
     }@inputs:
-    {
-      imports = [
-        ./parts/treefmt.nix
-        ./parts/systems.nix
-        ./parts/pkgs.nix
-        ./parts/nixos.nix
-      ];
-    };
+    flake-parts.lib.mkFlake { inherit inputs; } (import-tree ./parts);
 }
