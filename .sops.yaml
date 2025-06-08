@@ -4,14 +4,14 @@ keys:
   - &tom age1pjgmdxkj6zvn5hpjwd4mlv2jw89mk78luuetdcjqtmaq6r88juwshyjqal
 
 creation_rules:
-  - path_regex: secrets/[^/]+.secret
-    key_groups:
-      - age:
-          - *server
-          - *laptop
   - path_regex: secrets/[^/]+.shared.secret
     key_groups:
       - age:
           - *server
           - *laptop
           - *tom
+  - path_regex: secrets/[^/]+.secret
+    key_groups:
+      - age:
+          - *server
+          - *laptop

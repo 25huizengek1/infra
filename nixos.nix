@@ -22,6 +22,7 @@
     ./modules/nginx.nix
     ./modules/remotebuild.nix
     ./modules/tailscale.nix
+    ./modules/tom.nix
     ./modules/weblate.nix
   ];
 
