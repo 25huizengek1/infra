@@ -65,7 +65,6 @@
       const = import ./const.nix;
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ system ];
       flake =
         let
           osConfig = nixpkgs.lib.nixosSystem {
@@ -99,6 +98,7 @@
       imports = [
         treefmt.flakeModule
         ./parts/treefmt.nix
+        ./parts/systems.nix
       ];
     };
 }
