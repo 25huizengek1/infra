@@ -11,19 +11,19 @@
     ./disk-config.nix
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
-    ../containers/portainer.nix
-    ../containers/jenkins.nix
-    ../modules/android.nix
-    ../modules/anubis.nix
-    ../modules/mailserver
-    ../modules/minio.nix
-    ../modules/monitoring.nix
-    ../modules/nextcloud.nix
-    ../modules/nginx.nix
-    ../modules/remotebuild.nix
-    ../modules/tailscale.nix
-    ../modules/tom.nix
-    ../modules/weblate.nix
+    ./containers/portainer.nix
+    ./containers/jenkins.nix
+    ./modules/android.nix
+    ./modules/anubis.nix
+    ./modules/mailserver
+    ./modules/minio.nix
+    ./modules/monitoring.nix
+    ./modules/nextcloud.nix
+    ./modules/nginx.nix
+    ./modules/remotebuild.nix
+    ./modules/tailscale.nix
+    ./modules/tom.nix
+    ./modules/weblate.nix
   ];
 
   nix.settings.experimental-features = [
@@ -47,7 +47,7 @@
 
   networking = {
     hostName = hostname;
-    domain = (import ../const.nix).domain;
+    domain = (import ./const.nix).domain;
 
     firewall = {
       enable = true;
