@@ -9,6 +9,10 @@ let
   accessKey = "NgalcVZhiekAgzIMFxxj";
 in
 {
+  environment.systemPackages = with pkgs; [
+    ffmpeg
+  ];
+
   services.nextcloud = {
     enable = true;
     package = pkgs.nextcloud31;
@@ -28,6 +32,7 @@ in
         impersonate
         mail
         polls
+        previewgenerator
         ;
       notify_push = pkgs.nextcloud-notify_push.app;
     };
@@ -65,12 +70,15 @@ in
       "OC\\Preview\\Krita"
       "OC\\Preview\\MarkDown"
       "OC\\Preview\\MP3"
+      "OC\\Preview\\MP4"
       "OC\\Preview\\OpenDocument"
       "OC\\Preview\\PNG"
       "OC\\Preview\\TXT"
       "OC\\Preview\\XBitmap"
       "OC\\Preview\\HEIC"
     ];
+
+    settings.trusted_domains = [ "cloud.koensjoligedomeintje.nl" ];
 
     notify_push = {
       enable = true;
@@ -82,6 +90,16 @@ in
   services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
     forceSSL = true;
     enableACME = true;
+  };
+
+  services.nginx.virtualHosts."cloud.koensjoligedomeintje.nl" = {
+    inherit (config.services.nginx.virtualHosts.${config.services.nextcloud.hostName})
+      forceSSL
+      enableACME
+      locations
+      root
+      extraConfig
+      ;
   };
 
   sops.secrets.nextcloud-s3-secret = {

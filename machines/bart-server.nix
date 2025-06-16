@@ -11,8 +11,9 @@
     ./disk-config.nix
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
-    ../containers/portainer.nix
-    ../containers/jenkins.nix
+
+    # ../containers/portainer.nix
+    # ../containers/jenkins.nix
     ../modules/android.nix
     ../modules/anubis.nix
     ../modules/mailserver
@@ -24,6 +25,7 @@
     ../modules/tailscale.nix
     ../modules/tom.nix
     ../modules/weblate.nix
+    ../modules/vscode.nix
   ];
 
   nix.settings.experimental-features = [

@@ -52,6 +52,11 @@
                 to = "root@${const.domain}";
               }
             ];
+            discord_configs = [
+              {
+                webhook_url_file = config.sops.secrets.alertmanager-discord-webhook.path;
+              }
+            ];
           }
         ];
         route.receiver = "admin";
@@ -77,6 +82,7 @@
     globalConfig.scrape_interval = "15s";
 
     exporters.nginx.enable = true;
+    exporters.systemd.enable = true;
 
     ruleFiles = [
       (pkgs.writeText "up.rules" (
@@ -110,6 +116,14 @@
           }
         ];
       }
+      {
+        job_name = "systemd";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.systemd.port}" ];
+          }
+        ];
+      }
     ];
   };
 
@@ -123,5 +137,15 @@
     locations."/" = {
       proxyPass = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
     };
+  };
+
+  sops.secrets.alertmanager-discord-webhook = {
+    format = "binary";
+    owner = "alertmanager";
+    group = "alertmanager";
+    mode = "0600";
+
+    sopsFile = ../secrets/alertmanager-discord-webhook.secret;
+    restartUnits = [ "alertmanager.service" ];
   };
 }

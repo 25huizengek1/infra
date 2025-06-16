@@ -46,6 +46,8 @@
     recommendedZstdSettings = true;
     statusPage = true;
 
+    clientMaxBodySize = "128m";
+
     sslCiphers = "AES256+EECDH:AES256+EDH:!aNULL";
 
     virtualHosts."${const.domain}" = {
