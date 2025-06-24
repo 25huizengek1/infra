@@ -27,7 +27,7 @@
       "bart@${const.domain}" = "25huizengek1@gmail.com";
     };
 
-    stateVersion = 1;
+    stateVersion = 3;
   };
 
   sops.secrets."vitune.app.mail.key" = {
