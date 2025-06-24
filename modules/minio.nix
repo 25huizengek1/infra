@@ -1,4 +1,9 @@
-{ config, const, ... }:
+{
+  config,
+  const,
+  pkgs,
+  ...
+}:
 
 let
   listenAddress = "127.0.0.1:22677";
@@ -10,6 +15,19 @@ in
     inherit listenAddress;
     inherit consoleAddress;
     rootCredentialsFile = config.sops.secrets.minio-credentials.path;
+    package = pkgs.minio.overrideAttrs rec {
+      version = "2025-03-12T18-04-18Z";
+
+      # Minio doesn't use finalAttrs, sigh...
+      src = pkgs.fetchFromGitHub {
+        owner = "minio";
+        repo = "minio";
+        rev = "RELEASE.${version}";
+        hash = "sha256-wN8eiBn1XGsaxeuFvJ9KJtL5flBfNq0dYcuIbkgl2Ko=";
+      };
+
+      vendorHash = "sha256-z8uaMUdboJzQ2pSeG6IGhArnxH40+INrBAjpnmZMdg8=";
+    };
   };
 
   sops.secrets.minio-credentials = {
