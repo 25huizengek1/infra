@@ -2,6 +2,7 @@
   config,
   pkgs,
   const,
+  lib,
   ...
 }:
 
@@ -69,6 +70,7 @@ in
       "OC\\Preview\\JPEG"
       "OC\\Preview\\Krita"
       "OC\\Preview\\MarkDown"
+      "OC\\Preview\\Movie"
       "OC\\Preview\\MP3"
       "OC\\Preview\\MP4"
       "OC\\Preview\\OpenDocument"
@@ -79,6 +81,8 @@ in
     ];
 
     settings.trusted_domains = [ "cloud.koensjoligedomeintje.nl" ];
+
+    settings.preview_ffmpeg_path = lib.getExe pkgs.ffmpeg-headless;
 
     notify_push = {
       enable = true;
