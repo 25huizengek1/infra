@@ -9,7 +9,10 @@
 
   users.users.nix-remote-builder = {
     createHome = false;
-    openssh.authorizedKeys.keyFiles = [ ./remotebuild.pub ];
+    openssh.authorizedKeys = {
+      keyFiles = [ ./remotebuild.pub ];
+      keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiKac8QlzcnCMtTtFe39wW2lV884Oj+tlOz+9JgSAFl" ];
+    };
   };
 
   nix = {
