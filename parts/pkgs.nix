@@ -6,7 +6,6 @@
     config.allowUnfree = true;
     overlays = [
       (final: super: self.packages.${system})
-      (final: super: { nginxStable = super.nginxStable.override { openssl = super.pkgs.libressl; }; })
       inputs.headplane.overlays.default
     ];
   };
