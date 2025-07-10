@@ -17,9 +17,7 @@
     ../modules/android.nix
     ../modules/anubis.nix
     ../modules/mailserver
-    ../modules/minio.nix
     ../modules/monitoring.nix
-    ../modules/nextcloud.nix
     ../modules/nginx.nix
     ../modules/remotebuild.nix
     ../modules/tailscale.nix
