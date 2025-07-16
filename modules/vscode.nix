@@ -8,7 +8,7 @@
     script = ''
       ${lib.getExe pkgs.vscode-fhs} tunnel --accept-server-license-terms
     '';
-    path = with pkgs; [ 
+    path = with pkgs; [
       git
       nixd
       nixfmt-rfc-style
