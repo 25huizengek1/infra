@@ -39,13 +39,22 @@ in
         "1.1.1.1"
         "1.0.0.1"
       ];
-      dns.extra_records = [
-        {
-          type = "A";
-          name = "prometheus.${const.domain}";
+      dns.extra_records =
+        let
           value = "100.64.0.2";
-        }
-      ];
+        in
+        [
+          {
+            type = "A";
+            name = "prometheus.${const.domain}";
+            inherit value;
+          }
+          {
+            type = "A";
+            name = "uptime.${const.domain}";
+            inherit value;
+          }
+        ];
       policy.mode = "database";
     };
   };
@@ -84,7 +93,17 @@ in
         config_path = "${headscaleConfig}";
         config_strict = true;
       };
+      # integration.agent.enabled = false;
       integration.proc.enabled = true;
+      # Required for some reason, grabbed from docs
+      oidc = {
+        issuer = "https://oidc.example.com";
+        client_id = "headplane";
+        disable_api_key_login = true;
+        token_endpoint_auth_method = "client_secret_basic";
+        redirect_uri = "https://oidc.example.com/admin/oidc/callback";
+        headscale_api_key = "xxx";
+      };
     };
   };
 

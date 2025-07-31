@@ -124,6 +124,14 @@
           }
         ];
       }
+      {
+        job_name = "telegraf";
+        static_configs = [
+          {
+            targets = [ "localhost:9273" ];
+          }
+        ];
+      }
     ];
   };
 
@@ -141,11 +149,25 @@
 
   sops.secrets.alertmanager-discord-webhook = {
     format = "binary";
-    owner = "alertmanager";
-    group = "alertmanager";
     mode = "0600";
 
     sopsFile = ../secrets/alertmanager-discord-webhook.secret;
     restartUnits = [ "alertmanager.service" ];
+    owner = "alertmanager";
+    group = "alertmanager";
+  };
+
+  services.uptime-kuma.enable = true;
+
+  services.nginx.virtualHosts."uptime.${const.domain}" = {
+    enableACME = true;
+    forceSSL = true;
+    listenAddresses = [
+      "100.64.0.2" # TODO: refactor
+    ];
+
+    locations."/" = {
+      proxyPass = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}";
+    };
   };
 }

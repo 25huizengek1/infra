@@ -5,8 +5,32 @@
     config.android_sdk.accept_license = true;
     config.allowUnfree = true;
     overlays = [
-      (final: super: self.packages.${system})
-      inputs.headplane.overlays.default
+      (_final: _prev: self.packages.${system})
+      (
+        final: prev:
+        let
+          headplanePkgs = inputs.headplane.overlays.default final prev;
+        in
+        headplanePkgs // {
+          headplane = (
+            headplanePkgs.headplane.overrideAttrs (
+              finalPkg: prevPkg: {
+                pnpmDeps = final.pnpm_10.fetchDeps {
+                  inherit (finalPkg) pname version src;
+                  # fetcherVersion = 2;
+                  # hash = "sha256-CsrZjXl31sl/YRzpt/pyBtr4QKn1pLRHqu5hUcNVZbo=";
+                  fetcherVersion = 1;
+                  hash = "sha256-xjjkqbgjYaAGYAmlTFE+Lq3Hp6myZKaW3br0YTDNhQA=";
+                };
+              }
+            )
+          );
+        }
+      )
+      (final: _prev: {
+        jdk8 = final.temurin-bin-8;
+      })
+      inputs.copyparty.overlays.default
     ];
   };
 }

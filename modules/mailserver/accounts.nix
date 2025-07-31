@@ -13,11 +13,8 @@ in
         "root@${domain}"
         "development@${domain}"
         "anubis@${domain}"
+        "seafile@${domain}"
       ];
-    };
-    "weblate@${domain}" = {
-      hashedPasswordFile = config.sops.secrets.weblate-email-password-encrypted.path;
-      sendOnly = true;
     };
     "cloud@${domain}" = {
       hashedPasswordFile = config.sops.secrets.nextcloud-email-password-encrypted.path;

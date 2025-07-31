@@ -19,6 +19,7 @@
           { config.facter.reportPath = ../machines/bart-server.json; }
           inputs.sops-nix.nixosModules.sops
           inputs.nixos-mailserver.nixosModule
+          inputs.copyparty.nixosModules.default
         ];
       };
     in

@@ -11,26 +11,30 @@
     ./disk-config.nix
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
+    inputs.srvos.nixosModules.mixins-terminfo
+    inputs.srvos.nixosModules.mixins-telegraf
+    inputs.srvos.nixosModules.mixins-terminfo
+    inputs.srvos.nixosModules.mixins-nginx
+    inputs.srvos.nixosModules.roles-prometheus
 
-    # ../containers/portainer.nix
-    # ../containers/jenkins.nix
     ../modules/android.nix
     ../modules/anubis.nix
+    ../modules/copyparty.nix
+    ../modules/git.nix
     ../modules/mailserver
     ../modules/minio.nix
     ../modules/monitoring.nix
-    ../modules/nextcloud.nix
     ../modules/nginx.nix
     ../modules/remotebuild.nix
     ../modules/tailscale.nix
     ../modules/tom.nix
-    ../modules/weblate.nix
     ../modules/vscode.nix
   ];
 
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
+    "pipe-operators"
   ];
 
   nix.channel.enable = false;

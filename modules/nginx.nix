@@ -1,7 +1,9 @@
 {
+  config,
   lib,
   pkgs,
   const,
+  inputs,
   ...
 }:
 
@@ -9,12 +11,8 @@
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "security@${const.domain}";
 
-  security.pam.services.nginx.setEnvironment = false;
-  systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "shadow" ];
-
   services.nginx = {
     enable = true;
-    additionalModules = [ pkgs.nginxModules.pam ];
 
     commonHttpConfig =
       let
@@ -43,7 +41,6 @@
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
-    recommendedZstdSettings = true;
     statusPage = true;
 
     clientMaxBodySize = "128m";
@@ -59,5 +56,55 @@
         tryFiles = "$uri $uri/ =404";
       };
     };
+
+    virtualHosts."search.${const.domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/".root = inputs.nuschtos-search.packages.${pkgs.stdenv.system}.mkMultiSearch {
+        scopes = [
+          {
+            name = "copyparty";
+            urlPrefix = "https://github.com/9001/copyparty/blob/hovudstraum/";
+            modules = [ inputs.copyparty.nixosModules.default ];
+            specialArgs = {
+              inherit pkgs;
+            };
+          }
+          {
+            name = "nix-podman-stacks";
+            urlPrefix = "https://github.com/Tarow/nix-podman-stacks/blob/main/";
+            optionsJSON =
+              let
+                # This is the same way nix-podman-stacks generates their option documentation believe it or not...
+                eval = inputs.home-manager.lib.homeManagerConfiguration {
+                  inherit pkgs;
+                  modules = [
+                    inputs.nix-podman-stacks.homeModules.all
+                    {
+                      home.stateVersion = "25.05";
+                      home.username = "someuser";
+                      home.homeDirectory = "/home/someuser";
+                      tarow.podman = {
+                        hostIP4Address = "10.10.10.10";
+                        hostUid = 1000;
+                        externalStorageBaseDir = "/mnt/ext";
+                      };
+                    }
+                  ];
+                };
+                doc = pkgs.nixosOptionsDoc {
+                  inherit (eval) options;
+                };
+              in
+              pkgs.runCommand "options-filtered" { } ''
+                ${lib.getExe pkgs.jq} 'to_entries | map(select(.key | startswith("tarow"))) | from_entries' ${doc.optionsJSON}/share/doc/nixos/options.json > $out
+              '';
+          }
+        ];
+      };
+    };
   };
+
+  # Skip cloudflare when resolving own virtualHosts for some reason
+  networking.hosts."127.0.0.1" = builtins.attrNames config.services.nginx.virtualHosts;
 }

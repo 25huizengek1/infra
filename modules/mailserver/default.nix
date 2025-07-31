@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   const,
   ...
 }:
@@ -15,13 +14,10 @@
     enable = true;
     fqdn = const.domain;
     certificateScheme = "acme-nginx";
+    systemName = const.domain;
+    systemDomain = const.domain;
     domains = [ const.domain ];
-
-    dmarcReporting = {
-      enable = true;
-      inherit (const) domain;
-      organizationName = const.domain;
-    };
+    dmarcReporting.enable = true;
 
     forwards = {
       "bart@${const.domain}" = "25huizengek1@gmail.com";
@@ -53,5 +49,5 @@
   };
 
   services.postfix.config.inet_protocols = "ipv4";
-  services.postfix.config.bounce_template_file = builtins.readFile ./bounce-template.cf;
+  services.postfix.config.bounce_template_file = "${./bounce-template.cf}";
 }
