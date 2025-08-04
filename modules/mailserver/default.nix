@@ -16,14 +16,27 @@
     certificateScheme = "acme-nginx";
     systemName = const.domain;
     systemDomain = const.domain;
-    domains = [ const.domain ];
+    domains = [ const.domain "omeduostuurcentenneef.nl" ];
     dmarcReporting.enable = true;
+    enableManageSieve = true;
 
     forwards = {
       "bart@${const.domain}" = "25huizengek1@gmail.com";
     };
 
     stateVersion = 3;
+  };
+
+  sops.secrets."omeduostuurcentenneef.nl.mail.key" = {
+    format = "binary";
+    owner = "rspamd";
+    group = "rspamd";
+    mode = "0600";
+
+    sopsFile = ../../secrets/omeduostuurcentenneef.nl.mail.private.secret;
+
+    path = "${config.mailserver.dkimKeyDirectory}/omeduostuurcentenneef.nl.mail.key";
+    restartUnits = [ "rspamd.service" ];
   };
 
   sops.secrets."vitune.app.mail.key" = {

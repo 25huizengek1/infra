@@ -14,6 +14,9 @@ in
         "development@${domain}"
         "anubis@${domain}"
         "seafile@${domain}"
+        "bart@omeduostuurcentenneef.nl"
+        "postmaster@omeduostuurcentenneef.nl"
+        "security@omeduostuurcentenneef.nl"
       ];
     };
     "cloud@${domain}" = {
