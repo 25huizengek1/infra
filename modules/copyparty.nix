@@ -9,25 +9,30 @@ in
   services.copyparty = {
     enable = true;
     package = pkgs.copyparty.override {
-      withFastThumbnails = true;
-      withMediaProcessing = false;
-      withBasicAudioMetadata = true;
+      # withFastThumbnails = true;
+      # withMediaProcessing = false;
+      # withBasicAudioMetadata = true;
     };
     settings = {
       name = "omeduoparty";
       i = "unix:770:${unixSocket},127.1";
+      theme = 2;
       ah-alg = "argon2";
       e2dsa = true;
       e2ts = true;
       ftp = 3921;
+      tftp = 3969;
       z = true;
       stats = true;
       spinner = ",padding:0;border-radius:9em;border:.2em solid #444;border-top:.2em solid #fc0";
       zs = true;
       zs-on = "tailscale0";
       shr = "/shares";
+      no-tarcmp = true;
+      rss = true;
     };
     accounts.${username}.passwordFile = config.sops.secrets.copyparty-adm-password-enc.path;
+    accounts.tom.passwordFile = config.sops.secrets.copyparty-tom-password-enc.path;
     user = group;
     inherit group;
 
@@ -49,6 +54,13 @@ in
             rand = true;
             lifetime = 60 * 60 * 24 * 365;
           };
+        };
+        "/tom" = {
+          access = {
+            A = "${username},tom";
+            r = "*";
+          };
+          path = "/srv/copyparty/tom";
         };
         "/drop" = {
           access = access // {
@@ -180,6 +192,16 @@ in
   sops.secrets.copyparty-adm-password-enc = {
     format = "binary";
     sopsFile = ../secrets/copyparty-password.enc.secret;
+
+    owner = group;
+    inherit group;
+    mode = "0660";
+    restartUnits = [ "copyparty.service" ];
+  };
+
+  sops.secrets.copyparty-tom-password-enc = {
+    format = "binary";
+    sopsFile = ../secrets/copyparty-tom-password.enc.secret;
 
     owner = group;
     inherit group;
