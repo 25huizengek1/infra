@@ -57,6 +57,16 @@
       };
     };
 
+    virtualHosts."omeduostuurcentenneef.nl" = {
+      forceSSL = true;
+      enableACME = true;
+      root = ./webroot;
+
+      locations."/" = {
+        tryFiles = "$uri $uri/ =404";
+      };
+    };
+
     virtualHosts."search.${const.domain}" = {
       forceSSL = true;
       enableACME = true;
