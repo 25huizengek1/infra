@@ -39,6 +39,12 @@ in
       rss = true;
       # Disable 'send to server log' 
       urlform = "get";
+      usernames = true;
+
+      # reverse proxy
+      # Trust that nginx is configured correctly (if we move away from Cloudflare in the future we don't have to change this)
+      xff-hdr = "x-forwarded-for";
+      rproxy = 1;
     };
     accounts.${username}.passwordFile = config.sops.secrets.copyparty-adm-password-enc.path;
     accounts.tom.passwordFile = config.sops.secrets.copyparty-tom-password-enc.path;
