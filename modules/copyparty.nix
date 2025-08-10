@@ -22,20 +22,23 @@ in
     settings = {
       name = "omeduoparty";
       i = "unix:770:${unixSocket},127.1";
+      # Monokai
       theme = 2;
       ah-alg = "argon2";
       e2dsa = true;
       e2ts = true;
       ftp = 3921;
       tftp = 3969;
+      # Enable zeroconf on tailscale
       z = true;
+      z-on = "tailscale0";
       stats = true;
       spinner = ",padding:0;border-radius:9em;border:.2em solid #444;border-top:.2em solid #fc0";
-      zs = true;
-      zs-on = "tailscale0";
       shr = "/shares";
       no-tarcmp = true;
       rss = true;
+      # Disable 'send to server log' 
+      urlform = "get";
     };
     accounts.${username}.passwordFile = config.sops.secrets.copyparty-adm-password-enc.path;
     accounts.tom.passwordFile = config.sops.secrets.copyparty-tom-password-enc.path;
