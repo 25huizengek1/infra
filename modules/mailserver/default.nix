@@ -16,7 +16,10 @@
     certificateScheme = "acme-nginx";
     systemName = const.domain;
     systemDomain = const.domain;
-    domains = [ const.domain "omeduostuurcentenneef.nl" ];
+    domains = [
+      const.domain
+      "omeduostuurcentenneef.nl"
+    ];
     dmarcReporting.enable = true;
     enableManageSieve = true;
 

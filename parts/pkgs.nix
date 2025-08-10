@@ -11,7 +11,8 @@
         let
           headplanePkgs = inputs.headplane.overlays.default final prev;
         in
-        headplanePkgs // {
+        headplanePkgs
+        // {
           headplane = (
             headplanePkgs.headplane.overrideAttrs (
               finalPkg: prevPkg: {

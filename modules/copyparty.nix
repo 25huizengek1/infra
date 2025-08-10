@@ -1,4 +1,9 @@
-{ pkgs, config, inputs, ... }:
+{
+  pkgs,
+  config,
+  inputs,
+  ...
+}:
 
 let
   unixSocket = "/run/copyparty/party.sock";
@@ -37,7 +42,7 @@ in
       shr = "/shares";
       no-tarcmp = true;
       rss = true;
-      # Disable 'send to server log' 
+      # Disable 'send to server log'
       urlform = "get";
       usernames = true;
 
