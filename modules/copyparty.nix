@@ -1,9 +1,15 @@
-{ pkgs, config, ... }:
+{ pkgs, config, inputs, ... }:
 
 let
   unixSocket = "/run/copyparty/party.sock";
   group = "anubis";
   username = "adm";
+  copypartySource = pkgs.fetchFromGitHub {
+    owner = "9001";
+    repo = "copyparty";
+    tag = "v${inputs.copyparty.packages.${pkgs.stdenv.system}.copyparty.version}";
+    hash = "sha256-EHGinxdL7mo4wJv15ErRd3cebWN4TRjTrTrpbo9x6Xk=";
+  };
 in
 {
   services.copyparty = {
@@ -44,6 +50,15 @@ in
         "/" = {
           inherit access;
           path = "/root/private/fs";
+        };
+        "/muziek" = {
+          access = access // {
+            rwmd = "tom";
+          };
+          path = "/root/private/fs/muziek";
+          flags = {
+            xau = "j,c1,${copypartySource}/bin/hooks/podcast-normalizer.py";
+          };
         };
         "/share" = {
           access = access // {
