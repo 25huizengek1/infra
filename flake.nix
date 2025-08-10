@@ -8,10 +8,21 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    import-tree.url = "github:vic/import-tree";
-
+    nixpkgs-lib.url = "github:nix-community/nixpkgs.lib";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
+    import-tree.url = "github:vic/import-tree";
+    systems.url = "github:nix-systems/default";
+    flake-compat.url = "github:edolstra/flake-compat";
+
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs-lib";
+    };
 
     srvos = {
       url = "github:numtide/srvos";
@@ -23,7 +34,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    nixos-mailserver = {
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-25_05.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
+    };
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -31,8 +47,9 @@
     };
 
     headplane = {
-      url = "github:tale/headplane/44577aff81b5256d03940052e73783536d04151c";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:tale/headplane/next";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
     };
 
     treefmt = {
@@ -43,6 +60,7 @@
     nuschtos-search = {
       url = "github:NuschtOS/search";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
     };
 
     nix-podman-stacks = {
@@ -55,6 +73,7 @@
     copyparty = {
       url = "github:9001/copyparty";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
     };
   };
 

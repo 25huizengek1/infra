@@ -70,30 +70,20 @@ in
 
   services.headplane = {
     enable = true;
-    agent = {
-      enable = false; # TODO
-      settings = {
-        HEADPLANE_AGENT_DEBUG = true;
-        HEADPLANE_AGENT_HOSTNAME = "localhost";
-        HEADPLANE_AGENT_TS_SERVER = "https://example.com";
-        HEADPLANE_AGENT_TS_AUTHKEY = "xxxxxxxxxxxxxx";
-        HEADPLANE_AGENT_HP_SERVER = "https://example.com/admin/dns";
-        HEADPLANE_AGENT_HP_AUTHKEY = "xxxxxxxxxxxxxx";
-      };
-    };
     settings = {
       server = {
         host = "127.0.0.1";
         port = 49686;
-        cookie_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
         cookie_secure = true;
+        cookie_secret_path = config.sops.secrets.headplane-cookie.path;
       };
       headscale = {
         url = "https://${fqdn}";
         config_path = "${headscaleConfig}";
         config_strict = true;
       };
-      # integration.agent.enabled = false;
+      integration.agent.enabled = false; # TODO
+      integration.agent.pre_authkey_path = "${pkgs.writeText "headscale-pre-auth-key" ''''}"; # WHY WHY WHY WHY
       integration.proc.enabled = true;
       # Required for some reason, grabbed from docs
       oidc = {
@@ -102,7 +92,7 @@ in
         disable_api_key_login = true;
         token_endpoint_auth_method = "client_secret_basic";
         redirect_uri = "https://oidc.example.com/admin/oidc/callback";
-        headscale_api_key = "xxx";
+        headscale_api_key_path = "${pkgs.writeText "headscale-api-key" ''''}"; # WHY WHY WHY WHY
       };
     };
   };
@@ -116,20 +106,13 @@ in
     };
   };
 
-  systemd.services.headplane.environment = {
-    "HEADPLANE_LOAD_ENV_OVERRIDES" = "true";
-  };
-  systemd.services.headplane.serviceConfig.EnvironmentFile = config.sops.secrets.headplane-env.path;
-  systemd.services.headscale.serviceConfig.ProtectProc = lib.mkForce "default";
-
-  sops.secrets.headplane-env = {
+  sops.secrets.headplane-cookie = {
     format = "binary";
-    sopsFile = ../secrets/headplane.env.secret;
+    sopsFile = ../secrets/headplane_cookie.secret;
 
     owner = "headscale";
     group = "headscale";
-    mode = "0600";
-    restartUnits = [ "headscale.service" ];
+    mode = "0600";    restartUnits = [ "headplane.service" ];
   };
 
   services.tailscale.enable = true;

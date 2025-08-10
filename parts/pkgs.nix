@@ -18,10 +18,8 @@
               finalPkg: prevPkg: {
                 pnpmDeps = final.pnpm_10.fetchDeps {
                   inherit (finalPkg) pname version src;
-                  # fetcherVersion = 2;
-                  # hash = "sha256-CsrZjXl31sl/YRzpt/pyBtr4QKn1pLRHqu5hUcNVZbo=";
-                  fetcherVersion = 1;
-                  hash = "sha256-xjjkqbgjYaAGYAmlTFE+Lq3Hp6myZKaW3br0YTDNhQA=";
+                  fetcherVersion = 2;
+                  hash = "sha256-CsrZjXl31sl/YRzpt/pyBtr4QKn1pLRHqu5hUcNVZbo=";
                 };
               }
             )
