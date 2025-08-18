@@ -94,7 +94,7 @@
                       home.stateVersion = "25.05";
                       home.username = "someuser";
                       home.homeDirectory = "/home/someuser";
-                      tarow.podman = {
+                      nps = {
                         hostIP4Address = "10.10.10.10";
                         hostUid = 1000;
                         externalStorageBaseDir = "/mnt/ext";
@@ -104,6 +104,7 @@
                 };
                 doc = pkgs.nixosOptionsDoc {
                   inherit (eval) options;
+                  warningsAreErrors = false; # nix-podman-stacks has some invalid options
                 };
               in
               pkgs.runCommand "options-filtered" { } ''

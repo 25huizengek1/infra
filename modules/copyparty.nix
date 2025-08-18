@@ -23,6 +23,7 @@ in
       # withFastThumbnails = true;
       # withMediaProcessing = false;
       # withBasicAudioMetadata = true;
+      withTFTP = true;
     };
     settings = {
       name = "omeduoparty";
@@ -238,9 +239,5 @@ in
     restartUnits = [ "copyparty.service" ];
   };
 
-  environment.systemPackages = with pkgs; [
-    copyparty
-    partyfuse
-    u2c
-  ];
+  environment.systemPackages = [ pkgs.copyparty ];
 }
