@@ -89,7 +89,7 @@ in
       oidc = {
         issuer = "https://oidc.example.com";
         client_id = "headplane";
-        disable_api_key_login = true;
+        disable_api_key_login = false;
         token_endpoint_auth_method = "client_secret_basic";
         redirect_uri = "https://oidc.example.com/admin/oidc/callback";
         headscale_api_key_path = "${pkgs.writeText "headscale-api-key" ''''}"; # WHY WHY WHY WHY
