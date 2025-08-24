@@ -81,7 +81,6 @@ in
           };
           path = "/root/private/share";
           flags = {
-            rand = true;
             lifetime = 60 * 60 * 24 * 365;
           };
         };
