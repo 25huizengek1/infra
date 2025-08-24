@@ -112,7 +112,8 @@ in
 
     owner = "headscale";
     group = "headscale";
-    mode = "0600";    restartUnits = [ "headplane.service" ];
+    mode = "0600";
+    restartUnits = [ "headplane.service" ];
   };
 
   services.tailscale.enable = true;

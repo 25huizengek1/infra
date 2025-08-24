@@ -89,7 +89,7 @@
                 eval = inputs.home-manager.lib.homeManagerConfiguration {
                   inherit pkgs;
                   modules = [
-                    inputs.nix-podman-stacks.homeModules.all
+                    inputs.nix-podman-stacks.homeModules.nps
                     {
                       home.stateVersion = "25.05";
                       home.username = "someuser";
