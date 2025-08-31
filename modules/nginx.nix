@@ -81,6 +81,14 @@
             };
           }
           {
+            name = "headplane";
+            urlPrefix = "https://github.com/tale/headplane/blob/main/";
+            modules = [ inputs.headplane.nixosModules.headplane ];
+            specialArgs = {
+              inherit pkgs;
+            };
+          }
+          {
             name = "nix-podman-stacks";
             urlPrefix = "https://github.com/Tarow/nix-podman-stacks/blob/main/";
             optionsJSON =
@@ -108,7 +116,7 @@
                 };
               in
               pkgs.runCommand "options-filtered" { } ''
-                ${lib.getExe pkgs.jq} 'to_entries | map(select(.key | startswith("tarow"))) | from_entries' ${doc.optionsJSON}/share/doc/nixos/options.json > $out
+                ${lib.getExe pkgs.jq} 'to_entries | map(select(.key | startswith("nps"))) | from_entries' ${doc.optionsJSON}/share/doc/nixos/options.json > $out
               '';
           }
         ];
