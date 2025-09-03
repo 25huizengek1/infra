@@ -54,6 +54,7 @@ in
     };
     accounts.${username}.passwordFile = config.sops.secrets.copyparty-adm-password-enc.path;
     accounts.tom.passwordFile = config.sops.secrets.copyparty-tom-password-enc.path;
+    accounts.diamond0.passwordFile = config.sops.secrets.copyparty-diamond0-password-enc.path;
     user = group;
     inherit group;
 
@@ -90,6 +91,12 @@ in
             r = "*";
           };
           path = "/srv/copyparty/tom";
+        };
+        "/diamond0" = {
+          access = {
+            A = "${username},diamond0";
+          };
+          path = "/srv/copyparty/diamond0";
         };
         "/drop" = {
           access = access // {
@@ -231,6 +238,16 @@ in
   sops.secrets.copyparty-tom-password-enc = {
     format = "binary";
     sopsFile = ../secrets/copyparty-tom-password.enc.secret;
+
+    owner = group;
+    inherit group;
+    mode = "0660";
+    restartUnits = [ "copyparty.service" ];
+  };
+
+  sops.secrets.copyparty-diamond0-password-enc = {
+    format = "binary";
+    sopsFile = ../secrets/copyparty-diamond0-password.enc.secret;
 
     owner = group;
     inherit group;
