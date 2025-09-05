@@ -65,6 +65,10 @@
       locations."/" = {
         tryFiles = "$uri $uri/ =404";
       };
+
+      locations."/inter-braktief" = {
+        return = "301 https://inter-braktief.nl";
+      };
     };
 
     virtualHosts."search.${const.domain}" = {
