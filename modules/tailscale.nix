@@ -39,22 +39,11 @@ in
         "1.1.1.1"
         "1.0.0.1"
       ];
-      dns.extra_records =
-        let
-          value = "100.64.0.2";
-        in
-        [
-          {
-            type = "A";
-            name = "prometheus.${const.domain}";
-            inherit value;
-          }
-          {
-            type = "A";
-            name = "uptime.${const.domain}";
-            inherit value;
-          }
-        ];
+      dns.extra_records = lib.mapAttrsToList (name: _value: {
+        type = "A";
+        inherit name;
+        value = "100.64.0.2";
+      }) config.services.nginx.virtualHosts;
       policy.mode = "database";
     };
   };

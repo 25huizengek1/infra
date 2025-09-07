@@ -47,6 +47,12 @@
 
     sslCiphers = "AES256+EECDH:AES256+EDH:!aNULL";
 
+    defaultListenAddresses = [
+      "0.0.0.0"
+      "[::0]"
+      "100.64.0.2"
+    ];
+
     virtualHosts."${const.domain}" = {
       forceSSL = true;
       enableACME = true;
