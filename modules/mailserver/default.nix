@@ -1,6 +1,7 @@
 {
   config,
   const,
+  lib,
   ...
 }:
 
@@ -20,12 +21,22 @@
       const.domain
       "omeduostuurcentenneef.nl"
     ];
+    certificateDomains = lib.lists.remove config.mailserver.fqdn config.mailserver.domains;
     dmarcReporting.enable = true;
     enableManageSieve = true;
 
-    forwards = {
-      "bart@${const.domain}" = "25huizengek1@gmail.com";
+    fullTextSearch = {
+      enable = true;
+      autoIndex = true;
+      enforced = "body";
+      memoryLimit = 2000; # MiB
+      autoIndexExclude = [
+        "Trash"
+        "\\Junk"
+      ];
     };
+
+    useUTF8FolderNames = true;
 
     stateVersion = 3;
   };
@@ -58,9 +69,10 @@
     enable = true;
     hostName = "webmail.${const.domain}";
     extraConfig = ''
-      $config['smtp_server'] = "tls://${config.mailserver.fqdn}";
-      $config['smtp_user'] = "%u";
-      $config['smtp_pass'] = "%p";
+      $config['imap_host'] = [
+        "tls://${config.mailserver.fqdn}" => "${config.mailserver.fqdn}",
+        "tls://omeduostuurcentenneef.nl" => "omeduostuurcentenneef.nl"
+      ];
     '';
   };
 
