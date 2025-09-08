@@ -10,7 +10,7 @@ creation_rules:
           - *server
           - *laptop
           - *tom
-  - path_regex: secrets/[^/]+.secret
+  - path_regex: secrets/.+.secret
     key_groups:
       - age:
           - *server

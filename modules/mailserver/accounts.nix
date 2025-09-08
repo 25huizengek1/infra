@@ -35,6 +35,10 @@ in
         hashedPasswordFile = config.sops.secrets.alertmanager-email-password-encrypted.path;
         sendOnly = true;
       };
+      "discourse@omeduostuurcentenneef.nl" = {
+        hashedPasswordFile = config.sops.secrets.discourse-email-password-encrypted.path;
+        sendOnly = true;
+      };
     };
 
     forwards = {

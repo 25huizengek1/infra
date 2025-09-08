@@ -20,6 +20,7 @@
     ../modules/android.nix
     ../modules/anubis.nix
     ../modules/copyparty.nix
+    ../modules/discourse.nix
     ../modules/git.nix
     ../modules/mailserver
     ../modules/minio.nix
