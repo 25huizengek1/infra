@@ -17,7 +17,6 @@
     inputs.srvos.nixosModules.mixins-nginx
     inputs.srvos.nixosModules.roles-prometheus
 
-    ../modules/android.nix
     ../modules/anubis.nix
     ../modules/copyparty.nix
     ../modules/discourse.nix
@@ -25,7 +24,6 @@
     ../modules/mailserver
     ../modules/monitoring.nix
     ../modules/nginx.nix
-    ../modules/remotebuild.nix
     ../modules/tailscale.nix
     ../modules/tom.nix
     ../modules/vscode.nix
