@@ -23,7 +23,6 @@
     ../modules/discourse.nix
     ../modules/git.nix
     ../modules/mailserver
-    ../modules/minio.nix
     ../modules/monitoring.nix
     ../modules/nginx.nix
     ../modules/remotebuild.nix
