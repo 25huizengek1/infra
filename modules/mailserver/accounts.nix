@@ -18,6 +18,7 @@ in
           "bart@omeduostuurcentenneef.nl"
           "postmaster@omeduostuurcentenneef.nl"
           "security@omeduostuurcentenneef.nl"
+          "spam@omeduostuurcentenneef.nl"
         ];
       };
       # Because fuck you that's why
