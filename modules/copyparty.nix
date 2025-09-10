@@ -56,6 +56,7 @@ in
     accounts.tom.passwordFile = config.sops.secrets.copyparty-tom-password-enc.path;
     accounts.diamond0.passwordFile = config.sops.secrets.copyparty-diamond0-password-enc.path;
     accounts.diamond1.passwordFile = config.sops.secrets.copyparty-diamond1-password-enc.path;
+    accounts.diamond2.passwordFile = config.sops.secrets.copyparty-diamond2-password-enc.path;
     user = group;
     inherit group;
 
@@ -105,6 +106,13 @@ in
             A = "${username},diamond1";
           };
           path = "/srv/copyparty/diamond1";
+          flags.daw = true;
+        };
+        "/diamond2" = {
+          access = {
+            A = "${username},diamond2";
+          };
+          path = "/srv/copyparty/diamond2";
           flags.daw = true;
         };
         "/drop" = {
@@ -272,6 +280,16 @@ in
   sops.secrets.copyparty-diamond1-password-enc = {
     format = "binary";
     sopsFile = ../secrets/copyparty-diamond1-password.enc.secret;
+
+    owner = group;
+    inherit group;
+    mode = "0660";
+    restartUnits = [ "copyparty.service" ];
+  };
+
+  sops.secrets.copyparty-diamond2-password-enc = {
+    format = "binary";
+    sopsFile = ../secrets/copyparty-diamond2-password.enc.secret;
 
     owner = group;
     inherit group;
