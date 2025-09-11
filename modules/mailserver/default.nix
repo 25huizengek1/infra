@@ -67,11 +67,11 @@
 
   services.roundcube = {
     enable = true;
-    hostName = "webmail.${const.domain}";
+    hostName = "webmail.omeduostuurcentenneef.nl";
     extraConfig = ''
       $config['imap_host'] = [
-        "tls://${config.mailserver.fqdn}" => "${config.mailserver.fqdn}",
-        "tls://omeduostuurcentenneef.nl" => "omeduostuurcentenneef.nl"
+        "tls://omeduostuurcentenneef.nl" => "omeduostuurcentenneef.nl",
+        "tls://${config.mailserver.fqdn}" => "${config.mailserver.fqdn}"
       ];
     '';
   };
