@@ -27,6 +27,7 @@
     ../modules/tailscale.nix
     ../modules/tom.nix
     ../modules/vscode.nix
+    ../modules/web.nix
   ];
 
   nix.settings.experimental-features = [

@@ -75,6 +75,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+
+    omeduostuurcentenneef-web = {
+      url = "github:25huizengek1/omeduostuurcentenneef-web";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

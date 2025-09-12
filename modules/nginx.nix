@@ -53,30 +53,6 @@
       "100.64.0.2"
     ];
 
-    virtualHosts."${const.domain}" = {
-      forceSSL = true;
-      enableACME = true;
-      root = ./webroot;
-
-      locations."/" = {
-        tryFiles = "$uri $uri/ =404";
-      };
-    };
-
-    virtualHosts."omeduostuurcentenneef.nl" = {
-      forceSSL = true;
-      enableACME = true;
-      root = ./webroot;
-
-      locations."/" = {
-        tryFiles = "$uri $uri/ =404";
-      };
-
-      locations."/inter-braktief" = {
-        return = "301 https://inter-braktief.nl";
-      };
-    };
-
     virtualHosts."search.${const.domain}" = {
       forceSSL = true;
       enableACME = true;
