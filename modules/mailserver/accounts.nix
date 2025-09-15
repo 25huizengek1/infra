@@ -24,9 +24,7 @@ in
       # Because fuck you that's why
       "bart@omeduostuurcentenneef.nl" = {
         hashedPasswordFile = config.sops.secrets.bart-email-password-encrypted.path;
-        aliases = [
-          "bart@${domain}"
-        ];
+        aliases = config.mailserver.loginAccounts."bart@${domain}".aliases;
       };
       "cloud@${domain}" = {
         hashedPasswordFile = config.sops.secrets.nextcloud-email-password-encrypted.path;

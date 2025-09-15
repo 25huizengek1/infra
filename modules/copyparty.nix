@@ -94,21 +94,25 @@ in
           };
           path = "/srv/copyparty/tom";
         };
-        "/diamond0" = {
+        "/diamond" = {
+          inherit access;
+          path = "/root/private/fs/rommel/ut/diamonds";
+        };
+        "/diamond/0" = {
           access = {
             A = "${username},diamond0";
           };
           path = "/srv/copyparty/diamond0";
           flags.daw = true;
         };
-        "/diamond1" = {
+        "/diamond/1" = {
           access = {
             A = "${username},diamond1";
           };
           path = "/srv/copyparty/diamond1";
           flags.daw = true;
         };
-        "/diamond2" = {
+        "/diamond/2" = {
           access = {
             A = "${username},diamond2";
           };

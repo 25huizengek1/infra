@@ -534,11 +534,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1757640821,
-        "narHash": "sha256-9dv9jdleet2uvYPFxkrAPDen+hQF7HXrS4GmIWfFORQ=",
+        "lastModified": 1757808373,
+        "narHash": "sha256-maWqnwHQaIcdnGOJzLBb211WyNI0j/35tx9rdQeq8Ao=",
         "owner": "25huizengek1",
         "repo": "omeduostuurcentenneef-web",
-        "rev": "7aa81e0b882784ce88a37dff3d0323840b0565b8",
+        "rev": "f6e4a6de60a0050f9fb51df688d653d5c4fe0c28",
         "type": "github"
       },
       "original": {
