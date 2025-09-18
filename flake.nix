@@ -80,6 +80,11 @@
       url = "github:25huizengek1/omeduostuurcentenneef-web";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    ical-proxy = {
+      url = "github:25huizengek1/ical-proxy";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

@@ -21,6 +21,7 @@
     ../modules/copyparty.nix
     ../modules/discourse.nix
     ../modules/git.nix
+    ../modules/ical-proxy.nix
     ../modules/mailserver
     ../modules/monitoring.nix
     ../modules/nginx.nix
