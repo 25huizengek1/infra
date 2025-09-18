@@ -382,11 +382,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1758232660,
-        "narHash": "sha256-dqsStWieaTRnwLdaeCbbciOxm8pVYRCL/GHUPjJ14fk=",
+        "lastModified": 1758238990,
+        "narHash": "sha256-FzsHSyNP9whz2nmprOuIzifixvHa/LnmpsyziB6+tQI=",
         "owner": "25huizengek1",
         "repo": "ical-proxy",
-        "rev": "8263641d7532217f46a62a730fd5016508f58aa5",
+        "rev": "42058f424d1b2aca4f67843d48f61114eaf4006c",
         "type": "github"
       },
       "original": {

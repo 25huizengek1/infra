@@ -20,9 +20,6 @@ in
   services.copyparty = {
     enable = true;
     package = pkgs.copyparty.override {
-      # withFastThumbnails = true;
-      # withMediaProcessing = false;
-      # withBasicAudioMetadata = true;
       withTFTP = true;
     };
     settings = {
@@ -53,10 +50,6 @@ in
       rproxy = 1;
     };
     accounts.${username}.passwordFile = config.sops.secrets.copyparty-adm-password-enc.path;
-    accounts.tom.passwordFile = config.sops.secrets.copyparty-tom-password-enc.path;
-    accounts.diamond0.passwordFile = config.sops.secrets.copyparty-diamond0-password-enc.path;
-    accounts.diamond1.passwordFile = config.sops.secrets.copyparty-diamond1-password-enc.path;
-    accounts.diamond2.passwordFile = config.sops.secrets.copyparty-diamond2-password-enc.path;
     user = group;
     inherit group;
 
@@ -70,9 +63,7 @@ in
           path = "/root/private/fs";
         };
         "/muziek" = {
-          access = access // {
-            rwmd = "tom";
-          };
+          inherit access;
           path = "/root/private/fs/muziek";
           flags = {
             xau = "j,c1,${copypartySource}/bin/hooks/podcast-normalizer.py";
@@ -96,30 +87,27 @@ in
           path = "/root/private/fs/rommel/ut/diamonds";
         };
         "/diamond/0" = {
-          access = {
-            A = "${username},diamond0";
-          };
+          inherit access;
           path = "/srv/copyparty/diamond0";
           flags.daw = true;
         };
         "/diamond/1" = {
-          access = {
-            A = "${username},diamond1";
-          };
+          inherit access;
           path = "/srv/copyparty/diamond1";
           flags.daw = true;
         };
         "/diamond/2" = {
-          access = {
-            A = "${username},diamond2";
-          };
+          inherit access;
           path = "/srv/copyparty/diamond2";
+          flags.daw = true;
+        };
+        "/diamond/3" = {
+          inherit access;
+          path = "/srv/copyparty/diamond3";
           flags.daw = true;
         };
         "/drop" = {
           access = access // {
-            # you can only see the files if you know exactly the path and
-            # the file key.
             wG = "*";
           };
           path = "/srv/copyparty/fs/drop/";
@@ -210,7 +198,7 @@ in
         TARGET = "unix://${unixSocket}";
         METRICS_BIND = "127.0.0.1:16108"; # Prometheus can't scrape Unix sockets
         METRICS_BIND_NETWORK = "tcp";
-        POLICY_FNAME = "${pkgs.writers.writeJSON "anubis-copyparty-bot-policy" botPolicy}";
+        POLICY_FNAME = "${pkgs.writers.writeJSON "anubis-copyparty-bot-policy" botPolicy}"; # Why is this broken?
       };
     };
 
@@ -251,46 +239,6 @@ in
   sops.secrets.copyparty-adm-password-enc = {
     format = "binary";
     sopsFile = ../secrets/copyparty-password.enc.secret;
-
-    owner = group;
-    inherit group;
-    mode = "0660";
-    restartUnits = [ "copyparty.service" ];
-  };
-
-  sops.secrets.copyparty-tom-password-enc = {
-    format = "binary";
-    sopsFile = ../secrets/copyparty-tom-password.enc.secret;
-
-    owner = group;
-    inherit group;
-    mode = "0660";
-    restartUnits = [ "copyparty.service" ];
-  };
-
-  sops.secrets.copyparty-diamond0-password-enc = {
-    format = "binary";
-    sopsFile = ../secrets/copyparty-diamond0-password.enc.secret;
-
-    owner = group;
-    inherit group;
-    mode = "0660";
-    restartUnits = [ "copyparty.service" ];
-  };
-
-  sops.secrets.copyparty-diamond1-password-enc = {
-    format = "binary";
-    sopsFile = ../secrets/copyparty-diamond1-password.enc.secret;
-
-    owner = group;
-    inherit group;
-    mode = "0660";
-    restartUnits = [ "copyparty.service" ];
-  };
-
-  sops.secrets.copyparty-diamond2-password-enc = {
-    format = "binary";
-    sopsFile = ../secrets/copyparty-diamond2-password.enc.secret;
 
     owner = group;
     inherit group;
