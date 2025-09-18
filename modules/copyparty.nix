@@ -88,10 +88,7 @@ in
           };
         };
         "/tom" = {
-          access = {
-            A = "${username},tom";
-            r = "*";
-          };
+          inherit access;
           path = "/srv/copyparty/tom";
         };
         "/diamond" = {
