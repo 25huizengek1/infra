@@ -17,8 +17,6 @@ let
   imageName = "omeduostuurcentenneef-web";
   port = 6969;
 
-  socketPath = "/run/omeduoweb.sock";
-
   pkg = inputs.omeduostuurcentenneef-web.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
   dockerImage = pkgs.dockerTools.streamLayeredImage {
