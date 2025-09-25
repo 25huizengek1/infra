@@ -76,11 +76,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1757861997,
-        "narHash": "sha256-q7jfJ988ss/MCqXt2Zmk/mZkIv6i2mhj0UQL8SnARzI=",
+        "lastModified": 1758556306,
+        "narHash": "sha256-oFQgK86g3brHjFHV2nPaM1whYl3UcnCMJQ2XiNL84jM=",
         "owner": "baileyluTCD",
         "repo": "bun2nix",
-        "rev": "28fe01ee0b5a18d871e0c5659c71d98d79dfab17",
+        "rev": "5c301e55a19c7ef3126c20bd927f12e11bb70755",
         "type": "github"
       },
       "original": {
@@ -382,11 +382,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1758238990,
-        "narHash": "sha256-FzsHSyNP9whz2nmprOuIzifixvHa/LnmpsyziB6+tQI=",
+        "lastModified": 1758843469,
+        "narHash": "sha256-wut6Y5H8zXCn506pUAwSMgFZVMf/tgfT0ZCLBoTULl8=",
         "owner": "25huizengek1",
         "repo": "ical-proxy",
-        "rev": "42058f424d1b2aca4f67843d48f61114eaf4006c",
+        "rev": "725f737471ef91790effff0125a9b67928362891",
         "type": "github"
       },
       "original": {
@@ -644,11 +644,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1757865791,
-        "narHash": "sha256-gHOx1LtVuV8/FF/1VGqe3W74XSMKfqrKDx9IIMhVuEI=",
+        "lastModified": 1758843105,
+        "narHash": "sha256-POxvKKOUh/2husZ25W3EXBUtIw0FMsArP1swEXsGcd4=",
         "owner": "25huizengek1",
         "repo": "omeduostuurcentenneef-web",
-        "rev": "a6868fdad90f7c435c4b3773ce986b16d2ff3368",
+        "rev": "92e4d8efee392f219b1cb19dfd2e402bff9a9d2f",
         "type": "github"
       },
       "original": {
