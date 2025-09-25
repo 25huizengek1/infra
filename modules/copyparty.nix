@@ -2,6 +2,7 @@
   pkgs,
   config,
   inputs,
+  lib,
   ...
 }:
 
@@ -15,6 +16,12 @@ let
     tag = "v${inputs.copyparty.packages.${pkgs.stdenv.system}.copyparty.version}";
     hash = "sha256-EHGinxdL7mo4wJv15ErRd3cebWN4TRjTrTrpbo9x6Xk=";
   };
+  access.A = username;
+  diamonds = lib.genAttrs' (lib.range 0 3) (num: (lib.nameValuePair "/diamond/${toString num}") {
+    inherit access;
+    path = "/srv/copyparty/diamond${toString num}";
+    flags.daw = true;
+  });
 in
 {
   services.copyparty = {
@@ -53,89 +60,65 @@ in
     user = group;
     inherit group;
 
-    volumes =
-      let
-        access.A = username;
-      in
-      {
-        "/" = {
-          inherit access;
-          path = "/root/private/fs";
-        };
-        "/muziek" = {
-          inherit access;
-          path = "/root/private/fs/muziek";
-          flags = {
-            xau = "j,c1,${copypartySource}/bin/hooks/podcast-normalizer.py";
-          };
-        };
-        "/share" = {
-          access = access // {
-            G = "*";
-          };
-          path = "/root/private/share";
-          flags = {
-            lifetime = 60 * 60 * 24 * 365;
-          };
-        };
-        "/tom" = {
-          inherit access;
-          path = "/srv/copyparty/tom";
-        };
-        "/diamond" = {
-          inherit access;
-          path = "/root/private/fs/rommel/ut/diamonds";
-        };
-        "/diamond/0" = {
-          inherit access;
-          path = "/srv/copyparty/diamond0";
-          flags.daw = true;
-        };
-        "/diamond/1" = {
-          inherit access;
-          path = "/srv/copyparty/diamond1";
-          flags.daw = true;
-        };
-        "/diamond/2" = {
-          inherit access;
-          path = "/srv/copyparty/diamond2";
-          flags.daw = true;
-        };
-        "/diamond/3" = {
-          inherit access;
-          path = "/srv/copyparty/diamond3";
-          flags.daw = true;
-        };
-        "/drop" = {
-          access = access // {
-            wG = "*";
-          };
-          path = "/srv/copyparty/fs/drop/";
-          flags = {
-            hardlinkonly = true;
-            # adds some extra random stuff so the file is a little more
-            # "secret"
-            fka = 8;
-            # sort uploads by date
-            # this one seems buggy
-            # rotf = "%Y-%m-%d";
-            # no thumbnails
-            dthumb = true;
-            # 4 weeks
-            lifetime = 60 * 60 * 24 * 7 * 4;
-            # no more than 4096 MB over 15 minutes
-            maxb = "4096m,600";
-            # you do not get to choose the filename
-            rand = true;
-            # max 512 MB uploads
-            sz = "0-512m";
-            # always leave a little space
-            df = "20g";
-            # no XSS please
-            nohtml = true;
-          };
+    volumes = {
+      "/" = {
+        inherit access;
+        path = "/root/private/fs";
+      };
+      "/muziek" = {
+        inherit access;
+        path = "/root/private/fs/muziek";
+        flags = {
+          xau = "j,c1,${copypartySource}/bin/hooks/podcast-normalizer.py";
         };
       };
+      "/share" = {
+        access = access // {
+          G = "*";
+        };
+        path = "/root/private/share";
+        flags = {
+          lifetime = 60 * 60 * 24 * 365;
+        };
+      };
+      "/tom" = {
+        inherit access;
+        path = "/srv/copyparty/tom";
+      };
+      "/diamond" = {
+        inherit access;
+        path = "/root/private/fs/rommel/ut/diamonds";
+      };
+      "/drop" = {
+        access = access // {
+          wG = "*";
+        };
+        path = "/srv/copyparty/fs/drop/";
+        flags = {
+          hardlinkonly = true;
+          # adds some extra random stuff so the file is a little more
+          # "secret"
+          fka = 8;
+          # sort uploads by date
+          # this one seems buggy
+          # rotf = "%Y-%m-%d";
+          # no thumbnails
+          dthumb = true;
+          # 4 weeks
+          lifetime = 60 * 60 * 24 * 7 * 4;
+          # no more than 4096 MB over 15 minutes
+          maxb = "4096m,600";
+          # you do not get to choose the filename
+          rand = true;
+          # max 512 MB uploads
+          sz = "0-512m";
+          # always leave a little space
+          df = "20g";
+          # no XSS please
+          nohtml = true;
+        };
+      };
+    } // diamonds;
   };
 
   services.nginx.virtualHosts =
