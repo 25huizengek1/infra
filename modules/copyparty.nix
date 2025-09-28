@@ -32,6 +32,7 @@ in
     settings = {
       name = "omeduoparty";
       i = "unix:770:${unixSocket},127.1";
+      no-cfg-cmt-warn = true;
       # Monokai
       theme = 2;
       ah-alg = "argon2";
