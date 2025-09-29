@@ -45,6 +45,26 @@ in
         value = "100.64.0.2";
       }) config.services.nginx.virtualHosts;
       policy.mode = "database";
+      derp = {
+        auto_update_enabled = true;
+        paths = [
+          (pkgs.writers.writeJSON "derpmap.json" {
+            Regions = {
+              "900" = {
+                RegionID = 900;
+                RegionCode = "omeduoderp";
+                Nodes = [
+                  {
+                    Name = "1";
+                    RegionID = 900;
+                    HostName = config.services.tailscale.derper.domain;
+                  }
+                ];
+              };
+            };
+          })
+        ];
+      };
     };
   };
 
@@ -85,6 +105,14 @@ in
       };
     };
   };
+
+  services.tailscale.derper = {
+    enable = true;
+    domain = "derp.omeduostuurcentenneef.nl";
+    verifyClients = true;
+  };
+
+  services.nginx.virtualHosts.${config.services.tailscale.derper.domain}.enableACME = true;
 
   services.nginx.virtualHosts."headplane.${const.domain}" = {
     enableACME = true;
