@@ -58,6 +58,7 @@ in
       rproxy = 1;
     };
     accounts.${username}.passwordFile = config.sops.secrets.copyparty-adm-password-enc.path;
+    accounts.koen.passwordFile = config.sops.secrets.copyparty-koen-password-enc.path;
     user = group;
     inherit group;
 
@@ -85,6 +86,13 @@ in
       "/tom" = {
         inherit access;
         path = "/srv/copyparty/tom";
+      };
+      "/koen" = {
+        access = {
+          A = "adm,koen";
+          g = "*";
+        };
+        path = "/srv/copyparty/koen";
       };
       "/diamond" = {
         inherit access;
@@ -223,6 +231,16 @@ in
   sops.secrets.copyparty-adm-password-enc = {
     format = "binary";
     sopsFile = ../secrets/copyparty-password.enc.secret;
+
+    owner = group;
+    inherit group;
+    mode = "0660";
+    restartUnits = [ "copyparty.service" ];
+  };
+
+  sops.secrets.copyparty-koen-password-enc = {
+    format = "binary";
+    sopsFile = ../secrets/copyparty-password-koen.enc.secret;
 
     owner = group;
     inherit group;
