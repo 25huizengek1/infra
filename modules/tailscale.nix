@@ -43,21 +43,24 @@ in
         type = "A";
         inherit name;
         value = "100.64.0.2";
-      }) config.services.nginx.virtualHosts;
+      }) (removeAttrs config.services.nginx.virtualHosts [ fqdn ]);
       policy.mode = "database";
       derp = {
         auto_update_enabled = true;
         paths = [
-          (pkgs.writers.writeJSON "derpmap.json" {
-            Regions = {
+          (pkgs.writers.writeYAML "derpmap.yml" {
+            regions = {
               "900" = {
-                RegionID = 900;
-                RegionCode = "omeduoderp";
-                Nodes = [
+                regionid = 900;
+                regioncode = "omeduoderp";
+                nodes = [
                   {
-                    Name = "1";
-                    RegionID = 900;
-                    HostName = config.services.tailscale.derper.domain;
+                    name = "1";
+                    regionid = 900;
+                    hostname = config.services.tailscale.derper.domain;
+                    ipv4 = "78.46.150.107";
+                    ipv6 = "2a01:4f8:c2c:2f66::1";
+                    canport80 = true;
                   }
                 ];
               };
