@@ -17,11 +17,6 @@ let
     hash = "sha256-EHGinxdL7mo4wJv15ErRd3cebWN4TRjTrTrpbo9x6Xk=";
   };
   access.A = username;
-  diamonds = lib.genAttrs' (lib.range 0 3) (num: (lib.nameValuePair "/diamond/${toString num}") {
-    inherit access;
-    path = "/srv/copyparty/diamond${toString num}";
-    flags.daw = true;
-  });
 in
 {
   services.copyparty = {
@@ -70,18 +65,12 @@ in
       "/muziek" = {
         inherit access;
         path = "/root/private/fs/muziek";
-        flags = {
-          xau = "j,c1,${copypartySource}/bin/hooks/podcast-normalizer.py";
-        };
       };
       "/share" = {
         access = access // {
           G = "*";
         };
         path = "/root/private/share";
-        flags = {
-          lifetime = 60 * 60 * 24 * 365;
-        };
       };
       "/tom" = {
         inherit access;
@@ -97,6 +86,7 @@ in
       "/diamond" = {
         inherit access;
         path = "/root/private/fs/rommel/ut/diamonds";
+        flags.daw = true;
       };
       "/drop" = {
         access = access // {
@@ -127,7 +117,7 @@ in
           nohtml = true;
         };
       };
-    } // diamonds;
+    };
   };
 
   services.nginx.virtualHosts =
