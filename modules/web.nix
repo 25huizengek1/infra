@@ -8,11 +8,6 @@
 }:
 
 let
-  domains = [
-    const.domain
-    "omeduostuurcentenneef.nl"
-  ];
-
   name = "web";
   imageName = "omeduostuurcentenneef-web";
   port = 6969;
@@ -34,9 +29,9 @@ in
     ports = [ "${toString port}:${toString port}" ];
   };
 
-  services.nginx.virtualHosts = lib.genAttrs domains (_: {
+  services.nginx.virtualHosts.${const.domain} = {
     forceSSL = true;
     enableACME = true;
     locations."/".proxyPass = "http://localhost:${toString port}";
-  });
+  };
 }
