@@ -17,6 +17,8 @@
     inputs.srvos.nixosModules.mixins-nginx
     inputs.srvos.nixosModules.roles-prometheus
 
+    ../containers/portainer.nix
+
     ../modules/anubis.nix
     ../modules/copyparty.nix
     ../modules/discourse.nix
@@ -115,7 +117,7 @@
   };
 
   services.postgresql = {
-    authentication = pkgs.lib.mkOverride 10 ''
+    authentication = lib.mkOverride 10 ''
       # type	database	user	origin-address	auth-method
       local	all		all			trust
       host	all		all	127.0.0.1/32	trust
