@@ -53,6 +53,16 @@
       "100.64.0.2"
     ];
 
+    virtualHosts."laptop.${const.domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      serverAliases = [ "laptop.omeduostuurcentenneef.nl" ];
+      locations."/" = {
+        proxyPass = "http://bart-laptop-new:6969/";
+        proxyWebsockets = true;
+      };
+    };
+
     virtualHosts.${const.domain}.serverAliases = lib.mkForce [ "omeduostuurcentenneef.nl" ];
 
     virtualHosts."search.${const.domain}" = {

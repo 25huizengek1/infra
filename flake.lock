@@ -72,7 +72,7 @@
           "omeduostuurcentenneef-web",
           "nixpkgs"
         ],
-        "systems": "systems_2",
+        "systems": "systems_3",
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
@@ -264,6 +264,24 @@
     "flake-utils_2": {
       "inputs": {
         "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": "systems_2"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -491,6 +509,28 @@
         "type": "github"
       }
     },
+    "nix-vscode-extensions": {
+      "inputs": {
+        "flake-utils": "flake-utils_3",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754533101,
+        "narHash": "sha256-N9mbCFOyVZlaDKnJvVjAs4gsT2v+5VGdC9HfAaQPRfg=",
+        "owner": "nix-community",
+        "repo": "nix-vscode-extensions",
+        "rev": "4ed9caa20949c32af9dc3955f8073ef1fc4d11c3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-vscode-extensions",
+        "rev": "4ed9caa20949c32af9dc3955f8073ef1fc4d11c3",
+        "type": "github"
+      }
+    },
     "nixos-facter-modules": {
       "locked": {
         "lastModified": 1756491981,
@@ -644,11 +684,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1760314270,
-        "narHash": "sha256-vvr3Eb9ZcstDAikdOE4IPZORAd0iSxSk96GXiJteJ8M=",
+        "lastModified": 1760864618,
+        "narHash": "sha256-8pYJnJaleF7iuwI7td6C9aDPUmBBifHAyAjuRJ+H4Qw=",
         "owner": "25huizengek1",
         "repo": "omeduostuurcentenneef-web",
-        "rev": "4a840c3aab2f6fc2bc30a19c3c8f1cb1dfdfd759",
+        "rev": "ba62a73216f47927308b7e9151d0cc6fbeae83d4",
         "type": "github"
       },
       "original": {
@@ -669,6 +709,7 @@
         "ical-proxy": "ical-proxy",
         "import-tree": "import-tree",
         "nix-podman-stacks": "nix-podman-stacks",
+        "nix-vscode-extensions": "nix-vscode-extensions",
         "nixos-facter-modules": "nixos-facter-modules",
         "nixos-mailserver": "nixos-mailserver",
         "nixpkgs": "nixpkgs",
@@ -677,7 +718,7 @@
         "omeduostuurcentenneef-web": "omeduostuurcentenneef-web",
         "sops-nix": "sops-nix",
         "srvos": "srvos",
-        "systems": "systems_3",
+        "systems": "systems_4",
         "treefmt": "treefmt"
       }
     },
@@ -775,6 +816,21 @@
       }
     },
     "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_4": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",

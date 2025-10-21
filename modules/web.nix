@@ -26,6 +26,7 @@ in
     image = "localhost/${imageName}:${pkg.version}"; # thank you podman implementation, very cool
     imageStream = dockerImage;
     environment.PORT = toString port;
+    environmentFiles = [ config.sops.secrets.web-env.path ];
     ports = [ "${toString port}:${toString port}" ];
   };
 
@@ -33,5 +34,11 @@ in
     forceSSL = true;
     enableACME = true;
     locations."/".proxyPass = "http://localhost:${toString port}";
+  };
+
+  sops.secrets.web-env = {
+    format = "binary";
+    sopsFile = ../secrets/web.env.secret;
+    restartUnits = [ "podman-web.service" ];
   };
 }

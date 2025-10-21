@@ -11,6 +11,7 @@
       })
       inputs.headplane.overlays.default
       inputs.copyparty.overlays.default
+      inputs.nix-vscode-extensions.overlays.default
     ];
   };
 }
