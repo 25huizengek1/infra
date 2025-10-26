@@ -17,8 +17,17 @@ let
   dockerImage = pkgs.dockerTools.streamLayeredImage {
     name = imageName;
     tag = pkg.version;
-    contents = [ pkg ];
-    config.Cmd = [ "/bin/omeduostuurcentenneef-web" ];
+    contents = with pkgs; [
+      pkg
+      cacert
+      curl
+      coreutils-full
+      bashInteractive
+    ];
+    config = {
+      Cmd = [ "/bin/omeduostuurcentenneef-web" ];
+      Env = [ "NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-bundle.crt" ];
+    };
   };
 in
 {
