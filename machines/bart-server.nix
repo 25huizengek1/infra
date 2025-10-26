@@ -21,7 +21,6 @@
 
     ../modules/anubis.nix
     ../modules/copyparty.nix
-    ../modules/devcontainers.nix
     ../modules/discourse.nix
     ../modules/git.nix
     ../modules/ical-proxy.nix
