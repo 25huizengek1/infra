@@ -62,10 +62,6 @@ in
         inherit access;
         path = "/root/private/fs";
       };
-      "/muziek" = {
-        inherit access;
-        path = "/root/private/fs/muziek";
-      };
       "/share" = {
         access = access // {
           G = "*";
@@ -82,11 +78,6 @@ in
           g = "*";
         };
         path = "/srv/copyparty/koen";
-      };
-      "/diamond" = {
-        inherit access;
-        path = "/root/private/fs/rommel/ut/diamonds";
-        flags.daw = true;
       };
       "/drop" = {
         access = access // {

@@ -58,7 +58,7 @@
       enableACME = true;
       serverAliases = [ "laptop.omeduostuurcentenneef.nl" ];
       locations."/" = {
-        proxyPass = "http://bart-laptop-new:6969/";
+        proxyPass = "http://100.64.0.8:6969/";
         proxyWebsockets = true;
       };
     };
