@@ -26,6 +26,7 @@
     ../modules/ical-proxy.nix
     ../modules/mailserver
     ../modules/monitoring.nix
+    ../modules/nix.nix
     ../modules/nginx.nix
     ../modules/tailscale.nix
     ../modules/tom.nix
