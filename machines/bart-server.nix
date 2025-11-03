@@ -134,5 +134,7 @@
     '';
   };
 
+  srvos.prometheus.ruleGroups.srvosAlerts.alertRules.UnusualDiskReadLatency.enable = false;
+
   system.stateVersion = "25.05";
 }
