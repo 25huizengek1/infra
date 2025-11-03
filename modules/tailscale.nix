@@ -48,24 +48,20 @@ in
       derp = {
         auto_update_enabled = true;
         paths = [
-          (pkgs.writers.writeYAML "derpmap.yml" {
-            regions = {
-              "900" = {
-                regionid = 900;
-                regioncode = "omeduoderp";
-                nodes = [
-                  {
-                    name = "1";
-                    regionid = 900;
-                    hostname = config.services.tailscale.derper.domain;
-                    ipv4 = "78.46.150.107";
-                    ipv6 = "2a01:4f8:c2c:2f66::1";
-                    canport80 = true;
-                  }
-                ];
-              };
-            };
-          })
+          # TODO: don't hard-code this
+          (pkgs.writeText "derpmap.yml" ''
+            regions:
+              900:
+                nodes:
+                - canport80: true
+                  hostname: derp.omeduostuurcentenneef.nl
+                  ipv4: 78.46.150.107
+                  ipv6: 2a01:4f8:c2c:2f66::1
+                  name: '1'
+                  regionid: 900
+                regioncode: omeduoderp
+                regionid: 900
+          '')
         ];
       };
     };
