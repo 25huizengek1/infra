@@ -86,6 +86,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    tcs-bot = {
+      url = "github:25huizengek1/tcs-bot";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions/4ed9caa20949c32af9dc3955f8073ef1fc4d11c3";
       inputs.nixpkgs.follows = "nixpkgs";

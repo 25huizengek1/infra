@@ -29,6 +29,7 @@
     ../modules/nix.nix
     ../modules/nginx.nix
     ../modules/tailscale.nix
+    ../modules/tcs-bot.nix
     ../modules/tom.nix
     ../modules/vscode.nix
     ../modules/web.nix

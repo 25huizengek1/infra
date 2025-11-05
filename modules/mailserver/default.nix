@@ -5,6 +5,9 @@
   ...
 }:
 
+let
+  domain = "bartoostveen.nl";
+in
 {
   imports = [
     ./passwords.nix
@@ -13,11 +16,12 @@
 
   mailserver = {
     enable = true;
-    fqdn = const.domain;
+    fqdn = domain;
     certificateScheme = "acme-nginx";
-    systemName = const.domain;
-    systemDomain = const.domain;
+    systemName = domain;
+    systemDomain = domain;
     domains = [
+      domain
       const.domain
       "omeduostuurcentenneef.nl"
     ];
@@ -39,6 +43,18 @@
     useUTF8FolderNames = true;
 
     stateVersion = 3;
+  };
+
+  sops.secrets."bartoostveen.nl.mail.key" = {
+    format = "binary";
+    owner = "rspamd";
+    group = "rspamd";
+    mode = "0600";
+
+    sopsFile = ../../secrets/bartoostveen.nl.mail.private.secret;
+
+    path = "${config.mailserver.dkimKeyDirectory}/bartoostveen.nl.mail.key";
+    restartUnits = [ "rspamd.service" ];
   };
 
   sops.secrets."omeduostuurcentenneef.nl.mail.key" = {
@@ -67,11 +83,10 @@
 
   services.roundcube = {
     enable = true;
-    hostName = "webmail.omeduostuurcentenneef.nl";
+    hostName = "webmail.bartoostveen.nl";
     extraConfig = ''
       $config['imap_host'] = [
-        "tls://omeduostuurcentenneef.nl" => "omeduostuurcentenneef.nl",
-        "tls://${config.mailserver.fqdn}" => "${config.mailserver.fqdn}"
+        "tls://${domain}" => "${domain}"
       ];
     '';
   };

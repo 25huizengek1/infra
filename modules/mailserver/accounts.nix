@@ -1,7 +1,7 @@
 { config, ... }:
 
 let
-  domain = (import ../../const.nix).domain;
+  domain = "bartoostveen.nl";
 in
 {
   mailserver = {
@@ -26,6 +26,10 @@ in
         hashedPasswordFile = config.sops.secrets.bart-email-password-encrypted.path;
         aliases = config.mailserver.loginAccounts."bart@${domain}".aliases;
       };
+      "bart@vitune.app" = {
+        hashedPasswordFile = config.sops.secrets.bart-email-password-encrypted.path;
+        aliases = config.mailserver.loginAccounts."bart@${domain}".aliases;
+      };
       "cloud@${domain}" = {
         hashedPasswordFile = config.sops.secrets.nextcloud-email-password-encrypted.path;
         sendOnly = true;
@@ -41,7 +45,7 @@ in
     };
 
     forwards = {
-      "bart@${domain}" = "bart@omeduostuurcentenneef.nl";
+      "bart@${domain}" = [ "bart@omeduostuurcentenneef.nl" "bart@vitune.app" ];
     };
   };
 }
