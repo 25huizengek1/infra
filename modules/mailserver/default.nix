@@ -23,7 +23,6 @@ in
     domains = [
       domain
       const.domain
-      "omeduostuurcentenneef.nl"
     ];
     certificateDomains = lib.lists.remove config.mailserver.fqdn config.mailserver.domains;
     dmarcReporting.enable = true;

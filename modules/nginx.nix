@@ -63,8 +63,6 @@
       };
     };
 
-    virtualHosts.${const.domain}.serverAliases = lib.mkForce [ "omeduostuurcentenneef.nl" ];
-
     virtualHosts."search.${const.domain}" = {
       forceSSL = true;
       enableACME = true;
@@ -121,9 +119,6 @@
       };
     };
   };
-
-  # Account for stupid simple-nixos-mailserver bullshit
-  security.acme.certs.${const.domain}.extraDomainNames = lib.mkForce config.services.nginx.virtualHosts.${const.domain}.serverAliases;
 
   # Skip cloudflare when resolving own virtualHosts for some reason
   networking.hosts."127.0.0.1" = builtins.attrNames config.services.nginx.virtualHosts;

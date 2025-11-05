@@ -943,11 +943,11 @@
         "treefmt-nix": "treefmt-nix_4"
       },
       "locked": {
-        "lastModified": 1762337912,
-        "narHash": "sha256-R17k9aEeAXYTugr2v3HWfb47UtMsm/ZUZLOMXiJ6eJ4=",
+        "lastModified": 1762354106,
+        "narHash": "sha256-kt7Y4tx7tGt1+T9NoQvOuGlDBgO2glBVRWDFtHIyAfs=",
         "owner": "25huizengek1",
         "repo": "tcs-bot",
-        "rev": "e70ed3110ec628968d46b213a5aae444fcdae79e",
+        "rev": "3ba9d9a771ed3e3c24d832e51a3d0b66844d4fbc",
         "type": "github"
       },
       "original": {

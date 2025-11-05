@@ -39,7 +39,7 @@ in
     ports = [ "${toString port}:${toString port}" ];
   };
 
-  services.nginx.virtualHosts.${const.domain} = {
+  services.nginx.virtualHosts."omeduostuurcentenneef.nl" = {
     forceSSL = true;
     enableACME = true;
     locations."/".proxyPass = "http://localhost:${toString port}";
