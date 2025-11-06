@@ -21,7 +21,6 @@ let
     HOSTNAME = "https://${domain}";
     ENVIRONMENT = "PRODUCTION";
     METRICS_PREFIX = "::1";
-    CANVAS_COURSE_CODE = "17775,17533,17164";
   };
   pkg = inputs.tcs-bot.packages.${pkgs.stdenv.hostPlatform.system}.default;
   dockerImage = pkgs.dockerTools.streamLayeredImage {
