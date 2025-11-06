@@ -21,7 +21,7 @@ let
     HOSTNAME = "https://${domain}";
     ENVIRONMENT = "PRODUCTION";
     METRICS_PREFIX = "::1";
-    CANVAS_COURSE_CODE = "17533,17775,17164";
+    CANVAS_COURSE_CODE = "17775,17533,17164";
   };
   pkg = inputs.tcs-bot.packages.${pkgs.stdenv.hostPlatform.system}.default;
   dockerImage = pkgs.dockerTools.streamLayeredImage {
@@ -77,5 +77,26 @@ in
     format = "binary";
     sopsFile = ../secrets/tcs-bot.env.secret;
     restartUnits = [ "podman-tcs-bot.service" ];
+  };
+
+  systemd.timers."${name}-db-backup" = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+      Persistent = true; 
+      Unit = "${name}-db-backup.service";
+    };
+  };
+
+  systemd.services."${name}-db-backup" = {
+    script = ''
+      set -eu
+      ${lib.getExe' pkgs.postgresql_18 "pg_dump"} -h $(${lib.getExe pkgs.podman} container inspect -f '{{.NetworkSettings.IPAddress}}' ${name}-db) -d ${name} -U "${dbUser}" > /srv/${name}-$(date +%m-%d-%Y--%H-%M-%S).bak
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+    environment.PGPASSWORD = dbPassword;
   };
 }
