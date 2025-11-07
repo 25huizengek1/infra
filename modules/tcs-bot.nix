@@ -29,6 +29,7 @@ let
     contents = [ pkg pkgs.busybox ];
     config.Cmd = [ "/bin/${pkg.pname}" ];
   };
+  backupDir = "/srv/${name}-backups";
 in
 {
   virtualisation.oci-containers.containers = {
@@ -90,12 +91,25 @@ in
   systemd.services."${name}-db-backup" = {
     script = ''
       set -eu
-      ${lib.getExe' pkgs.postgresql_18 "pg_dump"} -h $(${lib.getExe pkgs.podman} container inspect -f '{{.NetworkSettings.IPAddress}}' ${name}-db) -d ${name} -U "${dbUser}" > /srv/${name}-$(date +%m-%d-%Y--%H-%M-%S).bak
+      mkdir -p ${backupDir}
+      chown -R root:users ${backupDir}
+      ${lib.getExe' pkgs.postgresql_18 "pg_dump"} \
+        -h $(${lib.getExe pkgs.podman} container inspect -f '{{.NetworkSettings.IPAddress}}' ${name}-db) \
+        -d ${name} \
+        -U "${dbUser}" > ${backupDir}/dump-$(date +%Y-%m-%d--%H-%M-%S).bak
     '';
     serviceConfig = {
       Type = "oneshot";
       User = "root";
     };
     environment.PGPASSWORD = dbPassword;
+  };
+
+  services.copyparty.volumes."/${name}-backups" = {
+    access = {
+      A = "adm";
+      g = "*";
+    };
+    path = backupDir;
   };
 }
