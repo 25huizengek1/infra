@@ -19,14 +19,17 @@ let
   dockerImage = pkgs.dockerTools.streamLayeredImage {
     inherit name;
     tag = pkg.version;
-    contents = [ pkg pkgs.busybox ];
+    contents = [
+      pkg
+      pkgs.busybox
+    ];
     config.Cmd = [ "/bin/${pkg.pname}" ];
   };
 in
 {
   virtualisation.oci-containers.containers = {
     ${name} = {
-      image = "localhost/${name}:${pkg.version}"; # thank you podman implementation, very cool
+      image = "localhost/${name}:${pkg.version}";
       imageStream = dockerImage;
       environment = env;
       dependsOn = [ "${name}-redis" ];

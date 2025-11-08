@@ -1,6 +1,5 @@
 {
   config,
-  const,
   lib,
   ...
 }:
@@ -21,8 +20,9 @@ in
     systemName = domain;
     systemDomain = domain;
     domains = [
-      domain
-      const.domain
+      "bartoostveen.nl"
+      "vitune.app"
+      "omeduostuurcentenneef.nl"
     ];
     certificateDomains = lib.lists.remove config.mailserver.fqdn config.mailserver.domains;
     dmarcReporting.enable = true;
@@ -84,9 +84,9 @@ in
     enable = true;
     hostName = "webmail.bartoostveen.nl";
     extraConfig = ''
-      $config['imap_host'] = [
-        "tls://${domain}" => "${domain}"
-      ];
+      $config['smtp_host'] = "tls://${config.mailserver.fqdn}";
+      $config['smtp_user'] = "%u";
+      $config['smtp_pass'] = "%p";
     '';
   };
 

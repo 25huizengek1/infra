@@ -9,7 +9,6 @@
         specialArgs = {
           inherit inputs;
           inherit hostname;
-          const = import ../const.nix;
         };
 
         modules = [

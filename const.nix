@@ -1,3 +1,0 @@
-{
-  domain = "vitune.app";
-}

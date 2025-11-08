@@ -9,7 +9,7 @@
 let
   domain = "tcsdiscord.bartoostveen.nl";
   name = "tcs-bot";
-  port = 6769; # Six seeeeeeeeeeeeeeeeeeeeeeeeeeeven
+  port = 6769;
   dbUser = name;
   dbPassword = "Waarom moet dit, dit is echt super nutteloos aangezien de database niet exposed is, maar hee aan de ene aardling die dit leest, goeie dagschotel!";
   env = {
@@ -26,7 +26,10 @@ let
   dockerImage = pkgs.dockerTools.streamLayeredImage {
     inherit name;
     tag = pkg.version;
-    contents = [ pkg pkgs.busybox ];
+    contents = [
+      pkg
+      pkgs.busybox
+    ];
     config.Cmd = [ "/bin/${pkg.pname}" ];
   };
   backupDir = "/srv/${name}-backups";
@@ -34,7 +37,7 @@ in
 {
   virtualisation.oci-containers.containers = {
     ${name} = {
-      image = "localhost/${name}:${pkg.version}"; # thank you podman implementation, very cool
+      image = "localhost/${name}:${pkg.version}";
       imageStream = dockerImage;
       environment = env;
       environmentFiles = [ config.sops.secrets.tcs-bot-env.path ];
@@ -83,7 +86,7 @@ in
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = "daily";
-      Persistent = true; 
+      Persistent = true;
       Unit = "${name}-db-backup.service";
     };
   };
@@ -106,10 +109,7 @@ in
   };
 
   services.copyparty.volumes."/${name}-backups" = {
-    access = {
-      A = "adm";
-      g = "*";
-    };
+    access.A = "adm";
     path = backupDir;
   };
 }

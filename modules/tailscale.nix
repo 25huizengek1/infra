@@ -3,13 +3,13 @@
   pkgs,
   inputs,
   lib,
-  const,
   ...
 }:
 
 let
   vhost = "headscale";
-  fqdn = "${vhost}.${const.domain}";
+  domain = "vitune.app";
+  fqdn = "${vhost}.${domain}";
 
   format = pkgs.formats.yaml { };
 
@@ -32,7 +32,7 @@ in
     port = 41916;
     settings = {
       server_url = "https://${fqdn}:443";
-      dns.base_domain = "tailnet.${const.domain}";
+      dns.base_domain = "tailnet.${domain}";
       dns.nameservers.global = [
         "8.8.8.8"
         "8.8.4.4"
@@ -48,7 +48,6 @@ in
       derp = {
         auto_update_enabled = true;
         paths = [
-          # TODO: don't hard-code this
           (pkgs.writeText "derpmap.yml" ''
             regions:
               900:
@@ -90,7 +89,7 @@ in
         config_path = "${headscaleConfig}";
         config_strict = true;
       };
-      integration.agent.enabled = false; # TODO
+      integration.agent.enabled = false;
       integration.agent.pre_authkey_path = "${pkgs.writeText "headscale-pre-auth-key" ''''}"; # WHY WHY WHY WHY
       integration.proc.enabled = true;
       # Required for some reason, grabbed from docs
@@ -113,7 +112,7 @@ in
 
   services.nginx.virtualHosts.${config.services.tailscale.derper.domain}.enableACME = true;
 
-  services.nginx.virtualHosts."headplane.${const.domain}" = {
+  services.nginx.virtualHosts."headplane.${domain}" = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {

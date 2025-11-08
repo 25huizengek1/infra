@@ -57,19 +57,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nuschtos-search = {
-      url = "github:NuschtOS/search";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
-    nix-podman-stacks = {
-      url = "github:Tarow/nix-podman-stacks";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-      inputs.sops-nix.follows = "sops-nix";
-    };
-
     copyparty = {
       url = "github:9001/copyparty";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -88,11 +75,6 @@
 
     tcs-bot = {
       url = "github:25huizengek1/tcs-bot";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-vscode-extensions = {
-      url = "github:nix-community/nix-vscode-extensions/4ed9caa20949c32af9dc3955f8073ef1fc4d11c3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

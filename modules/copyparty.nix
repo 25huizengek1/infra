@@ -10,12 +10,6 @@ let
   unixSocket = "/run/copyparty/party.sock";
   group = "anubis";
   username = "adm";
-  copypartySource = pkgs.fetchFromGitHub {
-    owner = "9001";
-    repo = "copyparty";
-    tag = "v${inputs.copyparty.packages.${pkgs.stdenv.system}.copyparty.version}";
-    hash = "sha256-EHGinxdL7mo4wJv15ErRd3cebWN4TRjTrTrpbo9x6Xk=";
-  };
   access.A = username;
 in
 {
@@ -28,27 +22,19 @@ in
       name = "omeduoparty";
       i = "unix:770:${unixSocket},127.1";
       no-cfg-cmt-warn = true;
-      # Monokai
-      theme = 2;
+      theme = 2; # Monokai
       ah-alg = "argon2";
       e2dsa = true;
       e2ts = true;
-      ftp = 3921;
-      tftp = 3969;
-      # Enable zeroconf on tailscale
-      z = true;
-      z-on = "tailscale0";
       stats = true;
       spinner = ",padding:0;border-radius:9em;border:.2em solid #444;border-top:.2em solid #fc0";
       shr = "/shares";
       no-tarcmp = true;
-      rss = true;
-      # Disable 'send to server log'
-      urlform = "get";
-      usernames = true;
+      urlform = "get"; # Disable 'send to server log'
+      usernames = true; # Username AND password authentication
 
       # reverse proxy
-      # Trust that nginx is configured correctly (if we move away from Cloudflare in the future we don't have to change this)
+      # Trust that nginx is configured correctly
       xff-hdr = "x-forwarded-for";
       rproxy = 1;
     };
@@ -62,6 +48,10 @@ in
         inherit access;
         path = "/root/private/fs";
       };
+      "/m2" = {
+        inherit access;
+        path = "/root/private/fs/rommel/ut/m2";
+      };
       "/share" = {
         access = access // {
           G = "*";
@@ -74,7 +64,7 @@ in
       };
       "/koen" = {
         access = {
-          A = "adm,koen";
+          A = "${username},koen";
           g = "*";
         };
         path = "/srv/copyparty/koen";
@@ -86,16 +76,12 @@ in
         path = "/srv/copyparty/fs/drop/";
         flags = {
           hardlinkonly = true;
-          # adds some extra random stuff so the file is a little more
-          # "secret"
+          # adds some extra random stuff so the file is a little more "secret"
           fka = 8;
-          # sort uploads by date
-          # this one seems buggy
-          # rotf = "%Y-%m-%d";
           # no thumbnails
           dthumb = true;
-          # 4 weeks
-          lifetime = 60 * 60 * 24 * 7 * 4;
+          # 52 weeks
+          lifetime = 60 * 60 * 24 * 7 * 52;
           # no more than 4096 MB over 15 minutes
           maxb = "4096m,600";
           # you do not get to choose the filename
@@ -133,6 +119,7 @@ in
     {
       "party.vitune.app" = host;
       "fs.omeduostuurcentenneef.nl" = host;
+      "files.bartoostveen.nl" = host;
     };
 
   systemd.sockets.copyparty = {
@@ -165,7 +152,6 @@ in
         ];
       };
     in
-
     {
       settings = {
         TARGET = "unix://${unixSocket}";

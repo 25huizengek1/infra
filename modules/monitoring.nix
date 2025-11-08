@@ -1,23 +1,20 @@
 {
   pkgs,
   config,
-  const,
   ...
 }:
-
-# Ideally, multiple servers in a cluster should monitor each other. But why do this when you can also NOT do that
 
 {
   services.grafana = {
     enable = true;
     settings.server = {
-      domain = "grafana.${const.domain}";
-      root_url = "https://grafana.${const.domain}";
+      domain = "grafana.vitune.app";
+      root_url = "https://grafana.vitune.app";
       protocol = "socket";
     };
   };
 
-  services.nginx.virtualHosts."grafana.${const.domain}" = {
+  services.nginx.virtualHosts."grafana.vitune.app" = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
@@ -39,9 +36,9 @@
       listenAddress = "127.0.0.1";
       configuration = {
         global = {
-          smtp_from = "Alerting <alerts@${const.domain}>";
-          smtp_smarthost = "${const.domain}:587";
-          smtp_auth_username = "alerts@${const.domain}";
+          smtp_from = "Alerting <alerts@vitune.app>";
+          smtp_smarthost = "vitune.app:587";
+          smtp_auth_username = "alerts@vitune.app";
           smtp_auth_password_file = config.sops.secrets.alertmanager-email-password.path;
         };
         receivers = [
@@ -49,7 +46,7 @@
             name = "admin";
             email_configs = [
               {
-                to = "root@${const.domain}";
+                to = "root@bartoostveen.nl";
               }
             ];
             discord_configs = [
@@ -77,7 +74,7 @@
     ];
 
     extraFlags = [
-      "--web.external-url=https://prometheus.${const.domain}/"
+      "--web.external-url=https://prometheus.vitune.app/"
     ];
     globalConfig.scrape_interval = "15s";
 
@@ -135,13 +132,10 @@
     ];
   };
 
-  services.nginx.virtualHosts."prometheus.${const.domain}" = {
+  services.nginx.virtualHosts."prometheus.vitune.app" = {
     enableACME = true;
     forceSSL = true;
-    listenAddresses = [
-      "100.64.0.2" # TODO: refactor
-    ];
-
+    listenAddresses = [ "100.64.0.2" ];
     locations."/" = {
       proxyPass = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
     };
@@ -159,13 +153,10 @@
 
   services.uptime-kuma.enable = true;
 
-  services.nginx.virtualHosts."uptime.${const.domain}" = {
+  services.nginx.virtualHosts."uptime.vitune.app" = {
     enableACME = true;
     forceSSL = true;
-    listenAddresses = [
-      "100.64.0.2" # TODO: refactor
-    ];
-
+    listenAddresses = [ "100.64.0.2" ];
     locations."/" = {
       proxyPass = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}";
     };

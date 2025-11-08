@@ -1,5 +1,3 @@
-{ const, ... }:
-
 let
   port = 9443;
 in
@@ -17,7 +15,7 @@ in
     privileged = true;
   };
 
-  services.nginx.virtualHosts."portainer.${const.domain}" = {
+  services.nginx.virtualHosts."portainer.vitune.app" = {
     forceSSL = true;
     enableACME = true;
     locations."/" = {

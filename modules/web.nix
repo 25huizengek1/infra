@@ -1,6 +1,5 @@
 {
   config,
-  const,
   pkgs,
   lib,
   inputs,
@@ -32,14 +31,14 @@ let
 in
 {
   virtualisation.oci-containers.containers.${name} = {
-    image = "localhost/${imageName}:${pkg.version}"; # thank you podman implementation, very cool
+    image = "localhost/${imageName}:${pkg.version}";
     imageStream = dockerImage;
     environment.PORT = toString port;
     environmentFiles = [ config.sops.secrets.web-env.path ];
-    ports = [ "${toString port}:${toString port}" ];
+    ports = [ "127.0.0.1:${toString port}:${toString port}" ];
   };
 
-  services.nginx.virtualHosts."omeduostuurcentenneef.nl" = {
+  services.nginx.virtualHosts."bartoostveen.nl" = {
     forceSSL = true;
     enableACME = true;
     locations."/".proxyPass = "http://localhost:${toString port}";
