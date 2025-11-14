@@ -153,12 +153,72 @@
 
   services.uptime-kuma.enable = true;
 
-  services.nginx.virtualHosts."uptime.vitune.app" = {
+  services.nginx.virtualHosts."uptime.bartoostveen.nl" = {
     enableACME = true;
     forceSSL = true;
-    listenAddresses = [ "100.64.0.2" ];
     locations."/" = {
       proxyPass = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}";
     };
   };
+
+  services.loki = {
+    enable = true;
+    configuration = {
+      auth_enabled = false;
+      server.http_listen_port = 3100;
+      common = {
+        ring = {
+          instance_addr = "127.0.0.1";
+          kvstore.store = "inmemory";
+        };
+        replication_factor = 1;
+        path_prefix = "/tmp/loki";
+      };
+      schema_config.configs = [
+        {
+          from = "2025-09-01";
+          store = "tsdb";
+          object_store = "filesystem";
+          schema = "v13";
+          index = {
+            prefix = "index_";
+            period = "24h";
+          };
+        }
+      ];
+      storage_config.filesystem.directory = "/tmp/loki/chunks";
+    };
+  };
+
+  services.alloy = {
+    enable = true;
+    extraFlags = [ "--disable-reporting" ];
+  };
+  environment.etc."alloy/config.alloy".text = ''
+    loki.source.journal "journal" {
+      max_age       = "24h0m0s"
+      forward_to    = [loki.write.default.receiver]
+      labels        = {
+        host = "${config.networking.hostName}",
+        job  = "systemd_journal",
+      }
+      relabel_rules = loki.relabel.journal.rules
+    }
+
+    loki.relabel "journal" {
+      forward_to = []
+      
+      rule {
+        source_labels = ["__journal__systemd_unit"]
+        target_label  = "unit"
+      }
+    }
+
+    loki.write "default" {
+      endpoint {
+        url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}/loki/api/v1/push"
+      }
+      external_labels = {}
+    }
+  '';
 }

@@ -26,6 +26,8 @@ in
     ];
     certificateDomains = lib.lists.remove config.mailserver.fqdn config.mailserver.domains;
     dmarcReporting.enable = true;
+    tlsrpt.enable = true;
+    systemContact = "postmaster@bartoostveen.nl";
     enableManageSieve = true;
 
     fullTextSearch = {

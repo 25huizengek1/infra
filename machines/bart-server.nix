@@ -27,6 +27,7 @@
     ../modules/monitoring.nix
     ../modules/nix.nix
     ../modules/nginx.nix
+    ../modules/search.nix
     ../modules/tailscale.nix
     ../modules/tcs-bot.nix
     ../modules/web.nix

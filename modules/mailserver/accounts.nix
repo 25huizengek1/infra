@@ -9,6 +9,7 @@
         "security@bartoostveen.nl"
         "root@bartoostveen.nl"
         "anubis@bartoostveen.nl"
+        "tcsbot@bartoostveen.nl"
 
         "bart@omeduostuurcentenneef.nl"
         "postmaster@omeduostuurcentenneef.nl"
