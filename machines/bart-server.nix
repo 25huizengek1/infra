@@ -8,6 +8,12 @@
 
 {
   imports = [
+    inputs.disko.nixosModules.disko
+    inputs.nixos-facter-modules.nixosModules.facter
+    inputs.sops-nix.nixosModules.sops
+    inputs.nixos-mailserver.nixosModule
+    inputs.copyparty.nixosModules.default
+
     ./disk-config.nix
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
@@ -32,6 +38,8 @@
     ../modules/tcs-bot.nix
     ../modules/web.nix
   ];
+
+  facter.reportPath = ./bart-server.json;
 
   nix.settings.experimental-features = [
     "nix-command"
