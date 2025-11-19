@@ -10,8 +10,8 @@
     enable = true;
     config = {
       user.signingKey = "31805D4650DE1EC8";
-      user.name = "25huizengek1";
-      user.email = "25huizengek1@gmail.com";
+      user.name = "Bart Oostveen";
+      user.email = "bart.oos.2006@gmail.com";
       commit.gpgSign = true;
       tag.gpgSign = true;
       pull.rebase = true;
