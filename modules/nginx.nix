@@ -2,13 +2,16 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 
+let
+  reverseString =
+    string: builtins.concatStringsSep "" (lib.flatten (lib.reverseList (builtins.split "" string)));
+in
 {
   security.acme.acceptTerms = true;
-  security.acme.defaults.email = "security@vitune.app";
+  security.acme.defaults.email = "security" + "@" + (reverseString "feennetnecruutsoudemo") + ".nl";
 
   services.nginx = {
     enable = true;

@@ -1,7 +1,7 @@
 {
-  self,
   inputs,
   lib,
+  withSystem,
   ...
 }:
 
@@ -11,15 +11,19 @@ in
 {
   flake.nixosConfigurations = lib.genAttrs hostnames (
     hostname:
-    inputs.nixpkgs.lib.nixosSystem {
-      inherit (self) pkgs;
+    withSystem "x86_64-linux" (
+      { pkgs, ... }:
 
-      specialArgs = {
-        inherit inputs;
-        inherit hostname;
-      };
+      inputs.nixpkgs.lib.nixosSystem {
+        inherit pkgs;
 
-      modules = [ ../machines/${hostname}.nix ];
-    }
+        specialArgs = {
+          inherit inputs;
+          inherit hostname;
+        };
+
+        modules = [ ../machines/${hostname}.nix ];
+      }
+    )
   );
 }

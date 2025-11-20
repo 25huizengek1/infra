@@ -3,5 +3,7 @@
 {
   imports = [ inputs.treefmt.flakeModule ];
 
-  perSystem.treefmt.programs.nixfmt.enable = true;
+  perSystem.treefmt = {
+    programs.nixfmt.enable = true;
+  };
 }
