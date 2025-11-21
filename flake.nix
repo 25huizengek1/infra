@@ -8,6 +8,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    immich-nixpkgs.url = "github:nixos/nixpkgs/738dcf167d04689293fb6c5caa7af84902a3262f";
+
     nixpkgs-lib.url = "github:nix-community/nixpkgs.lib";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     import-tree.url = "github:vic/import-tree";

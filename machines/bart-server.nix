@@ -29,6 +29,7 @@
     ../modules/copyparty.nix
     ../modules/git.nix
     ../modules/ical-proxy.nix
+    ../modules/immich.nix
     ../modules/mailserver
     ../modules/monitoring.nix
     ../modules/nix.nix
