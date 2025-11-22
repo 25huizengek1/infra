@@ -129,6 +129,14 @@
           }
         ];
       }
+      {
+        job_name = "uptime-kuma-anubis";
+        static_configs = [
+          {
+            targets = [ config.services.anubis.instances.uptime-kuma.settings.METRICS_BIND ];
+          }
+        ];
+      }
     ];
   };
 
@@ -153,11 +161,36 @@
 
   services.uptime-kuma.enable = true;
 
+  services.anubis.instances.uptime-kuma = {
+    botPolicy = {
+      bots = [
+        {
+          name = "telegram";
+          user_agent_regex = "TelegramBot (like TwitterBot)";
+          action = "ALLOW";
+        }
+        {
+          name = "tailscale";
+          remote_addresses = [ "100.64.0.0/16" ];
+          action = "ALLOW";
+        }
+      ];
+    };
+
+    settings = {
+      BIND = "/run/anubis/anubis-uptime-kuma/anubis-uptime-kuma.sock";
+      TARGET = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}";
+      METRICS_BIND = "127.0.0.1:15108"; # Prometheus can't scrape Unix sockets
+      METRICS_BIND_NETWORK = "tcp";
+    };
+  };
+
   services.nginx.virtualHosts."uptime.bartoostveen.nl" = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}";
+      proxyPass = "http://unix://${config.services.anubis.instances.uptime-kuma.settings.BIND}";
+      proxyWebsockets = true;
     };
   };
 

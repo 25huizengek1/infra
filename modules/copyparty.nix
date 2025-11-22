@@ -1,8 +1,6 @@
 {
   pkgs,
   config,
-  inputs,
-  lib,
   ...
 }:
 
@@ -127,31 +125,29 @@ in
 
   systemd.services.copyparty.requires = [ "copyparty.socket" ];
 
-  services.anubis.instances.copyparty =
-    let
-      botPolicy = {
-        bots = [
-          {
-            name = "telegram";
-            user_agent_regex = "TelegramBot (like TwitterBot)";
-            action = "ALLOW";
-          }
-          {
-            name = "tailscale";
-            remote_addresses = [ "100.64.0.0/16" ];
-            action = "ALLOW";
-          }
-        ];
-      };
-    in
-    {
-      settings = {
-        TARGET = "unix://${unixSocket}";
-        METRICS_BIND = "127.0.0.1:16108"; # Prometheus can't scrape Unix sockets
-        METRICS_BIND_NETWORK = "tcp";
-        POLICY_FNAME = "${pkgs.writers.writeJSON "anubis-copyparty-bot-policy" botPolicy}"; # Why is this broken?
-      };
+  services.anubis.instances.copyparty = {
+    botPolicy = {
+      bots = [
+        {
+          name = "telegram";
+          user_agent_regex = "TelegramBot (like TwitterBot)";
+          action = "ALLOW";
+        }
+        {
+          name = "tailscale";
+          remote_addresses = [ "100.64.0.0/16" ];
+          action = "ALLOW";
+        }
+      ];
     };
+
+    settings = {
+      BIND = "/run/anubis/anubis-copyparty/anubis-copyparty.sock";
+      TARGET = "unix://${unixSocket}";
+      METRICS_BIND = "127.0.0.1:16108"; # Prometheus can't scrape Unix sockets
+      METRICS_BIND_NETWORK = "tcp";
+    };
+  };
 
   services.prometheus.scrapeConfigs = [
     {

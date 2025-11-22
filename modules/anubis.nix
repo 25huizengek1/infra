@@ -11,7 +11,7 @@ in
     };
     botPolicy.store = {
       backend = "valkey";
-      parameters.url = "redis://unix://${redisSocket}";
+      parameters.url = "unix://${redisSocket}";
     };
   };
 

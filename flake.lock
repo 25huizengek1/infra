@@ -492,17 +492,17 @@
     },
     "immich-nixpkgs": {
       "locked": {
-        "lastModified": 1763673413,
-        "narHash": "sha256-CgDTwH81VaKiYeTg7zkVDBg8bLcTrkcd6hZ5h4TEqEc=",
-        "owner": "dotlambda",
+        "lastModified": 1761941903,
+        "narHash": "sha256-0OXtythk1egcNdKO4arSxdVzjALW+6OVVZ+AH27fPTA=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "3324154c4a4f0fa23dece3799f017cfc5187a8f1",
+        "rev": "738dcf167d04689293fb6c5caa7af84902a3262f",
         "type": "github"
       },
       "original": {
-        "owner": "dotlambda",
-        "ref": "immich",
+        "owner": "nixos",
         "repo": "nixpkgs",
+        "rev": "738dcf167d04689293fb6c5caa7af84902a3262f",
         "type": "github"
       }
     },
