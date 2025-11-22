@@ -17,12 +17,12 @@ in
       inputs.nixpkgs.lib.nixosSystem {
         inherit pkgs;
 
-        specialArgs = {
-          inherit inputs;
-          inherit hostname;
-        };
+        specialArgs = { inherit inputs; };
 
-        modules = [ ../machines/${hostname}.nix ];
+        modules = [
+          { networking.hostName = hostname; }
+          ../machines/${hostname}.nix
+        ];
       }
     )
   );

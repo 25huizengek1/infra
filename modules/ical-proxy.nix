@@ -1,8 +1,6 @@
 {
   pkgs,
-  lib,
   inputs,
-  config,
   ...
 }:
 
@@ -39,6 +37,7 @@ in
       image = "valkey/valkey:latest";
     };
   };
+
   services.nginx.virtualHosts.${domain} = {
     forceSSL = true;
     enableACME = true;
