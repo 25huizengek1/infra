@@ -4,20 +4,14 @@
   imports = [
     inputs.disko.nixosModules.disko
     inputs.nixos-facter-modules.nixosModules.facter
-    inputs.sops-nix.nixosModules.sops
-    inputs.nixos-mailserver.nixosModule
-    inputs.copyparty.nixosModules.default
 
-    ./disk-config.nix
+    ./server.disk-config.nix
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
-    inputs.srvos.nixosModules.mixins-terminfo
-    inputs.srvos.nixosModules.mixins-telegraf
-    inputs.srvos.nixosModules.mixins-terminfo
-    inputs.srvos.nixosModules.mixins-nginx
-    inputs.srvos.nixosModules.roles-prometheus
 
     ../containers/portainer.nix
+    ../containers/tcs-bot.nix
+    ../containers/web.nix
 
     ../modules/anubis.nix
     ../modules/common.nix
@@ -32,8 +26,6 @@
     ../modules/podman.nix
     ../modules/search.nix
     ../modules/tailscale.nix
-    ../modules/tcs-bot.nix
-    ../modules/web.nix
   ];
 
   facter.reportPath = ./bart-server.json;

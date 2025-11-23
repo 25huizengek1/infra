@@ -1,10 +1,16 @@
 {
   pkgs,
   config,
+  inputs,
   ...
 }:
 
 {
+  imports = [
+    inputs.srvos.nixosModules.mixins-telegraf
+    inputs.srvos.nixosModules.roles-prometheus
+  ];
+
   services.grafana = {
     enable = true;
     settings.server = {

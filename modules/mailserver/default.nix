@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  inputs,
   ...
 }:
 
@@ -9,6 +10,8 @@ let
 in
 {
   imports = [
+    inputs.nixos-mailserver.nixosModule
+
     ./passwords.nix
     ./accounts.nix
   ];

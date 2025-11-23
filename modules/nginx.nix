@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -10,6 +11,10 @@ let
     string: builtins.concatStringsSep "" (lib.flatten (lib.reverseList (builtins.split "" string)));
 in
 {
+  imports = [
+    inputs.srvos.nixosModules.mixins-nginx
+  ];
+
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "security" + "@" + (reverseString "feennetnecruutsoudemo") + ".nl";
 

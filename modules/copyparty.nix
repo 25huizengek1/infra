@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  inputs,
   ...
 }:
 
@@ -21,6 +22,10 @@ let
   cfg = config.infra.copyparty;
 in
 {
+  imports = [
+    inputs.copyparty.nixosModules.default
+  ];
+
   options.infra.copyparty = {
     enable = mkEnableOption "copyparty";
     name = mkOption {

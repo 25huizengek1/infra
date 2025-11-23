@@ -1,10 +1,16 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
 {
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+    inputs.srvos.nixosModules.mixins-terminfo
+  ];
+
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
