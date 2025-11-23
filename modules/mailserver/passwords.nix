@@ -9,6 +9,11 @@
     ];
   };
 
+  users.groups.alertmanager = { };
+  users.users.alertmanager = {
+    isSystemUser = true;
+    group = "alertmanager";
+  };
   sops.secrets.alertmanager-email-password = {
     format = "binary";
     mode = "0600";

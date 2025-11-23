@@ -40,30 +40,38 @@
     alertmanager = {
       enable = true;
       listenAddress = "127.0.0.1";
-      configuration = {
-        global = {
-          smtp_from = "Alerting <alerts@vitune.app>";
-          smtp_smarthost = "vitune.app:587";
-          smtp_auth_username = "alerts@vitune.app";
-          smtp_auth_password_file = config.sops.secrets.alertmanager-email-password.path;
+      configuration =
+        let
+          receiver = "admin";
+        in
+        {
+          global =
+            let
+              email = "alerts@bartoostveen.nl";
+            in
+            {
+              smtp_from = "Alerting <${email}>";
+              smtp_smarthost = "localhost:465";
+              smtp_auth_username = email;
+              smtp_auth_password_file = config.sops.secrets.alertmanager-email-password;
+            };
+          receivers = [
+            {
+              name = receiver;
+              email_configs = [
+                {
+                  to = "root@bartoostveen.nl";
+                }
+              ];
+              discord_configs = [
+                {
+                  webhook_url_file = config.sops.secrets.alertmanager-discord-webhook.path;
+                }
+              ];
+            }
+          ];
+          route = { inherit receiver; };
         };
-        receivers = [
-          {
-            name = "admin";
-            email_configs = [
-              {
-                to = "root@bartoostveen.nl";
-              }
-            ];
-            discord_configs = [
-              {
-                webhook_url_file = config.sops.secrets.alertmanager-discord-webhook.path;
-              }
-            ];
-          }
-        ];
-        route.receiver = "admin";
-      };
     };
 
     alertmanagers = [

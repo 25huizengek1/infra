@@ -22,7 +22,7 @@
         "development@vitune.app"
       ];
     };
-    "alerts@vitune.app" = {
+    "alerts@bartoostveen.nl" = {
       hashedPasswordFile = config.sops.secrets.alertmanager-email-password-encrypted.path;
       sendOnly = true;
     };
