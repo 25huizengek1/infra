@@ -47,11 +47,11 @@
         {
           global =
             let
-              email = "alerts@bartoostveen.nl";
+              email = "alerts@${config.mailserver.fqdn}";
             in
             {
               smtp_from = "Alerting <${email}>";
-              smtp_smarthost = "localhost:465";
+              smtp_smarthost = "${config.mailserver.fqdn}:465";
               smtp_auth_username = email;
               smtp_auth_password_file = config.sops.secrets.alertmanager-email-password.path;
             };

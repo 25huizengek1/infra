@@ -12,7 +12,6 @@
 
     dont-track-me.url = "github:dtomvan/dont-track-me.nix";
 
-    immich-nixpkgs.url = "github:nixos/nixpkgs/738dcf167d04689293fb6c5caa7af84902a3262f";
     prismlauncher-nixpkgs.url = "github:nixos/nixpkgs/077cb3aa7d111ff4d36e8bd18d906bb4a3d621f9";
 
     nixpkgs-lib.url = "github:nix-community/nixpkgs.lib";

@@ -1,15 +1,10 @@
 {
   config,
-  inputs,
-  pkgs,
   ...
 }:
 
 {
-  services.immich = {
-    enable = true;
-    package = inputs.immich-nixpkgs.legacyPackages.${pkgs.stdenv.system}.immich;
-  };
+  services.immich.enable = true;
 
   services.nginx.virtualHosts."images.bartoostveen.nl" = {
     enableACME = true;
