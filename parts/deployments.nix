@@ -7,8 +7,8 @@
   };
 
   flake.extraNixOSConfigurations = {
-    installer = {};
-    minimal-sd = {};
+    installer = { };
+    minimal-sd = { };
   };
 
   flake.home = [

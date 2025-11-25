@@ -1,5 +1,4 @@
 {
-  modulesPath,
   lib,
   pkgs,
   ...
