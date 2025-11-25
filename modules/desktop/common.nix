@@ -40,6 +40,7 @@
     nil
     nixd
     nix-inspect
+    nix-output-monitor
     nixfmt-rfc-style
     sops
     local.tilp

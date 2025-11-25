@@ -19,18 +19,20 @@ in
       (genAttrs' self.home (
         {
           hostname,
-          ip ? hostname,
+          ip ? null,
           username,
-          sshUser ? username,
+          sshUser ? null,
           arch,
           ...
         }:
         nameValuePair hostname {
-          hostname = ip;
+          hostname = if ip != null then ip else hostname;
 
           profiles.${username} = {
             user = username;
-            inherit sshUser;
+            sshUser = if sshUser != null then sshUser else username;
+
+            interactiveSudo = username == "root" && sshUser != "root";
 
             path =
               inputs.deploy-rs.lib.${arch}.activate.home-manager
@@ -42,20 +44,32 @@ in
         mapAttrs (
           name:
           {
+            ip ? null,
+            hostname ? null,
+            sshUser ? null,
             username,
             arch,
             ...
-          }@c:
+          }:
 
           let
-            hostname = c.ip or c.hostname or name;
+            h =
+              if ip != null then
+                ip
+              else if hostname != null then
+                hostname
+              else
+                name;
           in
           {
-            inherit hostname;
+            hostname = h;
 
             profiles.system = {
               user = username;
-              sshUser = username;
+              sshUser = if sshUser != null then sshUser else username;
+
+              interactiveSudo = username == "root" && sshUser != "root";
+
               path = inputs.deploy-rs.lib.${arch}.activate.nixos self.nixosConfigurations.${name};
             };
           }

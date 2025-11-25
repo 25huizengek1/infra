@@ -37,8 +37,13 @@ in
             default = null;
           };
           username = mkOption {
-            description = "The user to deploy from";
+            description = "The user to deploy as";
             type = str;
+            default = "root";
+          };
+          sshUser = mkOption {
+            description = "The user to push the configuration from, defaults to root";
+            type = nullOr str;
             default = "root";
           };
           arch = mkOption {

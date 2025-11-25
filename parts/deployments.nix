@@ -1,9 +1,9 @@
 {
   flake.nixos = {
-    bart-server.username = "root";
-    # bart-laptop.username = "bart";
-    bart-laptop-new.username = "bart";
-    bart-pc.username = "bart";
+    bart-server.sshUser = "root";
+    # bart-laptop.sshUser = "bart";
+    bart-laptop-new.sshUser = "bart";
+    bart-pc.sshUser = "bart";
   };
 
   flake.extraNixOSConfigurations = {
