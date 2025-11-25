@@ -123,7 +123,7 @@ in
 
   sops.secrets.headplane-cookie = {
     format = "binary";
-    sopsFile = ../secrets/headplane_cookie.secret;
+    sopsFile = ../../secrets/headplane_cookie.secret;
 
     owner = "headscale";
     group = "headscale";

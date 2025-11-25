@@ -20,7 +20,7 @@
     group = "root";
     mode = "0600";
 
-    sopsFile = ../secrets/rclone-omeduoparty-mnt.conf.secret;
+    sopsFile = ../../secrets/non-infra/rclone-omeduoparty-mnt.conf.secret;
     format = "binary";
   };
 }

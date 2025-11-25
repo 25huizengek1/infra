@@ -37,7 +37,7 @@
   };
 
   sops.secrets.bart-password = {
-    sopsFile = ../../secrets/bart.pass.secret;
+    sopsFile = ../../../secrets/non-infra/bart.pass.secret;
     neededForUsers = true;
 
     format = "binary";

@@ -167,7 +167,7 @@
     format = "binary";
     mode = "0600";
 
-    sopsFile = ../secrets/alertmanager-discord-webhook.secret;
+    sopsFile = ../../secrets/alertmanager-discord-webhook.secret;
     restartUnits = [ "alertmanager.service" ];
     owner = "alertmanager";
     group = "alertmanager";

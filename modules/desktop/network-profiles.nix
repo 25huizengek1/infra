@@ -6,7 +6,7 @@
     group = "root";
     mode = "0600";
 
-    sopsFile = ../secrets/nm-env.secret;
+    sopsFile = ../../secrets/non-infra/nm-env.secret;
     format = "binary";
   };
 

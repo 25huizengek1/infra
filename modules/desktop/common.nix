@@ -32,7 +32,7 @@
     comma
     copyparty
     curl
-    deploy-rs
+    deploy-rs.deploy-rs
     git
     google-chrome
     home-manager

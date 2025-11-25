@@ -1,15 +1,11 @@
 {
-  host ? "bart-pc",
   pkgs,
   lib,
   ...
 }:
 
 {
-  networking = {
-    hostName = host;
-    networkmanager.enable = true;
-  };
+  networking.networkmanager.enable = true;
 
   services.tailscale.enable = true;
   boot.kernel.sysctl = {
@@ -20,15 +16,6 @@
   };
 
   programs.openvpn3.enable = true;
-  networking.firewall.checkReversePath = false;
+  networking.firewall.checkReversePath = false; # TODO: remove
   networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
-
-  system.activationScripts = {
-    rfkillUnblockWlan = {
-      text = ''
-        rfkill unblock wlan
-      '';
-      deps = [ ];
-    };
-  };
 }

@@ -55,7 +55,7 @@ in
     group = "rspamd";
     mode = "0600";
 
-    sopsFile = ../../secrets/bartoostveen.nl.mail.private.secret;
+    sopsFile = ../../../secrets/bartoostveen.nl.mail.private.secret;
 
     path = "${config.mailserver.dkimKeyDirectory}/bartoostveen.nl.mail.key";
     restartUnits = [ "rspamd.service" ];
@@ -67,7 +67,7 @@ in
     group = "rspamd";
     mode = "0600";
 
-    sopsFile = ../../secrets/omeduostuurcentenneef.nl.mail.private.secret;
+    sopsFile = ../../../secrets/omeduostuurcentenneef.nl.mail.private.secret;
 
     path = "${config.mailserver.dkimKeyDirectory}/omeduostuurcentenneef.nl.mail.key";
     restartUnits = [ "rspamd.service" ];
@@ -79,7 +79,7 @@ in
     group = "rspamd";
     mode = "0600";
 
-    sopsFile = ../../secrets/vitune.app.mail.private.secret;
+    sopsFile = ../../../secrets/vitune.app.mail.private.secret;
 
     path = "${config.mailserver.dkimKeyDirectory}/vitune.app.mail.key";
     restartUnits = [ "rspamd.service" ];

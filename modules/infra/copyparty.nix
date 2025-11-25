@@ -207,7 +207,7 @@ in
 
     sops.secrets.copyparty-adm-password = {
       format = "binary";
-      sopsFile = ../secrets/copyparty-password.secret;
+      sopsFile = ../../secrets/copyparty-password.secret;
 
       owner = "prometheus";
       group = "prometheus";
@@ -217,7 +217,7 @@ in
 
     sops.secrets.copyparty-adm-password-enc = {
       format = "binary";
-      sopsFile = ../secrets/copyparty-password.enc.secret;
+      sopsFile = ../../secrets/copyparty-password.enc.secret;
 
       owner = group;
       inherit group;

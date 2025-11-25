@@ -73,7 +73,7 @@ in
       }@c:
 
       let
-        hostname = c.hostname or name;
+        hostname = if c.hostname != null then c.hostname else name;
       in
       withSystem arch (
         { pkgs, ... }:
@@ -84,6 +84,7 @@ in
           specialArgs = { inherit inputs; };
 
           modules = [
+            inputs.sops-nix.nixosModules.sops
             { networking.hostName = hostname; }
             ../machines/${hostname}.nix
           ];
