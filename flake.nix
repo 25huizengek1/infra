@@ -1,18 +1,24 @@
 {
-  description = "Bart Oostveen's Nix server infra configuration";
+  # TODO: declarative README.md (because it's cool)
+  description = "Bart Oostveen's NixOS configurations";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    dont-track-me.url = "github:dtomvan/dont-track-me.nix";
+
     immich-nixpkgs.url = "github:nixos/nixpkgs/738dcf167d04689293fb6c5caa7af84902a3262f";
+    prismlauncher-nixpkgs.url = "github:nixos/nixpkgs/077cb3aa7d111ff4d36e8bd18d906bb4a3d621f9";
 
     nixpkgs-lib.url = "github:nix-community/nixpkgs.lib";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     import-tree.url = "github:vic/import-tree";
+    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
     systems.url = "github:nix-systems/default";
     flake-compat.url = "github:edolstra/flake-compat";
 
@@ -53,7 +59,7 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
-    treefmt = {
+    treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -101,6 +107,13 @@
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    invoice = {
+      url = "github:25huizengek1/invoice";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.treefmt-nix.follows = "treefmt-nix";
     };
   };
 

@@ -13,19 +13,19 @@
     ../containers/tcs-bot.nix
     ../containers/web.nix
 
-    ../modules/anubis.nix
-    ../modules/common.nix
-    ../modules/copyparty.nix
-    ../modules/git.nix
-    ../modules/ical-proxy.nix
-    ../modules/immich.nix
-    ../modules/mailserver
-    ../modules/monitoring.nix
-    ../modules/nix.nix
-    ../modules/nginx.nix
-    ../modules/podman.nix
-    ../modules/search.nix
-    ../modules/tailscale.nix
+    ../modules/infra/anubis.nix
+    ../modules/infra/common.nix
+    ../modules/infra/copyparty.nix
+    ../modules/infra/git.nix
+    ../modules/infra/ical-proxy.nix
+    ../modules/infra/immich.nix
+    ../modules/infra/mailserver
+    ../modules/infra/monitoring.nix
+    ../modules/infra/nix.nix
+    ../modules/infra/nginx.nix
+    ../modules/infra/podman.nix
+    ../modules/infra/search.nix
+    ../modules/infra/tailscale.nix
   ];
 
   facter.reportPath = ./bart-server.json;
