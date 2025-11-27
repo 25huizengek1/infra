@@ -38,7 +38,7 @@
                 modules = [
                   inputs.nix-podman-stacks.homeModules.nps
                   {
-                    home.stateVersion = "25.05";
+                    home.stateVersion = "25.11";
                     home.username = "someuser";
                     home.homeDirectory = "/home/someuser";
                     nps = {
@@ -69,7 +69,7 @@
                 modules = [
                   inputs.plasma-manager.homeModules.plasma-manager
                   {
-                    home.stateVersion = "25.05";
+                    home.stateVersion = "25.11";
                     home.username = "someuser";
                     home.homeDirectory = "/home/someuser";
                   }
