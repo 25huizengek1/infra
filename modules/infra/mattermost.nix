@@ -11,6 +11,7 @@
     enableACME = true;
     forceSSL = true;
     listenAddresses = [ "100.64.0.2" ];
-    locations."/".proxyPass = "http://${config.services.mattermost.host}:${toString config.services.mattermost.port}";
+    locations."/".proxyPass =
+      "http://${config.services.mattermost.host}:${toString config.services.mattermost.port}";
   };
 }
