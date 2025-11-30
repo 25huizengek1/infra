@@ -26,9 +26,13 @@ let
   dockerImage = pkgs.dockerTools.streamLayeredImage {
     inherit name;
     tag = pkg.version;
-    contents = [
+    contents = with pkgs; [
       pkg
-      pkgs.busybox
+      busybox
+      cacert
+      curl
+      coreutils-full
+      bashInteractive
     ];
     config.Cmd = [ "/bin/${pkg.pname}" ];
   };
