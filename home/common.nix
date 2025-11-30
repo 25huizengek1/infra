@@ -73,6 +73,7 @@ in
           pdfarranger
           signal-desktop
           super-productivity
+          teams-for-linux
           telegram-desktop
           thunderbird
           vlc
