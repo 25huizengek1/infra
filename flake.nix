@@ -114,6 +114,16 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
+
+    licenseit = {
+      url = "github:NotAShelf/licenseit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    tailray = {
+      url = "github:NotAShelf/tailray";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

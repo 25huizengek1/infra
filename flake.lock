@@ -613,6 +613,26 @@
         "type": "github"
       }
     },
+    "licenseit": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1756641619,
+        "narHash": "sha256-d5mxXLoAL3O6v+23cdGcfq3eQJJ7b2PWPiBHBtARsL0=",
+        "owner": "NotAShelf",
+        "repo": "licenseit",
+        "rev": "31275f90e06bf586baba74613d2e636d6cb15102",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NotAShelf",
+        "repo": "licenseit",
+        "type": "github"
+      }
+    },
     "nix-podman-stacks": {
       "inputs": {
         "home-manager": [
@@ -901,6 +921,7 @@
         "ical-proxy": "ical-proxy",
         "import-tree": "import-tree",
         "invoice": "invoice",
+        "licenseit": "licenseit",
         "nix-podman-stacks": "nix-podman-stacks",
         "nixos-facter-modules": "nixos-facter-modules",
         "nixos-mailserver": "nixos-mailserver",
@@ -914,6 +935,7 @@
         "sops-nix": "sops-nix",
         "srvos": "srvos",
         "systems": "systems_4",
+        "tailray": "tailray",
         "tcs-bot": "tcs-bot",
         "treefmt-nix": "treefmt-nix_5"
       }
@@ -1053,6 +1075,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tailray": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763714964,
+        "narHash": "sha256-vYKfzKr/vikAOr45zHS5G1vIuoufqUh92pnJ8UCPtkw=",
+        "owner": "NotAShelf",
+        "repo": "tailray",
+        "rev": "ab8d2614d1787835b8cd256e5bfa8f524d1a8fc2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NotAShelf",
+        "repo": "tailray",
         "type": "github"
       }
     },

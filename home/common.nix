@@ -13,6 +13,7 @@ in
   imports = [
     ./git.nix
     inputs.sops-nix.homeManagerModules.sops
+    inputs.tailray.homeManagerModules.default
   ];
 
   options.common = {
@@ -89,9 +90,14 @@ in
       };
     };
 
+    services.tailray.enable = lib.mkDefault cfg.gui;
+    systemd.user.services.tailray.Service.Environment = lib.optionals config.services.tailray.enable [
+      "TAILRAY_ADMIN_URL=https://headplane.vitune.app/admin/login"
+    ];
+
     programs.home-manager.enable = true;
 
-    programs.google-chrome.enable = cfg.gui;
+    programs.google-chrome.enable = lib.mkDefault cfg.gui;
 
     programs.nix-index = {
       enable = true;

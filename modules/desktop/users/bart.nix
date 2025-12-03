@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   nix.settings.trusted-users = [ "bart" ];
@@ -24,6 +29,7 @@
 
     packages = with pkgs; [
       kdePackages.kate
+      inputs.licenseit.packages.${pkgs.stdenv.system}.default
     ];
 
     hashedPasswordFile = config.sops.secrets.bart-password.path;
