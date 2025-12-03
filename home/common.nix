@@ -8,6 +8,7 @@
 
 let
   cfg = config.common;
+  inherit (builtins) fromJSON readFile;
 in
 {
   imports = [
@@ -73,7 +74,6 @@ in
           pavucontrol
           pdfarranger
           signal-desktop
-          super-productivity
           teams-for-linux
           telegram-desktop
           thunderbird
@@ -97,8 +97,6 @@ in
 
     programs.home-manager.enable = true;
 
-    programs.google-chrome.enable = lib.mkDefault cfg.gui;
-
     programs.nix-index = {
       enable = true;
       enableBashIntegration = true;
@@ -107,8 +105,7 @@ in
     programs.oh-my-posh = {
       enable = true;
       enableBashIntegration = true;
-
-      settings = with builtins; fromJSON (unsafeDiscardStringContext (readFile ./oh-my-posh.json));
+      settings = fromJSON (readFile ./oh-my-posh.json);
     };
 
     programs.direnv = {
@@ -117,30 +114,20 @@ in
       nix-direnv.enable = true;
     };
 
+    programs.google-chrome.enable = lib.mkDefault cfg.gui;
     programs.vscode.enable = lib.mkDefault cfg.gui;
 
     programs.yt-dlp = {
       enable = true;
-      settings = {
-        sponsorblock-mark = "all,-preview";
-      };
+      settings.sponsorblock-mark = "all,-preview";
     };
 
     programs.bash = {
       enable = true;
       enableCompletion = true;
-
       historyControl = [ "erasedups" ];
-
-      sessionVariables = {
-        PROMPT_COMMAND = "history -a; history -n";
-      };
+      sessionVariables.PROMPT_COMMAND = "history -a; history -n";
     };
-
-    programs.keepassxc.enable = lib.mkDefault cfg.gui;
-    programs.pandoc.enable = true;
-
-    dont-track-me.enable = true;
 
     programs.delta.enable = true;
     git = {
@@ -152,7 +139,6 @@ in
 
       key = "31805D4650DE1EC8";
     };
-
     programs.git.includes = [
       {
         condition = "hasconfig:remote.*.url:git@gitlab.utwente.nl:*/**";
@@ -164,8 +150,8 @@ in
       }
     ];
 
-    sops = {
-      age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    };
+    sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+
+    dont-track-me.enable = true;
   };
 }
