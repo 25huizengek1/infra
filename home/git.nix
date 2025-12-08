@@ -77,6 +77,8 @@ in
         pull.rebase = true;
         init.defaultBranch = "master";
         advice.detachedHead = false;
+
+        alias.fwlpush = "push --force-with-lease";
       };
     };
 
