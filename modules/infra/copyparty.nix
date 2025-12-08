@@ -97,6 +97,7 @@ in
   config = mkIf cfg.enable {
     services.copyparty = {
       enable = true;
+      package = pkgs.copyparty-unstable;
       settings = {
         inherit (cfg) name;
         i = "unix:770:${unixSocket},127.1";
