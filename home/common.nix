@@ -148,6 +148,14 @@ in
           signingKey = "FAD453F45800E974";
         };
       }
+      {
+        condition = "hasconfig:remote.*.url:git@gitlab.snt.utwente.nl:*/**";
+        contents.user = {
+          email = "oostveen@snt.utwente.nl";
+          name = "Bart Oostveen";
+          signingKey = "FAD453F45800E974";
+        };
+      }
     ];
 
     sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
