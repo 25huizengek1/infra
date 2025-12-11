@@ -50,6 +50,7 @@ in
           dust
           ffmpeg
           gh
+          gopass
           invoice
           jq
           meteor-git
