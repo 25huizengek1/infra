@@ -96,11 +96,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765671312,
-        "narHash": "sha256-XDERcgAVwqLxNJqYx8LxKHYDdd5BK6bZS1h+3hsVokY=",
+        "lastModified": 1765753646,
+        "narHash": "sha256-KDt/bxBEFEb5aDs50LIHrzAVC4idTEzRItGRktfcepU=",
         "owner": "9001",
         "repo": "copyparty",
-        "rev": "fecc3fd50783073903175978ae7106a0de1cfcbd",
+        "rev": "3476d5e6d98bab8dd8dcb41f0f3a6c8bc8cd3cf5",
         "type": "github"
       },
       "original": {
