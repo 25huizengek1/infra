@@ -3,7 +3,7 @@
     bart-server.sshUser = "root";
     # bart-laptop.sshUser = "bart";
     bart-laptop-new.sshUser = "bart";
-    bart-pc.sshUser = "bart";
+    # bart-pc.sshUser = "bart";
   };
 
   flake.extraNixOSConfigurations = {
@@ -20,9 +20,9 @@
       username = "bart";
       hostname = "bart-laptop-new";
     }
-    {
-      username = "bart";
-      hostname = "bart-pc";
-    }
+    # {
+    #   username = "bart";
+    #   hostname = "bart-pc";
+    # }
   ];
 }
