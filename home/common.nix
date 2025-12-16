@@ -47,11 +47,12 @@ in
           bat
           btop
           curl
-          dawn
+          local.dawn
           dust
           ffmpeg
           gh
           gopass
+          inputs.licenseit.packages.${pkgs.stdenv.system}.default
           invoice
           jq
           meteor-git
@@ -67,6 +68,7 @@ in
         ++ lib.optionals cfg.gui [
           discord
           element-desktop
+          kdePackages.kate
           keystore-explorer
           libreoffice
           localsend

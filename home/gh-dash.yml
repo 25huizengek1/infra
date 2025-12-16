@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://dlvhdr.github.io/gh-dash/configuration/gh-dash/schema.json
+# yaml-language-server: $schema=https://www.gh-dash.dev/schema.json
 prSections:
 - title: My Pull Requests
   filters: is:open author:@me

@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}:
+{ config, ... }:
 
 {
   nix.settings.trusted-users = [ "bart" ];
@@ -25,11 +20,6 @@
       "scanner"
       "libvirtd"
       "qemu-libvirtd"
-    ];
-
-    packages = with pkgs; [
-      kdePackages.kate
-      inputs.licenseit.packages.${pkgs.stdenv.system}.default
     ];
 
     hashedPasswordFile = config.sops.secrets.bart-password.path;

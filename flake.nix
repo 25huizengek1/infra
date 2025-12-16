@@ -19,7 +19,6 @@
     import-tree.url = "github:vic/import-tree";
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
     systems.url = "github:nix-systems/default";
-    flake-compat.url = "github:edolstra/flake-compat";
 
     flake-utils = {
       url = "github:numtide/flake-utils";
@@ -44,7 +43,7 @@
     nixos-mailserver = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-compat.follows = "flake-compat";
+      inputs.flake-compat.follows = "";
     };
 
     sops-nix = {
@@ -123,6 +122,14 @@
     tailray = {
       url = "github:NotAShelf/tailray";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixos-apple-silicon = {
+      url = "github:tpwrules/nixos-apple-silicon";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "";
+      };
     };
   };
 

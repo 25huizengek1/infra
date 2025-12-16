@@ -29,22 +29,17 @@
 
   environment.systemPackages = with pkgs; [
     age
-    comma
     copyparty
     curl
     deploy-rs.deploy-rs
+    file
     git
-    google-chrome
-    home-manager
-    kdePackages.discover
     nil
     nixd
     nix-inspect
     nix-output-monitor
     nixfmt-rfc-style
     sops
-    local.tilp
-    vscode
     wget
   ];
 

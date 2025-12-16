@@ -45,5 +45,14 @@
     acme = true;
   };
 
+  services.nginx.virtualHosts."laptop.omeduostuurcentenneef.nl" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://100.64.0.8:6969/";
+      proxyWebsockets = true;
+    };
+  };
+
   system.stateVersion = "25.11";
 }

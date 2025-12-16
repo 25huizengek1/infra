@@ -203,21 +203,6 @@
         "type": "github"
       }
     },
-    "flake-compat_2": {
-      "locked": {
-        "lastModified": 1765121682,
-        "narHash": "sha256-4VBOP18BFeiPkyhy9o4ssBNQEvfvv1kXkasAYd0+rrA=",
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "rev": "65f23138d8d09a92e30f1e5c87611b23ef451bf3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -660,6 +645,27 @@
         "type": "github"
       }
     },
+    "nixos-apple-silicon": {
+      "inputs": {
+        "flake-compat": [],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765528634,
+        "narHash": "sha256-uIavvJkDwTZD1QY/oSkDtPN9xwkLwQayoZ5xOni4SBY=",
+        "owner": "tpwrules",
+        "repo": "nixos-apple-silicon",
+        "rev": "fc1440d6e6adb24d9b2650670744bae35654c867",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tpwrules",
+        "repo": "nixos-apple-silicon",
+        "type": "github"
+      }
+    },
     "nixos-facter-modules": {
       "locked": {
         "lastModified": 1765442039,
@@ -678,9 +684,7 @@
     "nixos-mailserver": {
       "inputs": {
         "blobs": "blobs",
-        "flake-compat": [
-          "flake-compat"
-        ],
+        "flake-compat": [],
         "git-hooks": "git-hooks",
         "nixpkgs": [
           "nixpkgs"
@@ -913,7 +917,6 @@
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "dont-track-me": "dont-track-me",
-        "flake-compat": "flake-compat_2",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "headplane": "headplane",
@@ -923,6 +926,7 @@
         "invoice": "invoice",
         "licenseit": "licenseit",
         "nix-podman-stacks": "nix-podman-stacks",
+        "nixos-apple-silicon": "nixos-apple-silicon",
         "nixos-facter-modules": "nixos-facter-modules",
         "nixos-mailserver": "nixos-mailserver",
         "nixpkgs": "nixpkgs",

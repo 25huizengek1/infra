@@ -59,15 +59,6 @@ in
       "[::0]"
       "100.64.0.2"
     ];
-
-    virtualHosts."laptop.omeduostuurcentenneef.nl" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "http://100.64.0.8:6969/";
-        proxyWebsockets = true;
-      };
-    };
   };
 
   # Skip cloudflare when resolving own virtualHosts for some reason

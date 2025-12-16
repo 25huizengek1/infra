@@ -43,8 +43,11 @@
 
   programs.nh = {
     enable = true;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 4d --keep 3";
+    clean = {
+      enable = true;
+      extraArgs = "--keep 5 --keep 3";
+      dates = "weekly";
+    };
   };
 
   services.postgresql = {
@@ -66,17 +69,8 @@
 
   environment.systemPackages = with pkgs; [
     curl
-    gcc
     gh
     git
-    gnutar
-    unzip
-    vscode-fhs
     wget
-    zip
-
-    dive
-    podman-compose
-    podman-tui
   ];
 }
