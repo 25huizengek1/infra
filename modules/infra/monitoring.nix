@@ -94,6 +94,7 @@
 
     exporters.nginx.enable = true;
     exporters.systemd.enable = true;
+    exporters.postgres.enable = true;
 
     ruleFiles = [
       (pkgs.writeText "up.rules" (
@@ -136,10 +137,18 @@
         ];
       }
       {
+        job_name = "postgres";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.postgres.port}" ];
+          }
+        ];
+      }
+      {
         job_name = "telegraf";
         static_configs = [
           {
-            targets = [ "localhost:9273" ];
+            targets = [ "localhost${config.services.telegraf.extraConfig.outputs.prometheus_client.listen}" ];
           }
         ];
       }
