@@ -1,0 +1,25 @@
+From ce5b520abc4f73c7e481651d071a2db1e38be5fb Mon Sep 17 00:00:00 2001
+From: Bart Oostveen <bart.oos.2006@gmail.com>
+Date: Tue, 16 Dec 2025 03:55:57 +0100
+Subject: [PATCH] fix: correct cmake libdir
+
+---
+ third-party/pcre2/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/third-party/pcre2/CMakeLists.txt b/third-party/pcre2/CMakeLists.txt
+index ac3f8d00..cc29eb5e 100644
+--- a/third-party/pcre2/CMakeLists.txt
++++ b/third-party/pcre2/CMakeLists.txt
+@@ -1176,7 +1176,7 @@ endif()
+ set(PACKAGE_VERSION "${PCRE2_MAJOR}.${PCRE2_MINOR}")
+ set(prefix ${CMAKE_INSTALL_PREFIX})
+ set(exec_prefix "\${prefix}")
+-set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
++set(libdir "@CMAKE_INSTALL_FULL_LIBDIR@")
+ set(includedir "\${prefix}/include")
+ 
+ set(LIB_POSTFIX "")
+-- 
+2.51.2
+

@@ -47,6 +47,7 @@ in
           bat
           btop
           curl
+          dawn
           dust
           ffmpeg
           gh
