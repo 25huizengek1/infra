@@ -51,6 +51,7 @@ in
           dust
           ffmpeg
           gh
+          glab
           gopass
           inputs.licenseit.packages.${pkgs.stdenv.system}.default
           invoice
