@@ -13,6 +13,7 @@ let
   dbUser = name;
   dbPassword = "Waarom moet dit, dit is echt super nutteloos aangezien de database niet exposed is, maar hee aan de ene aardling die dit leest, goeie dagschotel!";
   env = {
+    CANVAS_CA_BUNDLE = "/etc/ssl/certs/ca-bundle.crt";
     REDIS_CONNECTION_STRING = "${name}-redis:6379";
     DATABASE_CONNECTION_STRING = "jdbc:postgresql://${name}-db:5432/${name}";
     DATABASE_USERNAME = dbUser;

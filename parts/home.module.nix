@@ -22,7 +22,7 @@ let
     ;
 in
 {
-  options.flake.home = mkOption {
+  options.deployments.home = mkOption {
     description = "The Home Manager configurations for this flake.";
     type = listOf (submodule {
       options = {
@@ -53,7 +53,7 @@ in
     });
   };
 
-  config.flake.homeConfigurations = genAttrs' config.flake.home (
+  config.flake.homeConfigurations = genAttrs' config.deployments.home (
     {
       username,
       hostname,

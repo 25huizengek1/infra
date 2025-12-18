@@ -2,6 +2,7 @@
   self,
   inputs,
   lib,
+  config,
   ...
 }:
 
@@ -16,7 +17,7 @@ in
 {
   flake.deploy.nodes =
     recursiveUpdate
-      (genAttrs' self.home (
+      (genAttrs' config.deployments.home (
         {
           hostname,
           ip ? null,
@@ -73,7 +74,7 @@ in
               path = inputs.deploy-rs.lib.${arch}.activate.nixos self.nixosConfigurations.${name};
             };
           }
-        ) self.nixos
+        ) config.deployments.nixos
       );
 
   flake.checks = builtins.mapAttrs (

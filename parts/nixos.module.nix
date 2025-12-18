@@ -21,7 +21,7 @@ let
     ;
 in
 {
-  options.flake = {
+  options.deployments = {
     nixos = mkOption {
       description = "Set of NixOS configurations for a given host";
       type = attrsOf (submodule {
@@ -95,7 +95,7 @@ in
           ];
         }
       )
-    ) config.flake.nixos)
+    ) config.deployments.nixos)
     // mapAttrs (
       name:
       { arch, ... }:
@@ -107,5 +107,5 @@ in
           modules = [ ../images/${name}.nix ];
         }
       )
-    ) config.flake.extraNixOSConfigurations;
+    ) config.deployments.extraNixOSConfigurations;
 }
