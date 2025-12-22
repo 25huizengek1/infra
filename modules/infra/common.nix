@@ -45,7 +45,7 @@
     enable = true;
     clean = {
       enable = true;
-      extraArgs = "--keep 5 --keep 3";
+      extraArgs = "--keep 3 --optimise";
       dates = "weekly";
     };
   };
