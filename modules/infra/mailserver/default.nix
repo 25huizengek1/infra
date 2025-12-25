@@ -18,19 +18,21 @@ in
 
   mailserver = {
     enable = true;
+
     fqdn = domain;
-    certificateScheme = "acme-nginx";
     systemName = domain;
     systemDomain = domain;
+    x509.useACMEHost = domain;
+
     domains = [
-      "bartoostveen.nl"
+      domain
       "vitune.app"
       "omeduostuurcentenneef.nl"
     ];
-    certificateDomains = lib.lists.remove config.mailserver.fqdn config.mailserver.domains;
+
     dmarcReporting.enable = true;
     tlsrpt.enable = true;
-    systemContact = "postmaster@bartoostveen.nl";
+    systemContact = "postmaster@${domain}";
     enableManageSieve = true;
 
     fullTextSearch = {
@@ -47,6 +49,13 @@ in
     useUTF8FolderNames = true;
 
     stateVersion = 3;
+  };
+
+  services.nginx.virtualHosts."${config.mailserver.fqdn}" = {
+    serverName = config.mailserver.fqdn;
+    serverAliases = lib.lists.remove config.mailserver.fqdn config.mailserver.domains;
+    forceSSL = true;
+    enableACME = true;
   };
 
   sops.secrets."bartoostveen.nl.mail.key" = {
@@ -95,6 +104,8 @@ in
     '';
   };
 
-  services.postfix.config.inet_protocols = "ipv4";
-  services.postfix.config.bounce_template_file = "${./bounce-template.cf}";
+  services.postfix.settings.main = {
+    inet_protocols = "ipv4";
+    bounce_template_file = "${./bounce-template.cf}";
+  };
 }
