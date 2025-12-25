@@ -117,6 +117,7 @@ in
         # Trust that nginx is configured correctly
         xff-hdr = "x-forwarded-for";
         rproxy = 1;
+        daw = true;
       };
       accounts.${username}.passwordFile = config.sops.secrets.copyparty-adm-password-enc.path;
       user = group;
