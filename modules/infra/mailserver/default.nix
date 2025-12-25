@@ -30,10 +30,15 @@ in
       "omeduostuurcentenneef.nl"
     ];
 
+    # DKIM/DMARC
     dmarcReporting.enable = true;
     tlsrpt.enable = true;
     systemContact = "postmaster@${domain}";
+
+    hierarchySeparator = "/"; # See: https://doc.dovecot.org/main/core/config/namespaces.html#namespaces
+
     enableManageSieve = true;
+    enableSubmission = true; # Enable StartTLS
 
     fullTextSearch = {
       enable = true;
@@ -48,7 +53,7 @@ in
 
     useUTF8FolderNames = true;
 
-    stateVersion = 3;
+    stateVersion = 3; # Do not change this line, unless a new version needs to be migrated to
   };
 
   services.nginx.virtualHosts."${config.mailserver.fqdn}" = {
@@ -98,9 +103,26 @@ in
     enable = true;
     hostName = "webmail.bartoostveen.nl";
     extraConfig = ''
-      $config['smtp_host'] = "tls://${config.mailserver.fqdn}";
+      $config['imap_host'] = "ssl://${config.mailserver.fqdn}:993";
+      $config['imap_auth_type'] = 'LOGIN';
+      $config['imap_delimiter'] = '/';
+      $config['imap_conn_options'] = array(
+          'ssl' => array(
+              'verify_peer'  => false,
+              'verify_peer_name' => false,
+          ),
+      );
+
+      $config['smtp_host'] = "ssl://${config.mailserver.fqdn}:465";
       $config['smtp_user'] = "%u";
       $config['smtp_pass'] = "%p";
+      $config['smtp_auth_type'] = 'LOGIN';
+      $config['smtp_conn_options'] = array(
+          'ssl' => array(
+              'verify_peer'  => false,
+              'verify_peer_name' => false,
+          ),
+      );
     '';
   };
 
