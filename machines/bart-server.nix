@@ -20,7 +20,6 @@
     ../modules/infra/ical-proxy.nix
     ../modules/infra/immich.nix
     ../modules/infra/mailserver
-    ../modules/infra/mattermost.nix
     ../modules/infra/monitoring.nix
     ../modules/infra/nix.nix
     ../modules/infra/nginx.nix
