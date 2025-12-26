@@ -14,6 +14,7 @@
     ../modules/desktop/bluetooth.nix
     ../modules/desktop/copyparty-fuse.nix
     ../modules/desktop/common.nix
+    ../modules/desktop/fonts.nix
     ../modules/desktop/i18n.nix
     ../modules/desktop/kde.nix
     ../modules/desktop/network-profiles.nix

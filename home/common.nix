@@ -95,6 +95,8 @@ in
       };
     };
 
+    fonts.fontconfig.enable = true;
+
     services.tailray.enable = lib.mkDefault cfg.gui;
     systemd.user.services.tailray.Service.Environment = lib.optionals config.services.tailray.enable [
       "TAILRAY_ADMIN_URL=https://headplane.vitune.app/admin/login"
