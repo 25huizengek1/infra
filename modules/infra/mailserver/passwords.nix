@@ -5,7 +5,7 @@
 
     restartUnits = [
       "postfix-setup.service"
-      "dovecot2.service"
+      "dovecot.service"
     ];
   };
 
@@ -22,6 +22,16 @@
     restartUnits = [ "alertmanager.service" ];
     owner = "alertmanager";
     group = "alertmanager";
+  };
+
+  sops.secrets.authentik-email-password-encrypted = {
+    format = "binary";
+    sopsFile = ../../../secrets/email-passwords/auth.enc.secret;
+
+    restartUnits = [
+      "postfix-setup.service"
+      "dovecot.service"
+    ];
   };
 
   sops.secrets.bart-email-password-encrypted = {

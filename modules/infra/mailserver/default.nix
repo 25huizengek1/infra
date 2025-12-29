@@ -56,6 +56,41 @@ in
     stateVersion = 3; # Do not change this line, unless a new version needs to be migrated to
   };
 
+  services.prometheus = {
+    exporters = {
+      dovecot.enable = true;
+      postfix.enable = true;
+      rspamd.enable = true;
+    };
+
+    scrapeConfigs = [
+      {
+        job_name = "dovecot";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.dovecot.port}" ];
+          }
+        ];
+      }
+      {
+        job_name = "postfix";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.postfix.port}" ];
+          }
+        ];
+      }
+      {
+        job_name = "rspamd";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.rspamd.port}" ];
+          }
+        ];
+      }
+    ];
+  };
+
   services.nginx.virtualHosts."${config.mailserver.fqdn}" = {
     serverName = config.mailserver.fqdn;
     serverAliases = lib.lists.remove config.mailserver.fqdn config.mailserver.domains;

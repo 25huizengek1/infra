@@ -26,5 +26,9 @@
       hashedPasswordFile = config.sops.secrets.alertmanager-email-password-encrypted.path;
       sendOnly = true;
     };
+    "auth@bartoostveen.nl" = {
+      hashedPasswordFile = config.sops.secrets.authentik-email-password-encrypted.path;
+      sendOnly = true;
+    };
   };
 }

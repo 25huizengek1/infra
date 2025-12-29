@@ -12,6 +12,14 @@
     locations."/".root = inputs.nuschtos-search.packages.${pkgs.stdenv.system}.mkMultiSearch {
       scopes = [
         {
+          name = "authentik";
+          urlPrefix = "https://github.com/nix-community/authentik-nix/blob/main/";
+          modules = [ inputs.authentik.nixosModules.default ];
+          specialArgs = {
+            inherit pkgs;
+          };
+        }
+        {
           name = "copyparty";
           urlPrefix = "https://github.com/9001/copyparty/blob/hovudstraum/";
           modules = [ inputs.copyparty.nixosModules.default ];

@@ -14,6 +14,7 @@
     ../containers/web.nix
 
     ../modules/infra/anubis.nix
+    ../modules/infra/authentik.nix
     ../modules/infra/common.nix
     ../modules/infra/copyparty.nix
     ../modules/infra/git.nix
@@ -26,6 +27,7 @@
     ../modules/infra/podman.nix
     ../modules/infra/search.nix
     ../modules/infra/tailscale.nix
+    ../modules/infra/wordpress-test.nix
   ];
 
   facter.reportPath = ./bart-server.json;

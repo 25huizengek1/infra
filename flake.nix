@@ -2,6 +2,17 @@
   # TODO: declarative README.md (because it's cool)
   description = "Bart Oostveen's NixOS configurations";
 
+  nixConfig = {
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+      "https://cache.garnix.io"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -130,6 +141,11 @@
         nixpkgs.follows = "nixpkgs";
         flake-compat.follows = "";
       };
+    };
+
+    authentik = {
+      url = "github:nix-community/authentik-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
