@@ -15,7 +15,7 @@ php.buildComposerProject2 (finalAttrs: {
     hash = "sha256-VMEx6LtcG//p3tXI/T8JLRd+ctqkbmfLN69VunSiH/s=";
   };
 
-  vendorHash = "sha256-kTePmfOr61YVMOmJTQyUc37DeQnLmc8Poi7othyS0bg=";
+  vendorHash = "sha256-1sLJvhzSC/0DamHB9o1j3+HzZSLntMQG34RmmcJD8+k=";
   composerStrictValidation = false;
 
   installPhase = ''
