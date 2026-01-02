@@ -1,8 +1,4 @@
-{
-  inputs,
-  config,
-  ...
-}:
+{ inputs, config, ... }:
 
 let
   fqdn = "bartoostveen.nl";

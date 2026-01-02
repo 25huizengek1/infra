@@ -143,10 +143,7 @@
       };
     };
 
-    authentik = {
-      url = "github:nix-community/authentik-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    authentik.url = "github:nix-community/authentik-nix";
   };
 
   outputs =

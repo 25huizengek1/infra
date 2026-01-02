@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 
 {
   imports = [
@@ -14,7 +14,7 @@
     ../containers/web.nix
 
     ../modules/infra/anubis.nix
-    ../modules/infra/authentik.nix
+    # ../modules/infra/authentik.nix
     ../modules/infra/autokuma.nix
     ../modules/infra/common.nix
     ../modules/infra/copyparty.nix
@@ -55,6 +55,8 @@
       proxyWebsockets = true;
     };
   };
+
+  services.kresd.enable = lib.mkForce false;
 
   system.stateVersion = "25.11";
 }
