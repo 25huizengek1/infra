@@ -244,7 +244,7 @@ let
 
   cfg = config.infra.autokuma;
 
-  addType = type: mapAttrs (name: value: value // { inherit type; });
+  addType = type: mapAttrs (_name: value: value // { inherit type; });
   mkMonitorAttrs =
     instance:
     (addType "docker_host" instance.dockerHosts)
@@ -381,19 +381,19 @@ in
                 active = mkOption {
                   description = "Whether the notification should be active";
                   default = true;
-                  types = bool;
+                  type = bool;
                   example = false;
                 };
                 is_default = mkOption {
                   description = "Whether the notification is on by default";
                   default = false;
-                  types = bool;
+                  type = bool;
                   example = true;
                 };
                 config = mkOption {
                   description = "Notification config, get one using the kuma cli: `kuma notification list`";
                   default = { };
-                  types = attrs;
+                  type = attrs;
                   example = {
                     applyExisting = true;
                     disableUrl = false;
@@ -457,14 +457,12 @@ in
 
   config = mkIf cfg.enable {
     users = foldl' (
-      acc:
-      instance:
+      acc: instance:
       let
         user = if instance.user != null then instance.user else cfg.defaultUser;
         group = if instance.group != null then instance.group else cfg.defaultGroup;
       in
-      mergeAttrs acc
-      {
+      mergeAttrs acc {
         users.${user} = mkDefault {
           isSystemUser = true;
           inherit group;
@@ -478,7 +476,8 @@ in
       let
         user = if instance.user != null then instance.user else cfg.defaultUser;
         group = if instance.group != null then instance.group else cfg.defaultGroup;
-      in "d /run/autokuma/${name} 0750 ${user} ${group} - -"
+      in
+      "d /run/autokuma/${name} 0750 ${user} ${group} - -"
     ) cfg.instances;
 
     systemd.services = mapAttrs' (

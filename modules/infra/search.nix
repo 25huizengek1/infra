@@ -56,6 +56,46 @@
           urlPrefix = "https://github.com/nix-community/home-manager/tree/master/";
         }
         {
+          name = "infra";
+          urlPrefix = "https://github.com/25huizengek1/infra/blob/master/modules/infra/";
+          # I am not sure if it is possible for this to be MORE cursed, but at least we won't leak config this way
+          optionsJSON =
+            let
+              eval = inputs.nixpkgs.lib.nixosSystem {
+                inherit pkgs;
+                modules = [
+                  (
+                    { config, ... }:
+
+                    let
+                      extraSpecialArgs = {
+                        inherit pkgs;
+                        inherit lib;
+                        inherit inputs;
+                        inherit config;
+                      };
+                    in
+                    {
+                      imports = [
+                        inputs.sops-nix.nixosModules.sops
+                        (import ./autokuma.nix extraSpecialArgs)
+                        (import ./copyparty.nix extraSpecialArgs)
+                      ];
+
+                      system.stateVersion = "26.05";
+                    }
+                  )
+                ];
+              };
+              doc = pkgs.nixosOptionsDoc {
+                inherit (eval) options;
+              };
+            in
+            pkgs.runCommand "options-filtered" { } ''
+              ${lib.getExe pkgs.jq} 'to_entries | map(select(.key | startswith("infra"))) | from_entries' ${doc.optionsJSON}/share/doc/nixos/options.json > $out
+            '';
+        }
+        {
           name = "nix-podman-stacks";
           urlPrefix = "https://github.com/Tarow/nix-podman-stacks/blob/main/";
           optionsJSON =
