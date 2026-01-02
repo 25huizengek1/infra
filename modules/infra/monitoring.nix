@@ -2,9 +2,13 @@
   pkgs,
   config,
   inputs,
+  lib,
   ...
 }:
 
+let
+  vHost = "uptime.bartoostveen.nl";
+in
 {
   imports = [
     inputs.srvos.nixosModules.mixins-telegraf
@@ -208,13 +212,59 @@
     };
   };
 
-  services.nginx.virtualHosts."uptime.bartoostveen.nl" = {
+  services.nginx.virtualHosts.${vHost} = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://unix://${config.services.anubis.instances.uptime-kuma.settings.BIND}";
       proxyWebsockets = true;
     };
+  };
+
+  infra.autokuma = {
+    # TODO: Docker etc.
+    enable = lib.mkDefault true;
+    defaultEnvFile = config.sops.secrets.autokuma-env.path;
+    defaultSettings = {
+      kuma = {
+        url = config.services.anubis.instances.uptime-kuma.settings.TARGET;
+        username = "adm";
+      };
+      tag_name = "Managed by AutoKuma";
+      tag_color = "#ea2121";
+    };
+    instances.local = {
+      tags.nginx = {
+        name = "nginx @ ${config.networking.hostName}";
+        color = "#17964a";
+      };
+      monitors =
+        lib.genAttrs
+          (builtins.filter (vhost: vhost != "localhost") (lib.attrNames config.services.nginx.virtualHosts))
+          (vhost: {
+            type = "http";
+            name = vhost;
+            description = "nginx Managed by AutoKuma @ ${config.networking.hostName}";
+            expiry_notification = true;
+            url = "https://${vhost}";
+            accepted_statuscodes = [ "200-399" ];
+            tag_names = [
+              {
+                name = "nginx";
+                value = vhost;
+              }
+            ];
+          });
+    };
+  };
+
+  sops.secrets.autokuma-env = {
+    owner = "root";
+    group = "root";
+    mode = "0600";
+
+    sopsFile = ../../secrets/autokuma.env.secret;
+    format = "binary";
   };
 
   services.loki = {

@@ -20,6 +20,8 @@
   nix.channel.enable = false;
   nix.gc.automatic = lib.mkForce false;
 
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+
   nixpkgs.hostPlatform.system = "x86_64-linux";
 
   boot.loader.grub = {
