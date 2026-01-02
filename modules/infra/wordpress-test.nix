@@ -107,15 +107,18 @@ in
         inherit (pkgs.wordpressPackages.themes) twentytwentyfive;
       };
       languages = [
-        (with pkgs; stdenv.mkDerivation {
-          name = "wp-language-nl";
-          src = fetchzip {
-            url = "https://nl.wordpress.org/wordpress-${wordpress_6_9.version}-nl_NL.zip";
-            name = "wp-${wordpress_6_9.version}-language-nl";
-            hash = "sha256-iMQPKAIeVGnoBFbhlLbVZaiBVGL3DhiqSe9iKvRYK4E=";
-          };
-          installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
-        })
+        (
+          with pkgs;
+          stdenv.mkDerivation {
+            name = "wp-language-nl";
+            src = fetchzip {
+              url = "https://nl.wordpress.org/wordpress-${wordpress_6_9.version}-nl_NL.zip";
+              name = "wp-${wordpress_6_9.version}-language-nl";
+              hash = "sha256-iMQPKAIeVGnoBFbhlLbVZaiBVGL3DhiqSe9iKvRYK4E=";
+            };
+            installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
+          }
+        )
       ];
       package = wordpress_6_9;
     };
