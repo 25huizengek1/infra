@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   home.packages = with pkgs; [
@@ -26,6 +26,7 @@
     };
 
     configFile = {
+      # keep-sorted start
       "kdeglobals"."General"."AccentColor" = "0,85,255";
       "kdeglobals"."General"."TerminalApplication" = "alacritty";
       "kdeglobals"."General"."TerminalService" = "Alacritty.desktop";
@@ -35,6 +36,7 @@
       "kwinrc"."Desktops"."Id_1" = "32f7aab7-d3d2-463f-897b-3795a776364c";
       "kwinrc"."Desktops"."Number" = 4;
       "kwinrc"."Desktops"."Rows" = 2;
+      "kwinrc"."EdgeBarrier"."EdgeBarrier" = 10;
       "kwinrc"."Effect-slide"."HorizontalGap" = 0;
       "kwinrc"."Effect-slide"."VerticalGap" = 0;
       "kwinrc"."Plugins"."blurEnabled" = true;
@@ -53,7 +55,9 @@
       "plasma-localerc"."Formats"."LANG" = "en_US.UTF-8";
       "plasmanotifyrc"."Jobs"."PermanentPopups" = false;
       "spectaclerc"."GuiConfig"."captureMode" = 0;
-      "spectaclerc"."ImageSave"."imageSaveLocation" = "file:///home/bart/Pictures/Screenshots";
+      "spectaclerc"."ImageSave"."imageSaveLocation" =
+        "file://${config.home.homeDirectory}/Pictures/Screenshots";
+      # keep-sorted end
     };
   };
 }
