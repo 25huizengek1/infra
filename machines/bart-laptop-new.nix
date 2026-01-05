@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   ...
 }:
 
@@ -44,9 +43,6 @@
       vpl-gpu-rt
     ];
   };
-
-  services.displayManager.sddm.enable = lib.mkForce false;
-  services.displayManager.gdm.enable = true;
 
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD";
