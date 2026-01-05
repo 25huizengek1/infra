@@ -28,19 +28,22 @@
   services.resolved.enable = true;
 
   environment.systemPackages = with pkgs; [
+    # keep-sorted start
     age
+    attic-client
     copyparty
     curl
     deploy-rs.deploy-rs
     file
     git
     nil
-    nixd
     nix-inspect
     nix-output-monitor
+    nixd
     nixfmt-rfc-style
     sops
     wget
+    # keep-sorted end
   ];
 
   programs.nh = {
