@@ -1,0 +1,132 @@
+{ pkgs, config, ... }:
+
+let
+  vHost = "attic.bartoostveen.nl";
+
+  port = 64153;
+  metricsPort = 64154;
+
+  user = "atticd";
+in
+{
+  # TODO: generalize for cluster usage and s3 buckets
+  services.atticd = {
+    enable = true;
+    mode = "monolithic";
+    inherit user;
+    group = user;
+
+    environmentFile = config.sops.secrets.attic-env.path;
+
+    settings = {
+      allowed-hosts = [ vHost ];
+      api-endpoint = "https://${vHost}/";
+      listen = "127.0.0.1:${toString port}";
+      max-nar-info-size = 1048576;
+      require-proof-of-possession = true;
+
+      chunking = {
+        avg-size = 65536;
+        max-size = 262144;
+        min-size = 16384;
+        nar-size-threshold = 65536;
+      };
+      compression = {
+        level = 8;
+        type = "zstd";
+      };
+      database.url = "postgresql:///${user}?host=/run/postgresql";
+      garbage-collection = {
+        default-retention-period = "2 months";
+        interval = "1 day";
+      };
+    };
+  };
+
+  users.users.${user} = {
+    isSystemUser = true;
+    group = user;
+  };
+  users.groups.${user} = { };
+
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [ user ];
+    ensureUsers = [
+      {
+        name = user;
+        ensureDBOwnership = true;
+        ensureClauses.login = true;
+      }
+    ];
+  };
+
+  services.anubis.instances.attic = {
+    # TODO: generalize this
+    botPolicy = {
+      bots = [
+        {
+          name = "telegram";
+          user_agent_regex = "TelegramBot (like TwitterBot)";
+          action = "ALLOW";
+        }
+        {
+          name = "tailscale";
+          remote_addresses = [ "100.64.0.0/16" ];
+          action = "ALLOW";
+        }
+      ];
+    };
+
+    settings = {
+      BIND = "/run/anubis/anubis-attic/anubis-attic.sock";
+      TARGET = "http://${config.services.atticd.settings.listen}";
+      METRICS_BIND = "127.0.0.1:${toString metricsPort}"; # Prometheus can't scrape Unix sockets
+      METRICS_BIND_NETWORK = "tcp";
+    };
+  };
+
+  # TODO: generalize this
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "attic-anubis";
+      static_configs = [
+        {
+          targets = [ config.services.anubis.instances.attic.settings.METRICS_BIND ];
+        }
+      ];
+    }
+  ];
+
+  services.nginx.virtualHosts.${vHost} = {
+    enableACME = true;
+    forceSSL = true;
+
+    locations."/" = {
+      proxyPass = "http://unix://${config.services.anubis.instances.attic.settings.BIND}";
+      proxyWebsockets = true;
+      extraConfig = ''
+        client_max_body_size 0;
+        proxy_buffering off;
+        proxy_request_buffering off;
+        proxy_buffers 32 8k;
+        proxy_buffer_size 16k;
+        proxy_busy_buffers_size 24k;
+      '';
+    };
+  };
+
+  sops.secrets.attic-env = {
+    group = user;
+    owner = user;
+    mode = "0600";
+
+    sopsFile = ../../secrets/attic.env.secret;
+    restartUnits = [ "atticd.service" ];
+    format = "binary";
+  };
+
+  environment.systemPackages = with pkgs; [
+    attic-client
+  ];
+}
