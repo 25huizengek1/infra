@@ -14,11 +14,10 @@ let
   };
 in
 {
-  programs.adb.enable = true;
-
-  environment.systemPackages = [
-    (pkgs.android-studio.withSdk android.androidsdk)
-    (pkgs.androidStudioPackages.canary.withSdk android.androidsdk)
+  environment.systemPackages = with pkgs; [
+    (android-studio.withSdk android.androidsdk)
+    (androidStudioPackages.canary.withSdk android.androidsdk)
     android.androidsdk
+    android-tools
   ];
 }
