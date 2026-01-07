@@ -1000,11 +1000,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1764711883,
-        "narHash": "sha256-ZAbOl+1ZyNdCOz2CZ5w8wQMn1yEGCDx9ARUUoRCSNKk=",
+        "lastModified": 1767755181,
+        "narHash": "sha256-bDOvURcfpYPPxgLDo3N/1vIYAkqQkE7oDsZg956DRKU=",
         "owner": "25huizengek1",
         "repo": "omeduostuurcentenneef-web",
-        "rev": "314b87857068a9685835e3cc3b37257ffa233c0b",
+        "rev": "180982c767c244cf73497bf04acb2036694915f9",
         "type": "github"
       },
       "original": {

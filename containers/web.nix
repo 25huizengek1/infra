@@ -27,14 +27,38 @@ let
       Env = [ "NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-bundle.crt" ];
     };
   };
+
+  readmeStatsName = "gh-readme-stats";
+  readmeStatsPkg = pkgs.local.github-readme-stats;
+  readmeStatsDockerImage = pkgs.dockerTools.streamLayeredImage {
+    name = readmeStatsName;
+    tag = readmeStatsPkg.version;
+    contents = with pkgs; [
+      readmeStatsPkg
+      cacert
+    ];
+    config = {
+      Cmd = [ "/bin/github-readme-stats" ];
+      Env = [ "NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-bundle.crt" ];
+    };
+  };
 in
 {
   virtualisation.oci-containers.containers.${name} = {
     image = "localhost/${imageName}:${pkg.version}";
     imageStream = dockerImage;
-    environment.PORT = toString port;
+    environment = {
+      PORT = toString port;
+      GH_README_STATS_ENDPOINT = "http://${readmeStatsName}:9000/api?username=25huizengek1&show_icons=true&theme=gruvbox";
+    };
     environmentFiles = [ config.sops.secrets.web-env.path ];
     ports = [ "127.0.0.1:${toString port}:${toString port}" ];
+  };
+
+  virtualisation.oci-containers.containers.${readmeStatsName} = {
+    image = "localhost/${readmeStatsName}:${readmeStatsPkg.version}";
+    imageStream = readmeStatsDockerImage;
+    environmentFiles = [ config.sops.secrets.readme-stats-env.path ];
   };
 
   services.nginx.virtualHosts."bartoostveen.nl" = {
@@ -46,6 +70,12 @@ in
   sops.secrets.web-env = {
     format = "binary";
     sopsFile = ../secrets/web.env.secret;
-    restartUnits = [ "podman-web.service" ];
+    restartUnits = [ "podman-${name}.service" ];
+  };
+
+  sops.secrets.readme-stats-env = {
+    format = "binary";
+    sopsFile = ../secrets/readme-stats.env.secret;
+    restartUnits = [ "podman-${readmeStatsName}.service" ];
   };
 }
