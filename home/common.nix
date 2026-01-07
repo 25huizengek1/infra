@@ -163,7 +163,7 @@ in
         contents.user = {
           email = "oostveen@snt.utwente.nl";
           name = "Bart Oostveen";
-          signingKey = "FAD453F45800E974";
+          signingKey = "2D4FB795E873C2C3";
         };
       }
     ];
