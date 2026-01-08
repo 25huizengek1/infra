@@ -1,10 +1,15 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
 {
+  imports = [
+    inputs.nix-index-database.nixosModules.default
+  ];
+
   boot.loader.grub = {
     enable = true;
     useOSProber = true;
@@ -45,6 +50,8 @@
     wget
     # keep-sorted end
   ];
+
+  programs.nix-index-database.comma.enable = true;
 
   programs.nh = {
     enable = true;
