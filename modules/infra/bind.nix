@@ -30,4 +30,6 @@ in
           }
         );
   };
+
+  networking.firewall.allowedUDPPorts = [ 53 ];
 }
