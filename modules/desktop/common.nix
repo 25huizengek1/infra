@@ -42,6 +42,7 @@
     file
     git
     nil
+    nix-auth
     nix-inspect
     nix-output-monitor
     nixd
