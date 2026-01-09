@@ -217,6 +217,22 @@
         "type": "github"
       }
     },
+    "dns-zones": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767998663,
+        "narHash": "sha256-026yaU0AN4G62EnGjP3jyWmClrEuNh0zvqwEMHWfC4I=",
+        "owner": "25huizengek1",
+        "repo": "dns-zones",
+        "rev": "2d342bf5ad578c8457bf42607761bac1b2530688",
+        "type": "github"
+      },
+      "original": {
+        "owner": "25huizengek1",
+        "repo": "dns-zones",
+        "type": "github"
+      }
+    },
     "dont-track-me": {
       "locked": {
         "lastModified": 1740236549,
@@ -1205,6 +1221,7 @@
         "copyparty": "copyparty",
         "deploy-rs": "deploy-rs",
         "disko": "disko",
+        "dns-zones": "dns-zones",
         "dont-track-me": "dont-track-me",
         "flake-parts": "flake-parts_2",
         "flake-utils": "flake-utils_2",

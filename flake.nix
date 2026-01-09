@@ -156,6 +156,11 @@
       url = "github:numtide/nix-auth";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    dns-zones = {
+      url = "github:25huizengek1/dns-zones";
+      flake = false;
+    };
   };
 
   outputs =

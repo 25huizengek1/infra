@@ -17,6 +17,7 @@
     ../modules/infra/attic.nix
     # ../modules/infra/authentik.nix
     ../modules/infra/autokuma.nix
+    ../modules/infra/bind.nix
     ../modules/infra/common.nix
     ../modules/infra/copyparty.nix
     ../modules/infra/git.nix
