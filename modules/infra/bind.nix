@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, lib, pkgs, ... }:
 
 let
   inherit (lib)
@@ -11,6 +11,11 @@ let
     removeSuffix
     # keep-sorted end
     ;
+
+  checkZone = zone: file: pkgs.runCommand "${zone}-checked" { } ''
+    ${lib.getExe' pkgs.bind "named-checkzone"} ${zone} ${file}
+    cp ${file} $out
+  '';
 in
 {
   services.bind = {
@@ -24,9 +29,12 @@ in
         ))
         (
           name:
-          nameValuePair (removeSuffix ".zone" name) {
+          let
+            zone = removeSuffix ".zone" name;
+          in
+          nameValuePair zone {
             master = true;
-            file = "${inputs.dns-zones}/${name}";
+            file = "${checkZone zone "${inputs.dns-zones}/${name}"}";
           }
         );
   };
