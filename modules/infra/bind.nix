@@ -6,9 +6,9 @@ let
     attrNames
     filterAttrs
     genAttrs'
+    hasSuffix
     nameValuePair
     removeSuffix
-    hasSuffix
     # keep-sorted end
     ;
 in
@@ -17,11 +17,11 @@ in
     enable = true;
     zones =
       genAttrs'
-        (
-          attrNames (
-            filterAttrs (name: value: value == "regular" && hasSuffix ".zone" name) (builtins.readDir inputs.dns-zones)
+        (attrNames (
+          filterAttrs (name: value: value == "regular" && hasSuffix ".zone" name) (
+            builtins.readDir inputs.dns-zones
           )
-        )
+        ))
         (
           name:
           nameValuePair (removeSuffix ".zone" name) {
