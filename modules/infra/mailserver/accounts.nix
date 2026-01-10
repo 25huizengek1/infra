@@ -10,6 +10,7 @@
         "root@bartoostveen.nl"
         "anubis@bartoostveen.nl"
         "tcsbot@bartoostveen.nl"
+        "dns@bartoostveen.nl"
 
         "bart@omeduostuurcentenneef.nl"
         "postmaster@omeduostuurcentenneef.nl"
