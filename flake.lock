@@ -228,11 +228,11 @@
     "dns-zones": {
       "flake": false,
       "locked": {
-        "lastModified": 1768013035,
-        "narHash": "sha256-FNhV9YSOmglxEo+/SUsJzJDHDORSU19PWRgru3H5Qns=",
+        "lastModified": 1768068849,
+        "narHash": "sha256-bCDgzo/xLPFhizqaArj7M32RKUl8v+ucsUu90TyZ4Lc=",
         "owner": "25huizengek1",
         "repo": "dns-zones",
-        "rev": "5726b10e6e714941f3f4c72ce57e12ef02e2b635",
+        "rev": "9fb1112373d45770e889f55456593a94f3c08583",
         "type": "github"
       },
       "original": {
