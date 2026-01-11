@@ -34,7 +34,7 @@
   ];
 
   facter.reportPath = ./bart-server.json;
-  systemd.network.networks."10-uplink".networkConfig.Address = "2a01:4f8:c2c:2f66::1";
+  systemd.network.networks."10-uplink".networkConfig.Address = "2a01:4f8:c2c:2f66::1/128";
 
   networking.firewall.allowedTCPPorts = [
     80
