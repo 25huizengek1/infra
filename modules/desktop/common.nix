@@ -46,7 +46,7 @@
     nix-inspect
     nix-output-monitor
     nixd
-    nixfmt-rfc-style
+    nixfmt
     sops
     wget
     # keep-sorted end
@@ -103,7 +103,7 @@
       set atblanks
       set softwrap
 
-      extendsyntax nix formatter ${pkgs.nixfmt-rfc-style}
+      extendsyntax nix formatter ${pkgs.nixfmt}
     '';
   };
 
