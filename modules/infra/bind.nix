@@ -21,7 +21,7 @@ let
   nameServers = range 2 5;
 
   # TODO: dnssec
-  extraOptions = '''';
+  extraOptions = "";
 
   zoneFiles = attrNames (
     filterAttrs (name: value: value == "regular" && hasSuffix ".zone" name) (

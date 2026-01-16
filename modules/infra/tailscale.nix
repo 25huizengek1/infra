@@ -90,7 +90,7 @@ in
         config_strict = true;
       };
       integration.agent.enabled = false;
-      integration.agent.pre_authkey_path = "${pkgs.writeText "headscale-pre-auth-key" ''''}"; # WHY WHY WHY WHY
+      integration.agent.pre_authkey_path = "${pkgs.writeText "headscale-pre-auth-key" ""}"; # WHY WHY WHY WHY
       integration.proc.enabled = true;
       # Required for some reason, grabbed from docs
       oidc = {
@@ -99,7 +99,7 @@ in
         disable_api_key_login = false;
         token_endpoint_auth_method = "client_secret_basic";
         redirect_uri = "https://oidc.example.com/admin/oidc/callback";
-        headscale_api_key_path = "${pkgs.writeText "headscale-api-key" ''''}"; # WHY WHY WHY WHY
+        headscale_api_key_path = "${pkgs.writeText "headscale-api-key" ""}"; # WHY WHY WHY WHY
       };
     };
   };
