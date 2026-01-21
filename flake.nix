@@ -75,7 +75,7 @@
     headplane = {
       url = "github:tale/headplane/next";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
+        # nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
       };
     };

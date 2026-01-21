@@ -17,6 +17,7 @@
     ../modules/desktop/fonts.nix
     ../modules/desktop/i18n.nix
     ../modules/desktop/kde.nix
+    ../modules/desktop/kvm.nix
     ../modules/desktop/network-profiles.nix
     ../modules/desktop/networking.nix
     ../modules/desktop/podman.nix
