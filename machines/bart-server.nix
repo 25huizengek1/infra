@@ -22,6 +22,7 @@
     ../modules/infra/git.nix
     ../modules/infra/ical-proxy.nix
     ../modules/infra/immich.nix
+    ../modules/infra/ircbounce.nix
     ../modules/infra/mailserver
     ../modules/infra/monitoring.nix
     ../modules/infra/nix.nix
