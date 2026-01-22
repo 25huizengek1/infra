@@ -60,7 +60,7 @@
     interfaces.wg-snt = {
       ips = [
         "172.30.149.116/32"
-        # "fd0d:c7a1:e166:ca6c::116/128"
+        "fd0d:c7a1:e166:ca6c::116/128"
       ];
       listenPort = 51820;
       privateKeyFile = config.sops.secrets.wg-secret.path;
@@ -68,11 +68,11 @@
         {
           publicKey = "IlMJO6p4HoKhVMVcP+8BJNmPnYp6jnjHP0PxEmBCIis=";
           allowedIPs = [
-            # "172.30.149.0/24"
+            "172.30.149.0/24"
             # "130.89.0.0/16"
             "10.89.0.0/16"
-            # "2001:67c:2564::/48"
-            # "fe80::216:3eff::/64"
+            "2001:67c:2564::/48"
+            "fd0d:c7a1:e166::/64"
           ];
           endpoint = "vpn2.snt.utwente.nl:51820";
           persistentKeepalive = 25;

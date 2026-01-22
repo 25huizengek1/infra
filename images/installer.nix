@@ -11,6 +11,10 @@
     ../modules/desktop/networking.nix
   ];
 
+  nix.settings.experimental-features = [
+    "flakes"
+    "nix-command"
+  ];
   nix.channel.enable = lib.mkForce false;
   networking.hostName = "nixos-installer";
 
@@ -18,6 +22,7 @@
   services.tailscale.enable = true;
 
   environment.systemPackages = with pkgs; [
+    alacritty
     gh
     git
   ];

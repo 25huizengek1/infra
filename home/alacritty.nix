@@ -12,6 +12,7 @@
         opacity = 0.75;
         blur = true;
         startup_mode = "Maximized";
+        dynamic_title = true;
       };
 
       font.normal = {

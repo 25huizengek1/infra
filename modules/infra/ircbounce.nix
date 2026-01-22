@@ -8,8 +8,6 @@ let
   cert = "${certDir}/cert.pem";
   key = "${certDir}/key.pem";
   dhParams = "${config.security.dhparams.path}/nginx.pem";
-
-  channels = [ "#snt" ];
 in
 {
   services.nginx.virtualHosts.${vHost} = {
@@ -27,9 +25,23 @@ in
       SSLKeyFile = key;
       SSLDHParamFile = dhParams;
 
-      LoadModule = [ "adminlog" ];
+      LoadModule = [
+        "adminlog"
+        "fail2ban"
+        "lastseen"
+        "log"
+        "notify_connect"
+        "saslplainauth"
+        "webadmin"
+      ];
       User.bart = {
         Admin = true;
+        AutoClearChanBuffer = false;
+        AutoClearQueryBuffer = false;
+        Buffer = 1000;
+        QuitMsg = "Quit";
+        RealName = "Bart";
+
         Pass.password = {
           Method = "sha256";
           Hash = "23fe43fd6af0c309ba2eb51094bbf4bc3170cff996fe5424189224b8234a8cca";
@@ -37,8 +49,32 @@ in
         };
         Network.ircnet = {
           Server = "openirc.snt.utwente.nl 6667";
-          Chan = genAttrs channels (_name: { });
+          Chan = genAttrs [ "#snt" ] (_name: {
+            Buffer = 1000;
+          });
           Nick = "bart_irc";
+          LoadModule = [
+            "savebuff"
+          ];
+          RealName = "Bart Oostveen";
+        };
+        Network.libera = {
+          Server = "irc.eu.libera.chat +6697";
+          Chan =
+            genAttrs
+              [
+                "#libera"
+                "#nixos"
+                "#nixos-dev"
+                "#nixos-chat"
+              ]
+              (_name: {
+                Buffer = 1000;
+              });
+          LoadModule = [
+            "sasl"
+            "savebuff"
+          ];
         };
       };
     };

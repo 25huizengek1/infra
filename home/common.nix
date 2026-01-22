@@ -104,11 +104,6 @@ in
 
     programs.home-manager.enable = true;
 
-    programs.nix-index = {
-      enable = true;
-      enableBashIntegration = true;
-    };
-
     programs.oh-my-posh = {
       enable = true;
       enableBashIntegration = true;

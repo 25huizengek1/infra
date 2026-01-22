@@ -114,7 +114,7 @@ in
             src = fetchzip {
               url = "https://nl.wordpress.org/wordpress-${wordpress_6_9.version}-nl_NL.zip";
               name = "wp-${wordpress_6_9.version}-language-nl";
-              hash = "sha256-iMQPKAIeVGnoBFbhlLbVZaiBVGL3DhiqSe9iKvRYK4E=";
+              hash = "sha256-V0E2SF3zbMa5TayxcuTLd08xyH7BrLJ8Wz9hF+qSris=";
             };
             installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
           }
