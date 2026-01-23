@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  inherit (lib) genAttrs;
+  inherit (lib) genAttrs concatStringsSep attrsToList;
 
   vHost = "ircbounce.bartoostveen.nl";
   certDir = config.security.acme.certs.${vHost}.directory;
@@ -80,11 +80,47 @@ in
     };
   };
 
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
-    config.services.znc.config.Listener.l.Port
-  ];
+  networking.firewall = {
+    interfaces.tailscale0.allowedTCPPorts = [
+      config.services.znc.config.Listener.l.Port
+    ];
+
+    allowedTCPPorts = [ 113 ];
+  };
 
   users.users.znc.extraGroups = [ "nginx" ];
 
   systemd.services.znc.after = [ "acme-${vHost}.service" ];
+
+  services.oidentd.enable = true;
+  environment.etc."oidentd.conf".text =
+    let
+      response = {
+        root = "UNKNOWN";
+        znc = "bart";
+      };
+    in
+    ''
+      default {
+        default {
+          deny spoof
+          deny spoof_all
+          deny spoof_privport
+          allow random
+          allow random_numeric
+          allow numeric
+          allow hide
+        }
+      }
+
+      ${concatStringsSep "\n" (
+        map ({ name, value }: ''
+          user ${name} {
+            default {
+              force reply "${value}"
+            }
+          }
+        '') (attrsToList response)
+      )}
+    '';
 }
