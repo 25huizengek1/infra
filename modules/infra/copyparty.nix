@@ -227,6 +227,9 @@ in
       restartUnits = [ "copyparty.service" ];
     };
 
+    # systemd.services.copyparty.serviceConfig.ExecStart =
+    #   lib.mkForce "${lib.getExe pkgs.strace} -Tttyyvfs 1024 -e'!futex,munmap,madvise,newfstatat,read' -o /root/private/fs/copyparty.strace ${lib.getExe pkgs.copyparty-unstable} -c /run/copyparty/copyparty.conf";
+
     environment.systemPackages = [ pkgs.copyparty ];
   };
 }

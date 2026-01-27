@@ -85,7 +85,7 @@
     format = "binary";
     sopsFile = ../secrets/wg-private.secret;
     # TODO
-    reloadUnits = [];
+    reloadUnits = [ ];
   };
 
   programs.steam.enable = true;

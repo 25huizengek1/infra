@@ -114,13 +114,16 @@ in
       }
 
       ${concatStringsSep "\n" (
-        map ({ name, value }: ''
-          user ${name} {
-            default {
-              force reply "${value}"
+        map (
+          { name, value }:
+          ''
+            user ${name} {
+              default {
+                force reply "${value}"
+              }
             }
-          }
-        '') (attrsToList response)
+          ''
+        ) (attrsToList response)
       )}
     '';
 }
