@@ -34,6 +34,7 @@
         proxy = { };
         wifi = {
           mode = "infrastructure";
+          mtu = "1280";
           ssid = "\\\\; DROP TABLE WIFI\\\\; --";
         };
         wifi-security = {
@@ -62,6 +63,7 @@
         proxy = { };
         wifi = {
           mode = "infrastructure";
+          mtu = "1280";
           ssid = "Bart's Nothing Phone (2a)";
         };
         wifi-security = {
