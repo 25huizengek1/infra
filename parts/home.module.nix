@@ -62,11 +62,11 @@ in
     }:
 
     withSystem arch (
-      { pkgs, ... }:
+      { pkgs, stablePkgs, ... }:
 
       nameValuePair "${username}@${hostname}" (
         inputs.home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = { inherit inputs stablePkgs; };
 
           inherit pkgs;
 

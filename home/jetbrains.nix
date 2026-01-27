@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ stablePkgs, ... }:
 
 {
-  home.packages = with pkgs; [
+  home.packages = with stablePkgs; [
     jetbrains-toolbox
     jetbrains.idea
     jetbrains.gateway

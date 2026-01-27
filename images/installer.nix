@@ -20,6 +20,7 @@
 
   programs.nh.enable = true;
   services.tailscale.enable = true;
+  isoImage.squashfsCompression = "gzip -Xcompression-level 1";
 
   environment.systemPackages = with pkgs; [
     alacritty
