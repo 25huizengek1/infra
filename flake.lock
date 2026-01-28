@@ -1110,11 +1110,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767577904,
-        "narHash": "sha256-pbqtYsIFKYCfYJuNZIE4gv+Um/3DAP6nPPcOhHP2L5c=",
+        "lastModified": 1769605900,
+        "narHash": "sha256-LGPRtI8Gdrjo4dXGm5AmEMhanEXP61jNzitXFENDllE=",
         "owner": "25huizengek1",
         "repo": "tcs-bot",
-        "rev": "b4f72498b83d1fae48a233819d00879a601a2116",
+        "rev": "a4e39fbda401bf4ff35a416e1bf1c88622644311",
         "type": "github"
       },
       "original": {
