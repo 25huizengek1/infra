@@ -806,11 +806,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767800357,
-        "narHash": "sha256-MmQU4IIqDhCFuL4K0CU9tvls7u9o/iOfiyZe3Q9kc9g=",
+        "lastModified": 1769898860,
+        "narHash": "sha256-NX1j9OeAhsbmQHuJJnCMS39wrDAcQr9zjKIGH17XB30=",
         "owner": "25huizengek1",
         "repo": "omeduostuurcentenneef-web",
-        "rev": "e7c6128a644757fe2f34887c4440dd88ce285ca9",
+        "rev": "b029d987135080357c4f49838b59ce27f9ba1e13",
         "type": "github"
       },
       "original": {
