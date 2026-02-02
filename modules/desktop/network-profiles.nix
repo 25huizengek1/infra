@@ -75,27 +75,27 @@
           wep-key-flags = "1";
         };
       };
-      eduroam = {
+      eduroam-9e3b23c0-83f6-437a-b599-c875d7caee5d = {
         "802-1x" = {
           anonymous-identity = "anonymous@utwente.nl";
-          ca-cert = "/etc/ssl/certs/ca-certificates.crt";
-          domain-suffix-match = "radius.utwente.nl";
+          ca-cert = "/etc/ssl/certs/ca-bundle.crt";
+          domain-suffix-match = "utwente.nl";
           eap = "ttls;";
           identity = "b.oostveen@student.utwente.nl";
-          password-flags = "1";
-          phase2-auth = "mschapv2";
+          password = "$EDUROAM_UNIVERSITY_PASSWORD";
+          phase2-autheap = "mschapv2";
         };
         connection = {
           id = "eduroam";
-          permissions = "user:bart:;";
+          interface-name = "wlp0s20f3";
           type = "wifi";
-          uuid = "51611409-d62a-4b19-8d14-5e3bdcf0f10c";
+          uuid = "9e3b23c0-83f6-437a-b599-c875d7caee5d";
         };
         ipv4 = {
           method = "auto";
         };
         ipv6 = {
-          addr-gen-mode = "stable-privacy";
+          addr-gen-mode = "default";
           method = "auto";
         };
         proxy = { };
@@ -104,8 +104,8 @@
           ssid = "eduroam";
         };
         wifi-security = {
+          auth-alg = "open";
           key-mgmt = "wpa-eap";
-          psk = "$EDUROAM_UNIVERSITY_PASSWORD";
         };
       };
     };
