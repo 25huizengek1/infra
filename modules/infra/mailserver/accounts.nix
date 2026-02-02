@@ -31,5 +31,9 @@
       hashedPasswordFile = config.sops.secrets.authentik-email-password-encrypted.path;
       sendOnly = true;
     };
+    "vaultwarden@bartoostveen.nl" = {
+      hashedPasswordFile = config.sops.secrets.vaultwarden-email-password-encrypted.path;
+      sendOnly = true;
+    };
   };
 }

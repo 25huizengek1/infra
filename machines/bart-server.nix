@@ -30,6 +30,7 @@
     ../modules/infra/podman.nix
     ../modules/infra/search.nix
     ../modules/infra/tailscale.nix
+    ../modules/infra/vaultwarden.nix
     ../modules/infra/wordpress-test.nix
   ];
 

@@ -43,4 +43,14 @@
       "dovecot2.service"
     ];
   };
+
+  sops.secrets.vaultwarden-email-password-encrypted = {
+    format = "binary";
+    sopsFile = ../../../secrets/email-passwords/vaultwarden.enc.secret;
+
+    restartUnits = [
+      "postfix-setup.service"
+      "dovecot2.service"
+    ];
+  };
 }
