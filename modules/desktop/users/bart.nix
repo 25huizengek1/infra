@@ -20,6 +20,7 @@
       "scanner"
       "libvirtd"
       "qemu-libvirtd"
+      "wireshark"
     ];
 
     hashedPasswordFile = config.sops.secrets.bart-password.path;
@@ -30,6 +31,13 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE4zwjOqILG37umIJNYYSMjveYzmwjOw/pTdfLbcsaSP bart@bart-laptop-new"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAJ38XOn6VETxKPzT5SS1s3GexJmUV4P9aTNSe71DpFW bart@bart-pc"
     ];
+  };
+
+  # TODO: factor out of user module
+  programs.wireshark = {
+    enable = true;
+    dumpcap.enable = true;
+    usbmon.enable = true;
   };
 
   sops.secrets.bart-password = {
