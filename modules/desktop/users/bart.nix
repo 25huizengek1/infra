@@ -21,6 +21,7 @@
       "libvirtd"
       "qemu-libvirtd"
       "wireshark"
+      "dialout"
     ];
 
     hashedPasswordFile = config.sops.secrets.bart-password.path;
