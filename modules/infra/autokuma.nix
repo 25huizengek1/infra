@@ -143,10 +143,10 @@ let
             };
             headers = mkOption {
               description = "List of HTTP headers to send when connecting to Uptime Kuma";
-              default = [ "AutoKuma-Host=${config.networking.hostName}" ]; # Yes, the '=' is not a typo, this is hardcoded at https://github.com/BigBoot/AutoKuma/blob/2fffa28564e37cb846a6aec22d58b56eca8ca25e/kuma-client/src/client.rs#L108
+              default = [ ];
               type = listOf str;
               example = [
-                "FOO=bar"
+                "FOO=bar" # Yes, the '=' is not a typo, this is hardcoded at https://github.com/BigBoot/AutoKuma/blob/2fffa28564e37cb846a6aec22d58b56eca8ca25e/kuma-client/src/client.rs#L108
                 "BAR=baz"
               ];
             };
