@@ -12,6 +12,7 @@
     ../gpg.nix
     ../jetbrains.nix
     ../plasma.nix
+    ../tmux.nix
   ];
 
   common.gui = true;
