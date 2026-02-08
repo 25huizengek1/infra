@@ -1,5 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
+let
+  inherit (lib) concatStringsSep attrsToList;
+
+  attrsToGlobals =
+    attrs:
+    attrs |> attrsToList |> map ({ name, value }: "set -g ${name} ${value}") |> concatStringsSep "\n";
+in
 {
   programs.tmux = {
     enable = true;
@@ -11,29 +18,24 @@
     tmuxinator.enable = true;
     tmuxp.enable = true;
 
-    extraConfig = ''
-      set -g automatic-rename on
-      set -g allow-rename on
-      set -g set-titles on
-
-      set -g window-status-format "#I:#(basename #{pane_current_command})"
-      set -g window-status-current-format "#[bold]#I:#(basename #{pane_current_command})"
-    '';
+    extraConfig = attrsToGlobals {
+      "automatic-rename" = "on";
+      "allow-rename" = "on";
+      "set-titles" = "on";
+      "window-status-format" = "\"#I:#(basename #{pane_current_command})\"";
+      "window-status-current-format" = "\"#[bold]#I:#(basename #{pane_current_command})\"";
+    };
 
     plugins = with pkgs.tmuxPlugins; [
       cpu
       battery
-      {
-        plugin = tmux-sessionx;
-        extraConfig = ''
-          set -g @sessionx-bind '<prefix>+o'
-        '';
-      }
+      tmux-sessionx
+      tmux-which-key
       {
         plugin = catppuccin;
-        extraConfig = ''
-          set -g @catppuccin_flavor 'mocha'
-        '';
+        extraConfig = attrsToGlobals {
+          "@catppuccin_flavor" = "'mocha'";
+        };
       }
       {
         plugin = mkTmuxPlugin {
@@ -46,11 +48,10 @@
             hash = "sha256-A4PxrkUGZHjIt0np95848quUo42i+4CX9LwOJ5ek0/Y=";
           };
         };
-        extraConfig = ''
-          set -g @tmux-statusline-theme 'solarized-dark'
-        '';
+        extraConfig = attrsToGlobals {
+          "@tmux-statusline-theme" = "'solarized-dark'";
+        };
       }
-      tmux-which-key
     ];
   };
 }
