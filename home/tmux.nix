@@ -7,6 +7,7 @@
     clock24 = true;
     secureSocket = true;
     reverseSplit = true;
+    baseIndex = 1;
     tmuxinator.enable = true;
     tmuxp.enable = true;
 
