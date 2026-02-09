@@ -34,6 +34,14 @@ in
   services.nginx.virtualHosts =
     let
       socket = "http://unix://${config.services.matrix-continuwuity.settings.global.unix_socket_path}";
+      cinny = pkgs.cinny.override {
+        conf = {
+          homeserverList = [ fqdn ];
+          defaultHomeserver = 0;
+          allowCustomHomeservers = false;
+          featuredCommunities = { };
+        };
+      };
     in
     {
       ${fqdn}.locations."/.well-known/matrix/".proxyPass = socket;
@@ -41,7 +49,7 @@ in
         enableACME = true;
         forceSSL = true;
 
-        locations."/".root = "${pkgs.cinny}";
+        locations."/".root = "${cinny}";
         locations."/_matrix".proxyPass = socket;
       };
     };
