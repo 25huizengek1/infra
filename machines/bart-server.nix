@@ -18,6 +18,7 @@
     # ../modules/infra/authentik.nix
     ../modules/infra/autokuma.nix
     ../modules/infra/common.nix
+    ../modules/infra/continuwuity.nix
     ../modules/infra/copyparty.nix
     ../modules/infra/git.nix
     ../modules/infra/ical-proxy.nix
