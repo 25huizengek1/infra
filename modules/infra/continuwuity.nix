@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   fqdn = "bartoostveen.nl";
@@ -27,7 +27,7 @@ in
     };
   };
 
-  systemd.services.nginx.serviceConfig.SupplementGroups = [
+  systemd.services.nginx.serviceConfig.SupplementaryGroups = [
     config.services.matrix-continuwuity.group
   ];
 
@@ -41,7 +41,8 @@ in
         enableACME = true;
         forceSSL = true;
 
-        locations."/".proxyPass = socket;
+        locations."/".root = "${pkgs.cinny}";
+        locations."/_matrix".proxyPass = socket;
       };
     };
 }
