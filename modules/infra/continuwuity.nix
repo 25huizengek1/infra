@@ -40,6 +40,7 @@ in
           defaultHomeserver = 0;
           allowCustomHomeservers = false;
           featuredCommunities = { };
+          hashRouter.enabled = true;
         };
       };
     in
