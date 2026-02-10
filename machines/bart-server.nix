@@ -9,20 +9,18 @@
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
 
-    ../containers/portainer.nix
     ../containers/tcs-bot.nix
     ../containers/web.nix
 
     ../modules/infra/anubis.nix
     ../modules/infra/attic.nix
     # ../modules/infra/authentik.nix
-    ../modules/infra/autokuma.nix
+    # ../modules/infra/autokuma.nix
     ../modules/infra/common.nix
     ../modules/infra/continuwuity.nix
     ../modules/infra/copyparty.nix
     ../modules/infra/git.nix
     ../modules/infra/ical-proxy.nix
-    ../modules/infra/immich.nix
     ../modules/infra/ircbounce.nix
     ../modules/infra/mailserver
     ../modules/infra/monitoring.nix
@@ -31,8 +29,8 @@
     ../modules/infra/podman.nix
     ../modules/infra/search.nix
     ../modules/infra/tailscale.nix
-    ../modules/infra/vaultwarden.nix
-    ../modules/infra/wordpress-test.nix
+    # ../modules/infra/vaultwarden.nix
+    # ../modules/infra/wordpress-test.nix
   ];
 
   facter.reportPath = ./bart-server.json;
@@ -62,5 +60,5 @@
 
   services.kresd.enable = lib.mkForce false;
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }
