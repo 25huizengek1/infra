@@ -162,7 +162,8 @@
     omeduostuurcentenneef-web = {
       url = "github:25huizengek1/omeduostuurcentenneef-web";
       inputs = {
-        # nixpkgs.follows = "nixpkgs"; # TODO: fix
+        nixpkgs.follows = "nixpkgs";
+        bun2nix.url = "github:krauterbaquette/bun2nix/fix-cache-entry";
         flake-parts.follows = "flake-parts";
         treefmt-nix.follows = "treefmt-nix";
       };
