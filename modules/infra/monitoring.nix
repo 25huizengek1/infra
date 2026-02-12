@@ -99,6 +99,7 @@ in
     exporters.nginx.enable = true;
     exporters.systemd.enable = true;
     exporters.postgres.enable = true;
+    exporters.node.enable = true;
 
     ruleFiles = [
       (pkgs.writeText "up.rules" (
@@ -137,6 +138,14 @@ in
         static_configs = [
           {
             targets = [ "localhost:${toString config.services.prometheus.exporters.systemd.port}" ];
+          }
+        ];
+      }
+      {
+        job_name = "node";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
           }
         ];
       }
