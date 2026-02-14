@@ -113,16 +113,15 @@ in
   services.nginx.virtualHosts =
     let
       socket = "http://unix://${config.services.matrix-continuwuity.settings.global.unix_socket_path}";
-      cinny =
-        pkgs.cinny.override {
-          conf = {
-            homeserverList = [ fqdn ];
-            defaultHomeserver = 0;
-            allowCustomHomeservers = false;
-            featuredCommunities = { };
-            hashRouter.enabled = true;
-          };
+      cinny = pkgs.cinny.override {
+        conf = {
+          homeserverList = [ fqdn ];
+          defaultHomeserver = 0;
+          allowCustomHomeservers = false;
+          featuredCommunities = { };
+          hashRouter.enabled = true;
         };
+      };
       clientWellKnown = {
         "m.homeserver".base_url = "https://${domain}/";
         "org.matrix.msc3575.proxy".url = "https://${domain}/";
@@ -154,18 +153,12 @@ in
         enableACME = true;
         forceSSL = true;
         root = "${mkElementCall {
-          default_server_config = {
-            "m.homeserver" = {
-              base_url = "https://matrix.${fqdn}";
-              server_name = fqdn;
-            };
+          default_server_config."m.homeserver" = {
+            base_url = "https://matrix.${fqdn}";
+            server_name = fqdn;
           };
-          features = {
-            feature_use_device_session_member_events = true;
-          };
-          livekit = {
-            livekit_service_url = "https://${rtcDomain}/livekit/jwt";
-          };
+          features.feature_use_device_session_member_events = true;
+          livekit.livekit_service_url = "https://${rtcDomain}/livekit/jwt";
           matrix_rtc_session = {
             delayed_leave_event_delay_ms = 18000;
             delayed_leave_event_restart_ms = 4000;
@@ -173,6 +166,11 @@ in
             network_error_retry_ms = 100;
             wait_for_key_rotation_ms = 3000;
           };
+          media_devices = {
+            enable_audio = false;
+            enable_video = false;
+          };
+          app_prompt = false;
           ssla = "https://static.element.io/legal/element-software-and-services-license-agreement-uk-1.pdf";
         }}";
         locations."/".extraConfig = ''
