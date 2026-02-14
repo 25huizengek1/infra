@@ -163,7 +163,7 @@
       url = "github:25huizengek1/omeduostuurcentenneef-web";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        bun2nix.url = "github:krauterbaquette/bun2nix/fix-cache-entry";
+        bun2nix.url = "github:nix-community/bun2nix";
         flake-parts.follows = "flake-parts";
         treefmt-nix.follows = "treefmt-nix";
       };
