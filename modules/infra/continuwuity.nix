@@ -114,7 +114,7 @@ in
     let
       socket = "http://unix://${config.services.matrix-continuwuity.settings.global.unix_socket_path}";
       cinny =
-        (pkgs.cinny.override {
+        pkgs.cinny.override {
           conf = {
             homeserverList = [ fqdn ];
             defaultHomeserver = 0;
@@ -122,15 +122,7 @@ in
             featuredCommunities = { };
             hashRouter.enabled = true;
           };
-        }).overrideAttrs
-          {
-            src = pkgs.fetchFromGitHub {
-              owner = "hazre";
-              repo = "cinny";
-              rev = "1f2f8ffa499a1881bc9c4aee90d76a27a0ade032";
-              hash = "sha256-Uilek7gbE1mfGb5gOtrYAp8SJabBlPI0/7o1rI0kOL4=";
-            };
-          };
+        };
       clientWellKnown = {
         "m.homeserver".base_url = "https://${domain}/";
         "org.matrix.msc3575.proxy".url = "https://${domain}/";
