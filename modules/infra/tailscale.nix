@@ -132,4 +132,7 @@ in
   };
 
   services.tailscale.enable = true;
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="net", KERNEL=="tailscale0", RUN+="${lib.getExe' pkgs.iproute2 "ip"} link set dev tailscale0 mtu 1500"
+  '';
 }
