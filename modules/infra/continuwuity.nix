@@ -1,8 +1,26 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   fqdn = "bartoostveen.nl";
   domain = "matrix.${fqdn}";
+  rtcDomain = "matrix-rtc.${fqdn}";
+
+  inherit (lib) genAttrs;
+
+  keyFile = config.sops.secrets.livekit-keys.path;
+
+  mkElementCall =
+    elementCallConfig:
+    pkgs.element-call.overrideAttrs {
+      postInstall = ''
+        install ${pkgs.writers.writeJSON "element-call.json" elementCallConfig} $out/config.json
+      '';
+    };
 in
 {
   services.matrix-continuwuity = {
@@ -23,29 +41,152 @@ in
         client = "https://${domain}";
         server = "${domain}:443";
         support_email = "root@bartoostveen.nl";
+        rtc_focus_server_urls = [
+          {
+            type = "livekit";
+            livekit_service_url = "https://${rtcDomain}/livekit/jwt";
+          }
+        ];
       };
+
+      turn_uris = [
+        "turn:${rtcDomain}:${toString config.services.livekit.settings.turn.udp_port}?transport=udp"
+        "turns:${rtcDomain}:${toString config.services.livekit.settings.turn.tls_port}?transport=udp"
+      ];
+      turn_secret_file = config.sops.secrets.turn.path;
     };
   };
 
-  systemd.services.nginx.serviceConfig.SupplementaryGroups = [
-    config.services.matrix-continuwuity.group
-  ];
+  services.lk-jwt-service = {
+    enable = true;
+    inherit keyFile;
+    livekitUrl = "wss://${rtcDomain}/livekit/sfu";
+  };
+
+  services.livekit =
+    let
+      certDir = config.security.acme.certs.${rtcDomain}.directory;
+      cert = "${certDir}/cert.pem";
+      key = "${certDir}/key.pem";
+    in
+    {
+      enable = true;
+      openFirewall = true;
+      inherit keyFile;
+      settings = {
+        rtc = {
+          tcp_port = 7881;
+          port_range_start = 50100;
+          port_range_end = 50200;
+          use_external_ip = true;
+          enable_loopback_candidate = false;
+        };
+        turn = {
+          enabled = true;
+          udp_port = 3479;
+          tls_port = 3480;
+          cert_file = cert;
+          key_file = key;
+          external_tls = false;
+          relay_range_start = 50300;
+          relay_range_end = 50400;
+          domain = rtcDomain;
+        };
+      };
+    };
+
+  networking.firewall = {
+    allowedUDPPortRanges = [
+      {
+        from = config.services.livekit.settings.rtc.port_range_start;
+        to = config.services.livekit.settings.rtc.port_range_end;
+      }
+      {
+        from = config.services.livekit.settings.turn.relay_range_start;
+        to = config.services.livekit.settings.turn.relay_range_end;
+      }
+    ];
+    allowedUDPPorts = [ config.services.livekit.settings.turn.udp_port ];
+    allowedTCPPorts = [ config.services.livekit.settings.rtc.tcp_port ];
+  };
 
   services.nginx.virtualHosts =
     let
       socket = "http://unix://${config.services.matrix-continuwuity.settings.global.unix_socket_path}";
-      cinny = pkgs.cinny.override {
-        conf = {
-          homeserverList = [ fqdn ];
-          defaultHomeserver = 0;
-          allowCustomHomeservers = false;
-          featuredCommunities = { };
-          hashRouter.enabled = true;
-        };
+      cinny =
+        (pkgs.cinny.override {
+          conf = {
+            homeserverList = [ fqdn ];
+            defaultHomeserver = 0;
+            allowCustomHomeservers = false;
+            featuredCommunities = { };
+            hashRouter.enabled = true;
+          };
+        }).overrideAttrs
+          {
+            src = pkgs.fetchFromGitHub {
+              owner = "hazre";
+              repo = "cinny";
+              rev = "1f2f8ffa499a1881bc9c4aee90d76a27a0ade032";
+              hash = "sha256-Uilek7gbE1mfGb5gOtrYAp8SJabBlPI0/7o1rI0kOL4=";
+            };
+          };
+      clientWellKnown = {
+        "m.homeserver".base_url = "https://${domain}/";
+        "org.matrix.msc3575.proxy".url = "https://${domain}/";
+        "org.matrix.msc4143.rtc_foci" = [
+          {
+            type = "livekit";
+            livekit_service_url = "https://${rtcDomain}/livekit/jwt";
+          }
+        ];
+      };
+      clientWellKnownRoot = pkgs.linkFarm "root" {
+        # why does this have to be a directory again
+        "config.json" = (pkgs.writers.writeJSON "config.json" clientWellKnown);
       };
     in
     {
-      ${fqdn}.locations."/.well-known/matrix/".proxyPass = socket;
+      ${fqdn}.locations = {
+        "/.well-known/matrix/".proxyPass = socket;
+        "/.well-known/matrix/client" = {
+          # TODO: remove once new c10y version gets released
+          root = clientWellKnownRoot;
+          extraConfig = ''
+            rewrite ^ /config.json break;
+            add_header Access-Control-Allow-Origin *;
+          '';
+        };
+      };
+      "call.${fqdn}" = {
+        enableACME = true;
+        forceSSL = true;
+        root = "${mkElementCall {
+          default_server_config = {
+            "m.homeserver" = {
+              base_url = "https://matrix.${fqdn}";
+              server_name = fqdn;
+            };
+          };
+          features = {
+            feature_use_device_session_member_events = true;
+          };
+          livekit = {
+            livekit_service_url = "https://${rtcDomain}/livekit/jwt";
+          };
+          matrix_rtc_session = {
+            delayed_leave_event_delay_ms = 18000;
+            delayed_leave_event_restart_ms = 4000;
+            membership_event_expiry_ms = 180000000;
+            network_error_retry_ms = 100;
+            wait_for_key_rotation_ms = 3000;
+          };
+          ssla = "https://static.element.io/legal/element-software-and-services-license-agreement-uk-1.pdf";
+        }}";
+        locations."/".extraConfig = ''
+          try_files $uri /$uri /index.html;
+        '';
+      };
       ${domain} = {
         enableACME = true;
         forceSSL = true;
@@ -53,5 +194,41 @@ in
         locations."/".root = "${cinny}";
         locations."/_matrix".proxyPass = socket;
       };
+      ${rtcDomain} = {
+        enableACME = true;
+        forceSSL = true;
+        locations."^~ /livekit/jwt/".proxyPass =
+          "http://127.0.0.1:${toString config.services.lk-jwt-service.port}/";
+        locations."^~ /livekit/sfu/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.livekit.settings.port}/";
+          proxyWebsockets = true;
+        };
+      };
     };
+
+  systemd.services.nginx.serviceConfig.SupplementaryGroups = [
+    config.services.matrix-continuwuity.group
+  ];
+  systemd.services.continuwuity.serviceConfig.SupplementaryGroups = [ "matrix-livekit" ];
+  systemd.services.livekit.serviceConfig.SupplementaryGroups = [ "nginx" ];
+
+  users.users = genAttrs [ "livekit" "lk-jwt-service" ] (_name: {
+    isSystemUser = true;
+    group = "matrix-livekit";
+  });
+  users.groups.matrix-livekit = { };
+  sops.secrets.livekit-keys = {
+    sopsFile = ../../secrets/livekit-keys.secret;
+    owner = "livekit";
+    group = "matrix-livekit";
+    format = "binary";
+    mode = "440";
+  };
+  sops.secrets.turn = {
+    sopsFile = ../../secrets/turn.secret;
+    owner = "livekit";
+    group = "matrix-livekit";
+    format = "binary";
+    mode = "440";
+  };
 }
