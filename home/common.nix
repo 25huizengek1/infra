@@ -161,6 +161,14 @@ in
           signingKey = "2D4FB795E873C2C3";
         };
       }
+      {
+        condition = "hasconfig:remote.*.url:git@forgejo.ellis.link:*/**";
+        contents.user = {
+          email = "bart@bartoostveen.nl";
+          name = "Bart Oostveen";
+          signingKey = "5963223E57296C53";
+        };
+      }
     ];
 
     sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
