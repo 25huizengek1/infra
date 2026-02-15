@@ -50,6 +50,7 @@ in
           local.dawn
           dust
           ffmpeg
+          forgejo-cli
           gh
           glab
           gopass
