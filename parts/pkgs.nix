@@ -40,6 +40,11 @@
         config.allowUnfree = true;
       };
 
+      _module.args.personalPkgs = import inputs.nixpkgs-personal {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
       pkgsDirectory = ../pkgs;
     };
 

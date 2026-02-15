@@ -69,6 +69,7 @@ in
     };
   };
 
+  # TODO: clean this shit up wtf
   config.flake.nixosConfigurations =
     (mapAttrs (
       name:
@@ -81,12 +82,17 @@ in
         hostname = if c.hostname != null then c.hostname else name;
       in
       withSystem arch (
-        { pkgs, ... }:
+        {
+          pkgs,
+          stablePkgs,
+          personalPkgs,
+          ...
+        }:
 
         inputs.nixpkgs.lib.nixosSystem {
           inherit pkgs;
 
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs stablePkgs personalPkgs; };
 
           modules = [
             inputs.sops-nix.nixosModules.sops
@@ -100,10 +106,15 @@ in
       name:
       { arch, ... }:
       withSystem arch (
-        { pkgs, ... }:
+        {
+          pkgs,
+          stablePkgs,
+          personalPkgs,
+          ...
+        }:
         inputs.nixpkgs.lib.nixosSystem {
           inherit pkgs;
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs stablePkgs personalPkgs; };
           modules = [ ../images/${name}.nix ];
         }
       )
