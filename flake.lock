@@ -755,11 +755,11 @@
     },
     "nixpkgs-personal": {
       "locked": {
-        "lastModified": 1771190152,
-        "narHash": "sha256-i4yfxrIFDA7y53MRDc4GQpVne5mBKItuC37hfuMZWzM=",
+        "lastModified": 1771200921,
+        "narHash": "sha256-pt0kfV0q6kZSAwXzKsROQvNGkKNpsMiiGKe8M8YzloE=",
         "owner": "25huizengek1",
         "repo": "nixpkgs",
-        "rev": "e4b74bcd209c8e2df0d9607b3a7ff23ad0ceb73f",
+        "rev": "1c2761e1dec8f02be1b64c3237511265824def3a",
         "type": "github"
       },
       "original": {

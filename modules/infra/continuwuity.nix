@@ -124,33 +124,9 @@ in
           hashRouter.enabled = true;
         };
       };
-      clientWellKnown = {
-        "m.homeserver".base_url = "https://${domain}/";
-        "org.matrix.msc3575.proxy".url = "https://${domain}/";
-        "org.matrix.msc4143.rtc_foci" = [
-          {
-            type = "livekit";
-            livekit_service_url = "https://${rtcDomain}/livekit/jwt";
-          }
-        ];
-      };
-      clientWellKnownRoot = pkgs.linkFarm "root" {
-        # why does this have to be a directory again
-        "config.json" = (pkgs.writers.writeJSON "config.json" clientWellKnown);
-      };
     in
     {
-      ${fqdn}.locations = {
-        "/.well-known/matrix/".proxyPass = socket;
-        "/.well-known/matrix/client" = {
-          # TODO: remove once new c10y version gets released
-          root = clientWellKnownRoot;
-          extraConfig = ''
-            rewrite ^ /config.json break;
-            add_header Access-Control-Allow-Origin *;
-          '';
-        };
-      };
+      ${fqdn}.locations."/.well-known/matrix/".proxyPass = socket;
       "call.${fqdn}" = {
         enableACME = true;
         forceSSL = true;
