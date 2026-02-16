@@ -755,16 +755,16 @@
     },
     "nixpkgs-personal": {
       "locked": {
-        "lastModified": 1771200921,
-        "narHash": "sha256-pt0kfV0q6kZSAwXzKsROQvNGkKNpsMiiGKe8M8YzloE=",
+        "lastModified": 1771246168,
+        "narHash": "sha256-qvEVwnGBg7XmHLda0c9OZVN8+7NVfOYOf0HbCge2G90=",
         "owner": "25huizengek1",
         "repo": "nixpkgs",
-        "rev": "1c2761e1dec8f02be1b64c3237511265824def3a",
+        "rev": "af12cd0f37cdb3e97d8ac277e07c4fe133e5a8a2",
         "type": "github"
       },
       "original": {
         "owner": "25huizengek1",
-        "ref": "huizengek/continuwuity-0.5.5",
+        "ref": "huizengek/cinny-4.10.3",
         "repo": "nixpkgs",
         "type": "github"
       }

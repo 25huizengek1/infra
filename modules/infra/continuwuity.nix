@@ -115,7 +115,7 @@ in
   services.nginx.virtualHosts =
     let
       socket = "http://unix://${config.services.matrix-continuwuity.settings.global.unix_socket_path}";
-      cinny = pkgs.cinny.override {
+      cinny = personalPkgs.cinny.override {
         conf = {
           homeserverList = [ fqdn ];
           defaultHomeserver = 0;
