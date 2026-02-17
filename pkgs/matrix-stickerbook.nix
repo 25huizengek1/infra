@@ -2,6 +2,7 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
+  nix-update-script,
 }:
 
 buildGoModule (finalAttrs: {
@@ -20,6 +21,8 @@ buildGoModule (finalAttrs: {
   vendorHash = "sha256-oT9VwHQALPWe7eMUrOHOxHP/qzt3laW6FmFzf2phnyg=";
 
   ldflags = [ "-s" ];
+
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Sticker management system for Matrix";

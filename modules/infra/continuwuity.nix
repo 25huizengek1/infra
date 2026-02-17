@@ -117,13 +117,19 @@ in
       socket = "http://unix://${config.services.matrix-continuwuity.settings.global.unix_socket_path}";
       cinny = personalPkgs.cinny.override {
         conf = {
-          homeserverList = [ fqdn ];
+          homeserverList = [ fqdn "elisaado.com" "utwente.io" "matrix.org" ];
           defaultHomeserver = 0;
-          allowCustomHomeservers = false;
+          allowCustomHomeservers = true;
           featuredCommunities = { };
           hashRouter.enabled = true;
         };
       };
+      cinnies = genAttrs (map (n: "cinny${toString n}.${fqdn}") (lib.range 0 9)) (_: {
+        enableACME = true;
+        forceSSL = true;
+
+        locations."/".root = "${cinny}";
+      });
     in
     {
       ${fqdn}.locations."/.well-known/matrix/".proxyPass = socket;
@@ -172,7 +178,7 @@ in
           proxyWebsockets = true;
         };
       };
-    };
+    } // cinnies;
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [
     config.services.matrix-continuwuity.group
