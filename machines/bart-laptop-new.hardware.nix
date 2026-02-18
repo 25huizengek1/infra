@@ -17,12 +17,12 @@
     "sd_mod"
     "rtsx_pci_sdmmc"
   ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "dm-snapshot" "cryptd" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/de735b1f-48e0-45d4-af65-af4f0e0511e3";
+    device = "/dev/disk/by-label/NixOS-Root";
     fsType = "btrfs";
   };
 
@@ -35,9 +35,9 @@
     ];
   };
 
-  swapDevices = [
-    { device = "/dev/disk/by-uuid/a1462cd3-ddcd-4b22-b78d-0d4af0802ff1"; }
-  ];
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-label/NixOS-Encrypted";
+
+  swapDevices = [ { device = "/dev/disk/by-label/NixOS-Swap"; } ]; 
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
