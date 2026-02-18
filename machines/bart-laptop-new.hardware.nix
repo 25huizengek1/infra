@@ -22,9 +22,11 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-label/NixOS-Root";
+    device = "/dev/mapper/lvmroot-root";
     fsType = "btrfs";
   };
+
+  swapDevices = [ { device = "/dev/mapper/lvmroot-swap"; } ];
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/4875-9F7A";
@@ -35,9 +37,7 @@
     ];
   };
 
-  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-label/NixOS-Encrypted";
-
-  swapDevices = [ { device = "/dev/disk/by-label/NixOS-Swap"; } ]; 
+  boot.initrd.luks.devices.cryptroot.device = "/dev/disk/by-uuid/11738ded-1f57-4a2b-86ce-b426f8d6d89c";
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
