@@ -170,6 +170,14 @@ in
           signingKey = "5963223E57296C53";
         };
       }
+      {
+        condition = "hasconfig:remote.*.url:git@git.tijn.rs:*/**";
+        contents.user = {
+          email = "bart@bartoostveen.nl";
+          name = "Bart Oostveen";
+          signingKey = "5963223E57296C53";
+        };
+      }
     ];
 
     sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
