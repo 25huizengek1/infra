@@ -42,7 +42,8 @@ in
       well_known = {
         client = "https://${domain}";
         server = "${domain}:443";
-        support_email = "root@bartoostveen.nl";
+        support_email = "matrix@bartoostveen.nl";
+        support_mxid = "@bart:bartoostveen.nl";
         rtc_focus_server_urls = [
           {
             type = "livekit";

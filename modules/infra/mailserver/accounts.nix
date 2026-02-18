@@ -11,6 +11,7 @@
         "anubis@bartoostveen.nl"
         "tcsbot@bartoostveen.nl"
         "dns@bartoostveen.nl"
+        "matrix@bartoostveen.nl"
 
         "bart@omeduostuurcentenneef.nl"
         "postmaster@omeduostuurcentenneef.nl"
