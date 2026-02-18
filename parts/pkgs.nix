@@ -20,6 +20,7 @@
         config.android_sdk.accept_license = true;
         config.permittedInsecurePackages = [
           "broadcom-sta-6.30.223.271-59-6.12.59" # TODO: migrate to actually secure network drivers on bart-pc or get rid of wifi in its entirety
+          "olm-3.2.16"
         ];
 
         overlays = [

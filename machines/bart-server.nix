@@ -23,6 +23,7 @@
     ../modules/infra/ical-proxy.nix
     ../modules/infra/ircbounce.nix
     ../modules/infra/mailserver
+    ../modules/infra/maubot.nix
     ../modules/infra/monitoring.nix
     ../modules/infra/nix.nix
     ../modules/infra/nginx.nix
