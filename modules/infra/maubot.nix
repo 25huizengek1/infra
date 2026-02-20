@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   domain = "maubot.bartoostveen.nl";
@@ -8,7 +8,42 @@ in
     enable = true;
     configMutable = false;
     plugins = with config.services.maubot.package.plugins; [
+      alertbot
+      autoreply
+      choose
+      communitybot
+      dice
+      disruptor
       echo
+      factorial
+      github
+      gitlab
+      (idonthavespotify.overrideAttrs (finalAttrs: {
+        version = "1.1.1";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "HarHarLinks";
+          repo = "maubot-idonthavespotify";
+          tag = "v${finalAttrs.version}";
+          hash = "sha256-GW+DmPq8KfUPv0S6RW8B7eJhWQ5IQeWnS7BKH+VhkuU=";
+        };
+
+        preInstall = ''
+          mv de.sosnowkadub.idonthavespotify-v1.1.1.mbp $pluginName
+        '';
+      }))
+      join
+      karma
+      media
+      reactbot
+      reminder
+      rss
+      rss
+      rsvc
+      sed
+      tex
+      urlpreview
+      wolframalpha
     ];
     settings = {
       server.hostname = "127.0.0.1";
