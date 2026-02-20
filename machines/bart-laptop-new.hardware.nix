@@ -17,7 +17,10 @@
     "sd_mod"
     "rtsx_pci_sdmmc"
   ];
-  boot.initrd.kernelModules = [ "dm-snapshot" "cryptd" ];
+  boot.initrd.kernelModules = [
+    "dm-snapshot"
+    "cryptd"
+  ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
@@ -37,7 +40,8 @@
     ];
   };
 
-  boot.initrd.luks.devices.cryptroot.device = "/dev/disk/by-uuid/11738ded-1f57-4a2b-86ce-b426f8d6d89c";
+  boot.initrd.luks.devices.cryptroot.device =
+    "/dev/disk/by-uuid/11738ded-1f57-4a2b-86ce-b426f8d6d89c";
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

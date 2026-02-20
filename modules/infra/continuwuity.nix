@@ -116,7 +116,12 @@ in
       socket = "http://unix://${config.services.matrix-continuwuity.settings.global.unix_socket_path}";
       cinny = pkgs.cinny.override {
         conf = {
-          homeserverList = [ fqdn "elisaado.com" "utwente.io" "matrix.org" ];
+          homeserverList = [
+            fqdn
+            "elisaado.com"
+            "utwente.io"
+            "matrix.org"
+          ];
           defaultHomeserver = 0;
           allowCustomHomeservers = true;
           featuredCommunities = { };
@@ -177,7 +182,8 @@ in
           proxyWebsockets = true;
         };
       };
-    } // cinnies;
+    }
+    // cinnies;
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [
     config.services.matrix-continuwuity.group

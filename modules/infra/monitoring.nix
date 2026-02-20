@@ -263,7 +263,9 @@ in
       };
       monitors =
         lib.genAttrs
-          (builtins.filter (kumaVHost: kumaVHost != "localhost") (lib.attrNames config.services.nginx.virtualHosts))
+          (builtins.filter (kumaVHost: kumaVHost != "localhost") (
+            lib.attrNames config.services.nginx.virtualHosts
+          ))
           (kumaVHost: {
             type = "http";
             name = kumaVHost;

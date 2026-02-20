@@ -6,7 +6,7 @@
   local,
 }:
 
-python313Packages.buildPythonApplication (finalAttrs: {
+python313Packages.buildPythonApplication (_finalAttrs: {
   pname = "meshcore-gui";
   version = "unstable-2026-02-05";
 

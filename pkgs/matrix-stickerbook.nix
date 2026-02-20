@@ -5,7 +5,7 @@
   nix-update-script,
 }:
 
-buildGoModule (finalAttrs: {
+buildGoModule (_finalAttrs: {
   pname = "matrix-stickerbook";
   version = "0-unstable-2026-02-16";
 
