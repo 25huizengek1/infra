@@ -25,7 +25,6 @@
 
         overlays = [
           self.overlays.default
-          self.overlays.plasmashell-workaround
           self.overlays.nix-auth
 
           inputs.copyparty.overlays.default
