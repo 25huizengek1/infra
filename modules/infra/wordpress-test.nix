@@ -9,11 +9,11 @@ let
     with pkgs;
     stdenv.mkDerivation (finalAttrs: {
       pname = "wp-generic-oidc";
-      version = "3.10.2";
+      version = "3.11.3";
 
       src = fetchzip {
         url = "https://downloads.wordpress.org/plugin/daggerhart-openid-connect-generic.${finalAttrs.version}.zip";
-        hash = "sha256-bi4EWbMqgRvx0gyu94XMMNY0Tt1YGY6SYhKds/gZknY=";
+        hash = "sha256-/mqGWQz1lHsnA2dpQEZQVCWmqFSmDslFd4rzeEC4PA8=";
       };
 
       installPhase = "mkdir -p $out; cp -R * $out/";
@@ -48,26 +48,16 @@ let
     with pkgs;
     stdenv.mkDerivation (finalAttrs: {
       pname = "wp-view-transitions";
-      version = "1.1.1";
+      version = "1.1.2";
 
       src = fetchzip {
         url = "https://downloads.wordpress.org/plugin/view-transitions.${finalAttrs.version}.zip";
-        hash = "sha256-tJZSwV51CWYPZW0BwksRvcZDWCV6UJxvtMrur25CqAg=";
+        hash = "sha256-k2ksUSc/wqtNpVUsXcb+aBtlLXUOgxvAWc6gBc7WTUA=";
       };
 
       installPhase = "mkdir -p $out; cp -R * $out/";
     });
   # keep-sorted end
-
-  wordpress_6_9 =
-    with pkgs;
-    wordpress.overrideAttrs rec {
-      version = "6.9";
-      src = fetchurl {
-        url = "https://wordpress.org/wordpress-${version}.tar.gz";
-        hash = "sha256-WzY5AjPjL+9oy19mQ1uzK91Q4LPfpXUKzrLePFmT1yA=";
-      };
-    };
 in
 {
   services.wordpress = {
@@ -114,13 +104,13 @@ in
             src = fetchzip {
               url = "https://nl.wordpress.org/wordpress-${wordpress_6_9.version}-nl_NL.zip";
               name = "wp-${wordpress_6_9.version}-language-nl";
-              hash = "sha256-kPnILuSGHRCG/zTCsZumfH4W3UkmufX1/MNGu03N6io=";
+              hash = "sha256-Wev3K0GexZviRZ01USYQibcPjqd5tqY7kP4qvhLjMX4=";
             };
             installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
           }
         )
       ];
-      package = wordpress_6_9;
+      package = pkgs.wordpress_6_9;
     };
   };
 
