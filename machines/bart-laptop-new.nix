@@ -37,6 +37,7 @@
   };
 
   time.hardwareClockInLocalTime = true;
+  boot.kernel.sysctl."vm.swappiness" = 0;
 
   hardware.graphics = {
     enable = true;
@@ -90,5 +91,5 @@
 
   programs.steam.enable = true;
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }
