@@ -85,14 +85,13 @@ in
         {
           pkgs,
           stablePkgs,
-          personalPkgs,
           ...
         }:
 
         inputs.nixpkgs.lib.nixosSystem {
           inherit pkgs;
 
-          specialArgs = { inherit inputs stablePkgs personalPkgs; };
+          specialArgs = { inherit inputs stablePkgs; };
 
           modules = [
             inputs.sops-nix.nixosModules.sops
@@ -109,12 +108,11 @@ in
         {
           pkgs,
           stablePkgs,
-          personalPkgs,
           ...
         }:
         inputs.nixpkgs.lib.nixosSystem {
           inherit pkgs;
-          specialArgs = { inherit inputs stablePkgs personalPkgs; };
+          specialArgs = { inherit inputs stablePkgs; };
           modules = [ ../images/${name}.nix ];
         }
       )

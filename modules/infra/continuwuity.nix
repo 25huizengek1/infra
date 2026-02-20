@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  personalPkgs,
   lib,
   ...
 }:
@@ -26,7 +25,6 @@ in
 {
   services.matrix-continuwuity = {
     enable = true;
-    package = personalPkgs.matrix-continuwuity;
     settings.global = {
       server_name = fqdn;
       new_user_displayname_suffix = "";
@@ -116,7 +114,7 @@ in
   services.nginx.virtualHosts =
     let
       socket = "http://unix://${config.services.matrix-continuwuity.settings.global.unix_socket_path}";
-      cinny = personalPkgs.cinny.override {
+      cinny = pkgs.cinny.override {
         conf = {
           homeserverList = [ fqdn "elisaado.com" "utwente.io" "matrix.org" ];
           defaultHomeserver = 0;

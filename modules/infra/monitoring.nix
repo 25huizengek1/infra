@@ -7,7 +7,8 @@
 }:
 
 let
-  vHost = "uptime.bartoostveen.nl";
+  kumaVHost = "uptime.bartoostveen.nl";
+  grafanaVHost = "grafana.vitune.app";
 in
 {
   imports = [
@@ -17,14 +18,17 @@ in
 
   services.grafana = {
     enable = true;
-    settings.server = {
-      domain = "grafana.vitune.app";
-      root_url = "https://grafana.vitune.app";
-      protocol = "socket";
+    settings = {
+      server = {
+        domain = grafanaVHost;
+        root_url = "https://${grafanaVHost}";
+        protocol = "socket";
+      };
+      security.secret_key = "$__file{${config.sops.secrets.grafana-secret.path}}";
     };
   };
 
-  services.nginx.virtualHosts."grafana.vitune.app" = {
+  services.nginx.virtualHosts.${grafanaVHost} = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
@@ -195,6 +199,16 @@ in
     group = "alertmanager";
   };
 
+  sops.secrets.grafana-secret = {
+    format = "binary";
+    mode = "0600";
+
+    sopsFile = ../../secrets/grafana.secret;
+    restartUnits = [ "grafana.service" ];
+    owner = "grafana";
+    group = "grafana";
+  };
+
   services.uptime-kuma.enable = true;
 
   services.anubis.instances.uptime-kuma = {
@@ -221,7 +235,7 @@ in
     };
   };
 
-  services.nginx.virtualHosts.${vHost} = {
+  services.nginx.virtualHosts.${kumaVHost} = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
@@ -230,42 +244,42 @@ in
     };
   };
 
-  # infra.autokuma = {
-  #   # TODO: Docker etc.
-  #   enable = lib.mkDefault true;
-  #   defaultEnvFile = config.sops.secrets.autokuma-env.path;
-  #   defaultSettings = {
-  #     kuma = {
-  #       url = config.services.anubis.instances.uptime-kuma.settings.TARGET;
-  #       username = "adm";
-  #     };
-  #     tag_name = "Managed by AutoKuma";
-  #     tag_color = "#ea2121";
-  #   };
-  #   instances.local = {
-  #     tags.nginx = {
-  #       name = "nginx @ ${config.networking.hostName}";
-  #       color = "#17964a";
-  #     };
-  #     monitors =
-  #       lib.genAttrs
-  #         (builtins.filter (vhost: vhost != "localhost") (lib.attrNames config.services.nginx.virtualHosts))
-  #         (vhost: {
-  #           type = "http";
-  #           name = vhost;
-  #           description = "nginx Managed by AutoKuma @ ${config.networking.hostName}";
-  #           expiry_notification = true;
-  #           url = "https://${vhost}";
-  #           accepted_statuscodes = [ "200-399" ];
-  #           tag_names = [
-  #             {
-  #               name = "nginx";
-  #               value = vhost;
-  #             }
-  #           ];
-  #         });
-  #   };
-  # };
+  infra.autokuma = {
+    # TODO: Docker etc.
+    enable = lib.mkDefault true;
+    defaultEnvFile = config.sops.secrets.autokuma-env.path;
+    defaultSettings = {
+      kuma = {
+        url = config.services.anubis.instances.uptime-kuma.settings.TARGET;
+        username = "adm";
+      };
+      tag_name = "Managed by AutoKuma";
+      tag_color = "#ea2121";
+    };
+    instances.local = {
+      tags.nginx = {
+        name = "nginx @ ${config.networking.hostName}";
+        color = "#17964a";
+      };
+      monitors =
+        lib.genAttrs
+          (builtins.filter (kumaVHost: kumaVHost != "localhost") (lib.attrNames config.services.nginx.virtualHosts))
+          (kumaVHost: {
+            type = "http";
+            name = kumaVHost;
+            description = "nginx Managed by AutoKuma @ ${config.networking.hostName}";
+            expiry_notification = true;
+            url = "https://${kumaVHost}";
+            accepted_statuscodes = [ "200-399" ];
+            tag_names = [
+              {
+                name = "nginx";
+                value = kumaVHost;
+              }
+            ];
+          });
+    };
+  };
 
   sops.secrets.autokuma-env = {
     owner = "root";

@@ -15,7 +15,7 @@
     ../modules/infra/anubis.nix
     ../modules/infra/attic.nix
     # ../modules/infra/authentik.nix
-    # ../modules/infra/autokuma.nix
+    ../modules/infra/autokuma.nix
     ../modules/infra/common.nix
     ../modules/infra/continuwuity.nix
     ../modules/infra/copyparty.nix
