@@ -37,6 +37,16 @@ in
       unix_socket_path = "/run/continuwuity/continuwuity.sock";
       unix_socket_perms = 660;
 
+      url_preview_domain_explicit_allowlist = [
+        "i.imgur.com"
+        "cdn.discordapp.com"
+        "ooye.elisaado.com"
+        "media.tenor.com"
+        "giphy.com"
+        "cdn.nest.rip"
+        "ssd-cdn.nest.rip"
+      ];
+
       well_known = {
         client = "https://${domain}";
         server = "${domain}:443";
