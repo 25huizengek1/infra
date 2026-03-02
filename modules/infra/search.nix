@@ -34,14 +34,6 @@
           urlPrefix = "https://github.com/nix-community/disko/blob/master/";
         }
         {
-          name = "headplane";
-          urlPrefix = "https://github.com/tale/headplane/blob/main/";
-          modules = [ inputs.headplane.nixosModules.headplane ];
-          specialArgs = {
-            inherit pkgs;
-          };
-        }
-        {
           optionsJSON =
             inputs.home-manager.packages.${pkgs.stdenv.system}.docs-html.passthru.home-manager-options.nixos
             + /share/doc/nixos/options.json;

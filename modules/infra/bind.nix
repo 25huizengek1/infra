@@ -68,7 +68,7 @@ in
     via = nat x;
   }) nameServers;
 
-  # TODO: generalize such that these containers can run 'anywhere' and be routed through Tailscale or smth
+  # TODO: generalize such that these containers can run 'anywhere' and be routed through Wireguard or smth
   #       (since they now all run on the same host)
   # DNS slaves that both keep track of ns1 and are slave to other people
   # TODO: generate bind config from config file in dns ring repo

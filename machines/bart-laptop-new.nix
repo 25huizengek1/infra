@@ -65,7 +65,7 @@
         "172.30.149.116/32"
         "fd0d:c7a1:e166:ca6c::116/128"
       ];
-      listenPort = 51820;
+      listenPort = 51821;
       privateKeyFile = config.sops.secrets.wg-secret.path;
       peers = [
         {

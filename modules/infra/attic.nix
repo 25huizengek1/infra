@@ -71,8 +71,8 @@ in
           action = "ALLOW";
         }
         {
-          name = "tailscale";
-          remote_addresses = [ "100.64.0.0/16" ];
+          name = "wireguard";
+          remote_addresses = [ "10.0.0.0/24" ];
           action = "ALLOW";
         }
       ];

@@ -12,6 +12,7 @@ let
     attrsToList
     ;
 
+  # TODO: make this suck less
   metadata = {
     bart-server = {
       ips = [
