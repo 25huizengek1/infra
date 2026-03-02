@@ -60,7 +60,7 @@ in
 
   networking.firewall.allowedUDPPorts = [ 53 ];
 
-  boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = true;
+  boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = 1;
 
   networking.interfaces.enp1s0.ipv6.routes = map (x: {
     address = "2a01:4f8:c2c:2f66::${toString x}";
