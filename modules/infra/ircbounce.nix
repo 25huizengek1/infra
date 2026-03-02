@@ -81,7 +81,7 @@ in
   };
 
   networking.firewall = {
-    interfaces.tailscale0.allowedTCPPorts = [
+    interfaces.wg-infra.allowedTCPPorts = [
       config.services.znc.config.Listener.l.Port
     ];
 

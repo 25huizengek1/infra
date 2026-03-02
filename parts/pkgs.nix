@@ -28,7 +28,6 @@
           self.overlays.nix-auth
 
           inputs.copyparty.overlays.default
-          inputs.headplane.overlays.default
           inputs.deploy-rs.overlays.default
 
           (_prev: _final: { invoice = inputs.invoice.packages.${system}.default; })

@@ -12,6 +12,8 @@
     ../containers/tcs-bot.nix
     ../containers/web.nix
 
+    ../modules/wireguard.nix
+
     ../modules/infra/anubis.nix
     ../modules/infra/attic.nix
     ../modules/infra/authentik.nix
@@ -26,11 +28,11 @@
     ../modules/infra/mailserver
     ../modules/infra/maubot.nix
     ../modules/infra/monitoring.nix
+    ../modules/infra/networking.nix
     ../modules/infra/nix.nix
     ../modules/infra/nginx.nix
     ../modules/infra/podman.nix
     ../modules/infra/search.nix
-    ../modules/infra/tailscale.nix
     # ../modules/infra/vaultwarden.nix
     ../modules/infra/wordpress-test.nix
   ];
@@ -51,14 +53,7 @@
     acme = true;
   };
 
-  services.nginx.virtualHosts."laptop.omeduostuurcentenneef.nl" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://100.64.0.8:6969/";
-      proxyWebsockets = true;
-    };
-  };
+  infra.wireguard.enable = true;
 
   services.kresd.enable = lib.mkForce false;
 

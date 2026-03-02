@@ -14,7 +14,6 @@ in
   imports = [
     ./git.nix
     inputs.sops-nix.homeManagerModules.sops
-    inputs.tailray.homeManagerModules.default
   ];
 
   options.common = {
@@ -98,11 +97,6 @@ in
     };
 
     fonts.fontconfig.enable = true;
-
-    services.tailray.enable = lib.mkDefault cfg.gui;
-    systemd.user.services.tailray.Service.Environment = lib.optionals config.services.tailray.enable [
-      "TAILRAY_ADMIN_URL=https://headplane.vitune.app/admin/login"
-    ];
 
     programs.home-manager.enable = true;
 

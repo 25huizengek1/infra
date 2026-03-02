@@ -74,14 +74,6 @@
       inputs.systems.follows = "systems";
     };
 
-    headplane = {
-      url = "github:tale/headplane/next";
-      inputs = {
-        # nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-
     ical-proxy = {
       url = "github:bartoostveen/ical-proxy";
       inputs = {
@@ -196,11 +188,6 @@
     };
 
     systems.url = "github:nix-systems/default";
-
-    tailray = {
-      url = "github:NotAShelf/tailray";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     tcs-bot = {
       url = "github:bartoostveen/tcs-bot";

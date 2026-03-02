@@ -201,27 +201,6 @@
         "type": "github"
       }
     },
-    "devshell": {
-      "inputs": {
-        "nixpkgs": [
-          "headplane",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1741473158,
-        "narHash": "sha256-kWNaq6wQUbUMlPgw8Y+9/9wP0F8SHkjy24/mN3UAppg=",
-        "owner": "numtide",
-        "repo": "devshell",
-        "rev": "7c9e793ebe66bcba8292989a68c0419b737a22a0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "devshell",
-        "type": "github"
-      }
-    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -372,29 +351,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "headplane": {
-      "inputs": {
-        "devshell": "devshell",
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1761882755,
-        "narHash": "sha256-bfzueHxPkWBD75t1JmKqMwOjhCw/YfyRGt/oEADdSb0=",
-        "owner": "tale",
-        "repo": "headplane",
-        "rev": "28ad1d439fdf6a5f3ad188f172069cab3e3c3921",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tale",
-        "ref": "next",
-        "repo": "headplane",
         "type": "github"
       }
     },
@@ -726,16 +682,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1761349956,
-        "narHash": "sha256-tH3wHnOJms+U4k/rK2Nn1RfBrhffX92jLP/2VndSn0w=",
+        "lastModified": 1772198003,
+        "narHash": "sha256-I45esRSssFtJ8p/gLHUZ1OUaaTaVLluNkABkk6arQwE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "02f2cb8e0feb4596d20cc52fda73ccee960e3538",
+        "rev": "dd9b079222d43e1943b6ebd802f04fd959dc8e61",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixpkgs-unstable",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -799,22 +755,6 @@
         "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "1cd347bf3355fce6c64ab37d3967b4a2cb4b878c",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1772198003,
-        "narHash": "sha256-I45esRSssFtJ8p/gLHUZ1OUaaTaVLluNkABkk6arQwE=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "dd9b079222d43e1943b6ebd802f04fd959dc8e61",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
         "type": "github"
       }
     },
@@ -983,7 +923,6 @@
         "dont-track-me": "dont-track-me",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
-        "headplane": "headplane",
         "home-manager": "home-manager",
         "ical-proxy": "ical-proxy",
         "import-tree": "import-tree",
@@ -996,7 +935,7 @@
         "nixos-apple-silicon": "nixos-apple-silicon",
         "nixos-facter-modules": "nixos-facter-modules",
         "nixos-mailserver": "nixos-mailserver",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
         "nixpkgs-lib": "nixpkgs-lib",
         "nixpkgs-personal": "nixpkgs-personal",
         "nixpkgs-stable": "nixpkgs-stable",
@@ -1008,7 +947,6 @@
         "sops-nix": "sops-nix",
         "srvos": "srvos",
         "systems": "systems_4",
-        "tailray": "tailray",
         "tcs-bot": "tcs-bot",
         "treefmt-nix": "treefmt-nix_2"
       }
@@ -1125,26 +1063,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "tailray": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1770509443,
-        "narHash": "sha256-b+fXe0dQRdARf2zoOeBAkEOnHQ6twcASH7+0QFOxJFw=",
-        "owner": "NotAShelf",
-        "repo": "tailray",
-        "rev": "06bd3653a08e60883b36937ca4f43daac83ececf",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NotAShelf",
-        "repo": "tailray",
         "type": "github"
       }
     },
