@@ -592,35 +592,6 @@
         "type": "github"
       }
     },
-    "nix-podman-stacks": {
-      "inputs": {
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "search": [
-          "nuschtos-search"
-        ],
-        "sops-nix": [
-          "sops-nix"
-        ]
-      },
-      "locked": {
-        "lastModified": 1772315614,
-        "narHash": "sha256-4E3JOR1PyAAk7teUCJAfSN3q4zg7D/iPTWplEkM0zW0=",
-        "owner": "Tarow",
-        "repo": "nix-podman-stacks",
-        "rev": "816d2920da64e9c74650f9556313289b0680e23a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Tarow",
-        "repo": "nix-podman-stacks",
-        "type": "github"
-      }
-    },
     "nixos-apple-silicon": {
       "inputs": {
         "flake-compat": [],
@@ -931,7 +902,6 @@
         "maubot-spotify": "maubot-spotify",
         "nix-auth": "nix-auth",
         "nix-index-database": "nix-index-database",
-        "nix-podman-stacks": "nix-podman-stacks",
         "nixos-apple-silicon": "nixos-apple-silicon",
         "nixos-facter-modules": "nixos-facter-modules",
         "nixos-mailserver": "nixos-mailserver",

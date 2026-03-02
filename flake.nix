@@ -118,16 +118,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-podman-stacks = {
-      url = "github:Tarow/nix-podman-stacks";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
-        search.follows = "nuschtos-search";
-        sops-nix.follows = "sops-nix";
-      };
-    };
-
     nixos-apple-silicon = {
       url = "github:tpwrules/nixos-apple-silicon";
       inputs = {
