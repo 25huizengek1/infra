@@ -10,10 +10,8 @@
       obs-tuna
     ];
 
-    package = (
-      pkgs.obs-studio.override {
-        cudaSupport = true;
-      }
-    );
+    package = pkgs.obs-studio.override {
+      cudaSupport = true;
+    };
   };
 }

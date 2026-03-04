@@ -9,11 +9,6 @@
     ];
   };
 
-  users.groups.alertmanager = { };
-  users.users.alertmanager = {
-    isSystemUser = true;
-    group = "alertmanager";
-  };
   sops.secrets.alertmanager-email-password = {
     format = "binary";
     mode = "0600";
@@ -37,16 +32,6 @@
   sops.secrets.bart-email-password-encrypted = {
     format = "binary";
     sopsFile = ../../../secrets/email-passwords/bart.enc.secret;
-
-    restartUnits = [
-      "postfix-setup.service"
-      "dovecot2.service"
-    ];
-  };
-
-  sops.secrets.vaultwarden-email-password-encrypted = {
-    format = "binary";
-    sopsFile = ../../../secrets/email-passwords/vaultwarden.enc.secret;
 
     restartUnits = [
       "postfix-setup.service"

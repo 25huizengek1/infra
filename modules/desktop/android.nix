@@ -16,7 +16,6 @@ in
 {
   environment.systemPackages = with pkgs; [
     (android-studio.withSdk android.androidsdk)
-    (androidStudioPackages.canary.withSdk android.androidsdk)
     android.androidsdk
     android-tools
   ];

@@ -17,7 +17,7 @@
     "pipe-operators"
   ];
 
-  nix.channel.enable = false;
+  nix.channel.enable = lib.mkForce false;
   nix.gc.automatic = lib.mkForce false;
 
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
@@ -31,10 +31,10 @@
     efiInstallAsRemovable = true;
   };
 
-  networking.useNetworkd = true;
-  networking.firewall.enable = true;
+  networking.useNetworkd = lib.mkForce true;
+  networking.firewall.enable = lib.mkForce true;
 
-  services.openssh.enable = true;
+  services.openssh.enable = lib.mkDefault true;
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMdc+Tbt0d+pHMYrDjrT3Ui09NV38T3bFWk/OMEL4Dp6 u0_a374@bart-phone"
@@ -42,10 +42,10 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE4zwjOqILG37umIJNYYSMjveYzmwjOw/pTdfLbcsaSP bart@bart-laptop-new"
   ];
 
-  services.redis.package = pkgs.valkey;
+  services.redis.package = lib.mkDefault pkgs.valkey;
 
   programs.nh = {
-    enable = true;
+    enable = lib.mkDefault true;
     clean = {
       enable = true;
       extraArgs = "--keep 3 --optimise";
@@ -54,7 +54,7 @@
   };
 
   services.postgresql = {
-    authentication = lib.mkOverride 10 ''
+    authentication = ''
       # type	database	user	origin-address	auth-method
       local	all		all			trust
       host	all		all	127.0.0.1/32	trust
@@ -72,8 +72,6 @@
 
   environment.systemPackages = with pkgs; [
     curl
-    gh
-    git
     wget
   ];
 }

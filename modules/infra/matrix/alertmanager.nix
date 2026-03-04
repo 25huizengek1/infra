@@ -1,48 +1,27 @@
 {
-  pkgs,
   lib,
+  pkgs,
   config,
   ...
 }:
 
 let
-  metricsPort = 61152;
-  socket = config.services.fail2ban.daemonSettings.Definition.socket;
-
   inherit (lib) getExe;
 in
 {
-  services.fail2ban = {
-    enable = true;
-    daemonSettings.Definition.socket = "/run/fail2ban/fail2ban.sock";
-    ignoreIP = [ "10.0.0.0/24" ];
-  };
-
-  services.prometheus.scrapeConfigs = [
-    {
-      job_name = "fail2ban";
-      static_configs = [
-        {
-          targets = [ "127.0.0.1:${toString metricsPort}" ];
-        }
-      ];
-    }
-  ];
-
-  # TODO: refactor once https://github.com/NixOS/nixpkgs/pull/494160 gets merged
-  systemd.services.prometheus-fail2ban-exporter = {
-    description = "Prometheus fail2ban exporter";
-    after = [ "network.target" ];
+  systemd.services.alertmanager-matrix = {
+    description = "Alertmanager Matrix bot";
+    after = [
+      "network.target"
+      "continuwuity.service"
+    ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";
-      ExecStart = ''
-        ${getExe pkgs.local.fail2ban-prometheus-exporter} \
-          --collector.f2b.socket=${socket} \
-          --web.listen-address="127.0.0.1:${toString metricsPort}" \
-          --collector.f2b.exit-on-socket-connection-error
-      '';
+      ExecStart = getExe pkgs.local.alertmanager-matrix;
+      EnvironmentFile = config.sops.secrets.alertmanager-matrix-env.path;
       Restart = "on-failure";
+      DynamicUser = true;
       AmbientCapabilities = "";
       CapabilityBoundingSet = "";
       LockPersonality = true;
@@ -50,6 +29,7 @@ in
       NoNewPrivileges = true;
       PrivateDevices = true;
       PrivateMounts = true;
+      PrivateUsers = true;
       PrivateTmp = true;
       ProtectClock = true;
       ProtectControlGroups = "strict";
@@ -68,5 +48,14 @@ in
       SystemCallArchitectures = "native";
       UMask = 27;
     };
+  };
+
+  sops.secrets.alertmanager-matrix-env = {
+    sopsFile = ../../../secrets/alertmanager-matrix.env.secret;
+    owner = "alertmanager-matrix";
+    group = "alertmanager-matrix";
+    format = "binary";
+    mode = "440";
+    restartUnits = [ "alertmanager-matrix.service" ];
   };
 }

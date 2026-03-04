@@ -30,7 +30,8 @@
   ];
   nix.channel.enable = lib.mkForce false;
 
-  services.resolved.enable = true;
+  services.resolved.enable = lib.mkDefault true;
+  services.kresd.enable = lib.mkForce false;
 
   environment.systemPackages = with pkgs; [
     # keep-sorted start
@@ -52,10 +53,10 @@
     # keep-sorted end
   ];
 
-  programs.nix-index-database.comma.enable = true;
+  programs.nix-index-database.comma.enable = lib.mkDefault true;
 
   programs.nh = {
-    enable = true;
+    enable = lib.mkDefault true;
     clean = {
       enable = true;
       extraArgs = "--keep 5 --keep-since 3d";
@@ -64,19 +65,19 @@
   };
 
   programs.gnupg.agent = {
-    enable = true;
+    enable = lib.mkDefault true;
     enableSSHSupport = true;
   };
 
   programs.nix-ld = {
-    enable = true;
+    enable = lib.mkDefault true;
     libraries = with pkgs; [
       libvirt
     ];
   };
 
   programs.nano = {
-    enable = true;
+    enable = lib.mkDefault true;
     nanorc = ''
       set historylog
       set multibuffer
@@ -108,7 +109,7 @@
   };
 
   services.openssh = {
-    enable = true;
+    enable = lib.mkDefault true;
     settings = {
       UseDns = true;
       PasswordAuthentication = false;
@@ -116,6 +117,6 @@
     };
   };
 
-  services.libinput.enable = true;
-  services.flatpak.enable = true;
+  services.libinput.enable = lib.mkForce true;
+  services.flatpak.enable = lib.mkDefault true;
 }

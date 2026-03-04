@@ -1,11 +1,5 @@
-{
-  config,
-  ...
-}:
+{ config, ... }:
 
-let
-  mountPoint = "${config.home.homeDirectory}/omeduoparty";
-in
 {
   programs.rclone = {
     enable = true;
@@ -16,12 +10,12 @@ in
         vendor = "owncloud";
         user = "adm";
       };
-      secrets = {
-        pass = config.sops.secrets.omeduoparty-pass.path;
-      };
+
+      secrets.pass = config.sops.secrets.omeduoparty-pass.path;
+
       mounts."/" = {
         enable = true;
-        inherit mountPoint;
+        mountPoint = "${config.home.homeDirectory}/omeduoparty";
         options = {
           poll-interval = "10s";
           umask = "002";

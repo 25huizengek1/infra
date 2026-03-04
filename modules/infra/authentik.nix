@@ -90,6 +90,4 @@ in
     3389 # LDAP
     6636 # LDAPS
   ];
-
-  # services.dovecot2.extraConfig = "TODO";
 }

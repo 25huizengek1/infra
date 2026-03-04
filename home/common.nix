@@ -42,10 +42,10 @@ in
       packages =
         with pkgs;
         [
+          # keep-sorted start
           bat
           btop
           curl
-          local.dawn
           dust
           ffmpeg
           forgejo-cli
@@ -55,6 +55,7 @@ in
           inputs.licenseit.packages.${pkgs.stdenv.system}.default
           invoice
           jq
+          local.dawn
           meteor-git
           nano
           nix-init
@@ -64,11 +65,15 @@ in
           unzip
           wget
           zip
+          # keep-sorted end
         ]
         ++ lib.optionals cfg.gui [
+          # keep-sorted start
           discord
           element-desktop
           kdePackages.kate
+          kdePackages.krdc
+          kdePackages.krfb
           keystore-explorer
           libreoffice
           localsend
@@ -83,6 +88,7 @@ in
           thunderbird
           vlc
           wl-clipboard
+          # keep-sorted end
         ];
     };
 

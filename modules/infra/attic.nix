@@ -9,7 +9,6 @@ let
   user = "atticd";
 in
 {
-  # TODO: generalize for cluster usage and s3 buckets
   services.atticd = {
     enable = true;
     mode = "monolithic";
@@ -61,32 +60,13 @@ in
     ];
   };
 
-  services.anubis.instances.attic = {
-    # TODO: generalize this
-    botPolicy = {
-      bots = [
-        {
-          name = "telegram";
-          user_agent_regex = "TelegramBot (like TwitterBot)";
-          action = "ALLOW";
-        }
-        {
-          name = "wireguard";
-          remote_addresses = [ "10.0.0.0/24" ];
-          action = "ALLOW";
-        }
-      ];
-    };
-
-    settings = {
-      BIND = "/run/anubis/anubis-attic/anubis-attic.sock";
-      TARGET = "http://${config.services.atticd.settings.listen}";
-      METRICS_BIND = "127.0.0.1:${toString metricsPort}"; # Prometheus can't scrape Unix sockets
-      METRICS_BIND_NETWORK = "tcp";
-    };
+  services.anubis.instances.attic.settings = {
+    BIND = "/run/anubis/anubis-attic/anubis-attic.sock";
+    TARGET = "http://${config.services.atticd.settings.listen}";
+    METRICS_BIND = "127.0.0.1:${toString metricsPort}";
+    METRICS_BIND_NETWORK = "tcp";
   };
 
-  # TODO: generalize this
   services.prometheus.scrapeConfigs = [
     {
       job_name = "attic-anubis";

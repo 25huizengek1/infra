@@ -20,9 +20,6 @@ let
 
   nameServers = range 2 5;
 
-  # TODO: dnssec
-  extraOptions = "";
-
   zoneFiles = attrNames (
     filterAttrs (name: value: value == "regular" && hasSuffix ".zone" name) (
       builtins.readDir inputs.dns-zones
@@ -43,8 +40,6 @@ in
 {
   services.bind = {
     enable = true;
-    inherit extraOptions;
-
     zones = genAttrs' zoneFiles (
       name:
       let
@@ -62,16 +57,13 @@ in
 
   boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = 1;
 
+  # TODO: generalize to something like `infra.ipv6`
   networking.interfaces.enp1s0.ipv6.routes = map (x: {
     address = "2a01:4f8:c2c:2f66::${toString x}";
     prefixLength = 128;
     via = nat x;
   }) nameServers;
 
-  # TODO: generalize such that these containers can run 'anywhere' and be routed through Wireguard or smth
-  #       (since they now all run on the same host)
-  # DNS slaves that both keep track of ns1 and are slave to other people
-  # TODO: generate bind config from config file in dns ring repo
   containers = genAttrs' nameServers (
     x:
     nameValuePair "bind-ns${toString x}" {
@@ -101,7 +93,6 @@ in
 
           services.bind = {
             enable = true;
-            inherit extraOptions;
             zones = genAttrs' zoneFiles (
               name:
               let

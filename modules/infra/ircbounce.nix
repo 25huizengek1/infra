@@ -85,7 +85,7 @@ in
       config.services.znc.config.Listener.l.Port
     ];
 
-    allowedTCPPorts = [ 113 ];
+    allowedTCPPorts = [ 113 ]; # oidentd
   };
 
   users.users.znc.extraGroups = [ "nginx" ];

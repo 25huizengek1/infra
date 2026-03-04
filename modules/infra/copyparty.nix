@@ -159,28 +159,11 @@ in
 
     systemd.services.copyparty.requires = [ "copyparty.socket" ];
 
-    services.anubis.instances.copyparty = {
-      botPolicy = {
-        bots = [
-          {
-            name = "telegram";
-            user_agent_regex = "TelegramBot (like TwitterBot)";
-            action = "ALLOW";
-          }
-          {
-            name = "wireguard";
-            remote_addresses = [ "10.0.0.0/24" ];
-            action = "ALLOW";
-          }
-        ];
-      };
-
-      settings = {
-        BIND = "/run/anubis/anubis-copyparty/anubis-copyparty.sock";
-        TARGET = "unix://${unixSocket}";
-        METRICS_BIND = "127.0.0.1:16108"; # Prometheus can't scrape Unix sockets
-        METRICS_BIND_NETWORK = "tcp";
-      };
+    services.anubis.instances.copyparty.settings = {
+      BIND = "/run/anubis/anubis-copyparty/anubis-copyparty.sock";
+      TARGET = "unix://${unixSocket}";
+      METRICS_BIND = "127.0.0.1:16108";
+      METRICS_BIND_NETWORK = "tcp";
     };
 
     services.prometheus.scrapeConfigs = [

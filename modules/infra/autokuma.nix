@@ -7,40 +7,44 @@
 
 let
   inherit (lib)
-    mkDefault
-    mkIf
-    mkOption
-    mkEnableOption
-    mkPackageOption
-    types
-    getExe
+    # keep-sorted start
     attrValues
-    mapAttrs
-    mapAttrs'
+    attrsToList
+    concatStringsSep
     filterAttrs
     filterAttrsRecursive
-    recursiveUpdate
-    attrsToList
-    nameValuePair
-    concatStringsSep
-    last
     foldl'
-    mergeAttrs
+    getExe
+    last
+    mapAttrs
+    mapAttrs'
     mapAttrsToList
+    mergeAttrs
+    mkDefault
+    mkEnableOption
+    mkIf
+    mkOption
+    mkPackageOption
+    nameValuePair
+    recursiveUpdate
+    types
+    # keep-sorted end
     ;
 
   inherit (types)
-    str
-    listOf
-    nullOr
-    attrsOf
+    # keep-sorted start
     attrs
-    path
-    submodule
+    attrsOf
+    bool
     enum
     int
-    bool
     lines
+    listOf
+    nullOr
+    path
+    str
+    submodule
+    # keep-sorted end
     ;
 
   settingsType = submodule {
@@ -290,7 +294,7 @@ in
     instances = mkOption {
       description = "Instances of the autokuma daemon";
       default = { };
-      example = { }; # TODO
+      example = { };
       type = attrsOf (submodule {
         options = {
           enable = mkOption {

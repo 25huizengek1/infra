@@ -1,7 +1,12 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  home.packages = [ pkgs.kdePackages.kgpg ];
+  home.packages = lib.optionals config.common.gui [ pkgs.kdePackages.kgpg ];
 
   programs.gpg.enable = true;
 

@@ -1,13 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   programs.delta = {
-    enable = true;
+    enable = lib.mkDefault true;
     enableGitIntegration = true;
   };
 
   programs.git = {
-    enable = true;
+    enable = lib.mkDefault true;
     package = pkgs.gitFull;
     signing = {
       key = "5963223E57296C53";
@@ -20,8 +20,6 @@
       pull.rebase = true;
       init.defaultBranch = "master";
       advice.detachedHead = false;
-
-      alias.fwlpush = "push --force-with-lease";
     };
 
     includes = [
@@ -45,7 +43,7 @@
   };
 
   programs.gh = {
-    enable = true;
+    enable = lib.mkDefault true;
     gitCredentialHelper.enable = true;
     extensions = with pkgs; [
       gh-dash

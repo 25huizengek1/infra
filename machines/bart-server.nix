@@ -1,11 +1,12 @@
-{ inputs, lib, ... }:
+{ inputs, ... }:
 
 {
   imports = [
     inputs.disko.nixosModules.disko
+    ./bart-server.disk-config.nix
+
     inputs.nixos-facter-modules.nixosModules.facter
 
-    ./server.disk-config.nix
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
 
@@ -19,7 +20,7 @@
     ../modules/infra/authentik.nix
     ../modules/infra/autokuma.nix
     ../modules/infra/common.nix
-    ../modules/infra/continuwuity.nix
+    ../modules/infra/matrix
     ../modules/infra/copyparty.nix
     ../modules/infra/fail2ban.nix
     ../modules/infra/git.nix
@@ -33,18 +34,11 @@
     ../modules/infra/nginx.nix
     ../modules/infra/podman.nix
     ../modules/infra/search.nix
-    # ../modules/infra/vaultwarden.nix
     ../modules/infra/wordpress-test.nix
   ];
 
   facter.reportPath = ./bart-server.json;
   systemd.network.networks."10-uplink".networkConfig.Address = "2a01:4f8:c2c:2f66::1/128";
-
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-    22
-  ];
 
   srvos.prometheus.ruleGroups.srvosAlerts.alertRules.UnusualDiskReadLatency.enable = false;
 
@@ -54,8 +48,6 @@
   };
 
   infra.wireguard.enable = true;
-
-  services.kresd.enable = lib.mkForce false;
 
   system.stateVersion = "26.05";
 }

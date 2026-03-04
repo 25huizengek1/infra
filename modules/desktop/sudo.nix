@@ -1,10 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
+let
+  inherit (lib) getExe';
+in
 {
   security.rtkit.enable = true;
+
   security.sudo =
     let
       minutes = 60;
+      commands = [
+        "${getExe' pkgs.systemd "systemctl"} suspend"
+        (getExe' pkgs.systemd "reboot")
+        (getExe' pkgs.systemd "poweroff")
+      ];
     in
     {
       enable = true;
@@ -13,20 +22,10 @@
       '';
       extraRules = [
         {
-          commands = [
-            {
-              command = "${pkgs.systemd}/bin/systemctl suspend";
-              options = [ "NOPASSWD" ];
-            }
-            {
-              command = "${pkgs.systemd}/bin/reboot";
-              options = [ "NOPASSWD" ];
-            }
-            {
-              command = "${pkgs.systemd}/bin/poweroff";
-              options = [ "NOPASSWD" ];
-            }
-          ];
+          commands = map (command: {
+            inherit command;
+            options = [ "NOPASSWD" ];
+          }) commands;
           groups = [ "wheel" ];
         }
       ];

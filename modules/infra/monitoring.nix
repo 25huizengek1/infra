@@ -228,28 +228,11 @@ in
 
   services.uptime-kuma.enable = true;
 
-  services.anubis.instances.uptime-kuma = {
-    botPolicy = {
-      bots = [
-        {
-          name = "telegram";
-          user_agent_regex = "TelegramBot (like TwitterBot)";
-          action = "ALLOW";
-        }
-        {
-          name = "wireguard";
-          remote_addresses = [ "10.0.0.0/24" ];
-          action = "ALLOW";
-        }
-      ];
-    };
-
-    settings = {
-      BIND = "/run/anubis/anubis-uptime-kuma/anubis-uptime-kuma.sock";
-      TARGET = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}";
-      METRICS_BIND = "127.0.0.1:15108"; # Prometheus can't scrape Unix sockets
-      METRICS_BIND_NETWORK = "tcp";
-    };
+  services.anubis.instances.uptime-kuma.settings = {
+    BIND = "/run/anubis/anubis-uptime-kuma/anubis-uptime-kuma.sock";
+    TARGET = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}";
+    METRICS_BIND = "127.0.0.1:15108";
+    METRICS_BIND_NETWORK = "tcp";
   };
 
   services.nginx.virtualHosts.${kumaVHost} = {
@@ -262,7 +245,6 @@ in
   };
 
   infra.autokuma = {
-    # TODO: Docker etc.
     enable = lib.mkDefault true;
     defaultEnvFile = config.sops.secrets.autokuma-env.path;
     defaultSettings = {
@@ -369,4 +351,10 @@ in
       external_labels = {}
     }
   '';
+
+  users.groups.alertmanager = { };
+  users.users.alertmanager = {
+    isSystemUser = true;
+    group = "alertmanager";
+  };
 }

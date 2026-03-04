@@ -9,9 +9,23 @@ in
       SERVE_ROBOTS_TXT = true;
       WEBMASTER_EMAIL = "anubis@bartoostveen.nl";
     };
-    botPolicy.store = {
-      backend = "valkey";
-      parameters.url = "unix://${redisSocket}";
+    policy = {
+      settings.store = {
+        backend = "valkey";
+        parameters.url = "unix://${redisSocket}";
+      };
+      extraBots = [
+        {
+          name = "telegram";
+          user_agent_regex = "TelegramBot \\(like TwitterBot\\)";
+          action = "ALLOW";
+        }
+        {
+          name = "wireguard";
+          remote_addresses = [ "10.0.0.0/24" ];
+          action = "ALLOW";
+        }
+      ];
     };
   };
 

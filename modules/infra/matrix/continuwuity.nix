@@ -1,0 +1,149 @@
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+
+let
+  cfg = config.infra.matrix;
+
+  inherit (lib)
+    # keep-sorted start
+    mkEnableOption
+    mkIf
+    mkOption
+    mkPackageOption
+    types
+    # keep-sorted end
+    ;
+
+  inherit (types) listOf str bool;
+in
+{
+  options.infra.matrix = {
+    enable = mkEnableOption "Continuwuity with Livekit, Cinny and Element Call";
+    package = mkPackageOption pkgs "matrix-continuwuity" { };
+    fqdn = mkOption {
+      description = "Full home server name";
+      type = str;
+      default = "example.com";
+    };
+    domain = mkOption {
+      description = "Domain to proxy continuwuity to";
+      type = str;
+      default = "matrix.example.com";
+    };
+    livekit = {
+      enable = mkEnableOption "Livekit/Matrix RTC";
+      domain = mkOption {
+        description = "Domain to host the livekit/lk-jwt-service/turn instance";
+        type = str;
+        default = "lk.example.com";
+      };
+    };
+    element = {
+      enable = mkEnableOption "Element web client";
+      package = mkPackageOption pkgs "element-web" { };
+      domain = mkOption {
+        description = "Domain to host the Element web client";
+        type = str;
+        default = "element.example.com";
+      };
+    };
+    call = {
+      enable = mkEnableOption "Element Call";
+      package = mkPackageOption pkgs "element-call" { };
+      domain = mkOption {
+        description = "Element call domain";
+        type = str;
+        default = "call.example.com";
+      };
+    };
+    cinny = {
+      enable = mkEnableOption "Cinny";
+      package = mkPackageOption pkgs "cinny" { };
+      replaceContinuwuity = mkOption {
+        description = "Whether to replace c10y's 'welcome to continuwuity' with Cinny";
+        type = bool;
+        default = true;
+        example = false;
+      };
+      domains = mkOption {
+        description = "Domains to host a Cinny instance on";
+        type = listOf str;
+      };
+    };
+  };
+
+  config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.call.enable -> cfg.livekit.enable;
+      }
+    ];
+
+    services.matrix-continuwuity = {
+      enable = true;
+      package = cfg.package;
+      settings.global = {
+        server_name = cfg.fqdn;
+        new_user_displayname_suffix = "";
+        allow_registration = false;
+        allow_encryption = true;
+        allow_federation = true;
+        trusted_servers = [ "matrix.org" ];
+
+        address = null;
+        unix_socket_path = "/run/continuwuity/continuwuity.sock";
+        unix_socket_perms = 660;
+
+        url_preview_domain_explicit_allowlist = [
+          "i.imgur.com"
+          "cdn.discordapp.com"
+          "ooye.elisaado.com"
+          "media.tenor.com"
+          "giphy.com"
+          "cdn.nest.rip"
+          "ssd-cdn.nest.rip"
+          "i.github.com"
+          "github.com"
+          "fs.omeduostuurcentenneef.nl"
+          "files.bartoostveen.nl"
+          "party.vitune.app"
+        ];
+
+        well_known = {
+          client = "https://${cfg.domain}";
+          server = "${cfg.domain}:443";
+          support_email = "matrix@bartoostveen.nl";
+          support_mxid = "@bart:${cfg.fqdn}";
+        };
+      };
+    };
+
+    # Allow federation through http socket to make servers that don't query .well-known work
+    networking.firewall.allowedTCPPorts = [ 8448 ];
+
+    services.nginx.virtualHosts =
+      let
+        socket = "http://unix://${config.services.matrix-continuwuity.settings.global.unix_socket_path}";
+      in
+      {
+        ${cfg.fqdn}.locations."/.well-known/matrix/".proxyPass = socket;
+        ${cfg.domain} = {
+          enableACME = true;
+          forceSSL = true;
+
+          locations.${
+            if (cfg.cinny.enable && cfg.cinny.replaceContinuwuity) then "/_matrix" else "/"
+          }.proxyPass =
+            socket;
+        };
+      };
+
+    systemd.services.nginx.serviceConfig.SupplementaryGroups = [
+      config.services.matrix-continuwuity.group
+    ];
+  };
+}

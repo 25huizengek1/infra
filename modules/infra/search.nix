@@ -103,13 +103,12 @@
           urlPrefix = "https://github.com/nix-community/plasma-manager/blob/main/";
           optionsJSON =
             let
-              # This is the same way nix-podman-stacks generates their option documentation believe it or not...
               eval = inputs.home-manager.lib.homeManagerConfiguration {
                 inherit pkgs;
                 modules = [
                   inputs.plasma-manager.homeModules.plasma-manager
                   {
-                    home.stateVersion = "25.11";
+                    home.stateVersion = "26.05";
                     home.username = "someuser";
                     home.homeDirectory = "/home/someuser";
                   }
@@ -117,7 +116,7 @@
               };
               doc = pkgs.nixosOptionsDoc {
                 inherit (eval) options;
-                warningsAreErrors = false; # nix-podman-stacks has some invalid options
+                warningsAreErrors = false;
               };
             in
             pkgs.runCommand "options-filtered" { } ''

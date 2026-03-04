@@ -1,17 +1,17 @@
-{ ... }:
+{ lib, ... }:
 
 {
   programs.gnupg.agent = {
-    enable = true;
+    enable = lib.mkDefault true;
     enableSSHSupport = true;
   };
 
   programs.git = {
-    enable = true;
+    enable = lib.mkDefault true;
     config = {
-      user.signingKey = "31805D4650DE1EC8";
+      user.signingKey = "5963223E57296C53";
       user.name = "Bart Oostveen";
-      user.email = "bart.oos.2006@gmail.com";
+      user.email = "bart@bartoostveen.nl";
       commit.gpgSign = true;
       tag.gpgSign = true;
       pull.rebase = true;
@@ -20,7 +20,7 @@
     };
   };
 
-  programs.bash.interactiveShellInit = ''
+  programs.bash.interactiveShellInit = lib.mkDefault ''
     GPG_TTY=$(tty)
   '';
 }
