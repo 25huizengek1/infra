@@ -71,9 +71,6 @@ in
           inherit pkgs;
 
           modules = [
-            inputs.plasma-manager.homeModules.plasma-manager
-            inputs.dont-track-me.homeManagerModules.default
-            inputs.sops-nix.homeManagerModules.sops
             ../home/${"${username}@${hostname}"}/home.nix
             {
               home = {

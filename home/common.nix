@@ -127,7 +127,5 @@ in
     };
 
     sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-
-    dont-track-me.enable = true;
   };
 }

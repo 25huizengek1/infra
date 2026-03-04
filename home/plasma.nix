@@ -1,6 +1,15 @@
-{ pkgs, config, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 
 {
+  imports = [
+    inputs.plasma-manager.homeModules.plasma-manager
+  ];
+
   home.packages = with pkgs; [
     kdePackages.breeze-gtk
     kdePackages.kde-gtk-config

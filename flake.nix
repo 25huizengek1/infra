@@ -62,8 +62,6 @@
       flake = false;
     };
 
-    dont-track-me.url = "github:dtomvan/dont-track-me.nix";
-
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs-lib";
