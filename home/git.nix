@@ -1,91 +1,56 @@
+{ pkgs, ... }:
+
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-let
-  inherit (lib)
-    mkEnableOption
-    mkOption
-    mkIf
-    mkDefault
-    types
-    ;
-
-  cfg = config.git;
-in
-{
-  options = {
-    git.enable = mkEnableOption "git";
-
-    git.user.email = mkOption {
-      description = "git config --global user.email";
-      type = types.str;
-      default = "example@example.com";
-    };
-
-    git.user.name = mkOption {
-      description = "git config --global user.name";
-      type = types.str;
-      default = "Unknown";
-    };
-
-    git.key = mkOption {
-      description = "The signing key used for Git commits";
-      type = types.nullOr types.str;
-      default = null;
-    };
-
-    git.gh = mkOption {
-      description = "gh cli integration";
-      type = types.submodule {
-        options = {
-          enable = mkEnableOption "the gh cli";
-          extensions = mkOption {
-            description = "Extensions for gh";
-            type = types.listOf types.package;
-            default = with pkgs; [
-              gh-dash
-              local.gh-branch
-              gh-notify
-            ];
-          };
-        };
-      };
-      default = { };
-    };
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
   };
 
-  config = mkIf cfg.enable {
-    programs.delta.enableGitIntegration = mkDefault true;
-
-    programs.git = {
-      enable = true;
-
-      package = pkgs.gitFull;
-
-      signing = mkIf (cfg.key != null) {
-        key = cfg.key;
-        signByDefault = true;
-      };
-
-      settings = {
-        user.email = cfg.user.email;
-        user.name = cfg.user.name;
-        pull.rebase = true;
-        init.defaultBranch = "master";
-        advice.detachedHead = false;
-
-        alias.fwlpush = "push --force-with-lease";
-      };
+  programs.git = {
+    enable = true;
+    package = pkgs.gitFull;
+    signing = {
+      key = "5963223E57296C53";
+      signByDefault = true;
     };
 
-    programs.gh = mkIf cfg.gh.enable {
-      enable = true;
-      gitCredentialHelper.enable = true;
-      inherit (cfg.gh) extensions;
+    settings = {
+      user.email = "bart@bartoostveen.nl";
+      user.name = "Bart Oostveen";
+      pull.rebase = true;
+      init.defaultBranch = "master";
+      advice.detachedHead = false;
+
+      alias.fwlpush = "push --force-with-lease";
     };
+
+    includes = [
+      {
+        condition = "hasconfig:remote.*.url:git@gitlab.utwente.nl:*/**";
+        contents.user = {
+          email = "b.oostveen@student.utwente.nl";
+          name = "Oostveen, B. (Bart, Student B-TCS)";
+          signingKey = "FAD453F45800E974";
+        };
+      }
+      {
+        condition = "hasconfig:remote.*.url:git@gitlab.snt.utwente.nl:*/**";
+        contents.user = {
+          email = "oostveen@snt.utwente.nl";
+          name = "Bart Oostveen";
+          signingKey = "2D4FB795E873C2C3";
+        };
+      }
+    ];
+  };
+
+  programs.gh = {
+    enable = true;
+    gitCredentialHelper.enable = true;
+    extensions = with pkgs; [
+      gh-dash
+      local.gh-branch
+      gh-notify
+    ];
   };
 }

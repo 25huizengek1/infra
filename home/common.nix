@@ -129,35 +129,6 @@ in
       sessionVariables.PROMPT_COMMAND = "history -a; history -n";
     };
 
-    programs.delta.enable = true;
-    git = {
-      enable = true;
-      gh.enable = true;
-
-      user.email = "bart@bartoostveen.nl";
-      user.name = "Bart Oostveen";
-
-      key = "5963223E57296C53";
-    };
-    programs.git.includes = [
-      {
-        condition = "hasconfig:remote.*.url:git@gitlab.utwente.nl:*/**";
-        contents.user = {
-          email = "b.oostveen@student.utwente.nl";
-          name = "Oostveen, B. (Bart, Student B-TCS)";
-          signingKey = "FAD453F45800E974";
-        };
-      }
-      {
-        condition = "hasconfig:remote.*.url:git@gitlab.snt.utwente.nl:*/**";
-        contents.user = {
-          email = "oostveen@snt.utwente.nl";
-          name = "Bart Oostveen";
-          signingKey = "2D4FB795E873C2C3";
-        };
-      }
-    ];
-
     sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
     dont-track-me.enable = true;
