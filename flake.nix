@@ -16,7 +16,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-personal.url = "github:bartoostveen/nixpkgs/huizengek/cinny-4.10.5";
+    nixpkgs-personal.url = "github:bartoostveen/nixpkgs/bart/continuwuity-0.5.6";
     nixpkgs-stable.url = "github:nixos/nixpkgs/1cd347bf3355fce6c64ab37d3967b4a2cb4b878c"; # /nixos-25.11";
     prismlauncher-nixpkgs.url = "github:nixos/nixpkgs/077cb3aa7d111ff4d36e8bd18d906bb4a3d621f9";
 
@@ -100,7 +100,7 @@
     };
 
     maubot-spotify = {
-      url = "github:HarHarLinks/maubot-idonthavespotify/v1.1.2";
+      url = "github:HarHarLinks/maubot-idonthavespotify/59db9d33436393f878d6ccc63d978989e13b59b8"; # this guy deleted their tags
       flake = false;
     };
 

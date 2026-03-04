@@ -71,8 +71,7 @@ in
           element-desktop
           kdePackages.kate
           keystore-explorer
-          # TODO: add back once staging-next gets merged into nixos-unstable
-          # libreoffice
+          libreoffice
           localsend
           mpv
           nerd-fonts.jetbrains-mono

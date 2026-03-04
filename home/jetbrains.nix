@@ -5,5 +5,6 @@
     jetbrains-toolbox
     jetbrains.idea
     jetbrains.gateway
+    jetbrains.pycharm
   ];
 }

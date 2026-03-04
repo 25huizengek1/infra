@@ -26,6 +26,7 @@ in
 {
   services.matrix-continuwuity = {
     enable = true;
+    package = personalPkgs.matrix-continuwuity;
     settings.global = {
       server_name = fqdn;
       new_user_displayname_suffix = "";
