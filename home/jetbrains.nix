@@ -6,5 +6,6 @@
     jetbrains.idea
     jetbrains.gateway
     jetbrains.pycharm
+    jetbrains.clion
   ];
 }
