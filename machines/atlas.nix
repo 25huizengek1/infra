@@ -4,6 +4,7 @@
   imports = [
     "${inputs.nixpkgs}/nixos/modules/installer/sd-card/sd-image.nix"
     ./atlas.firmware.nix
+    ./atlas.hardware.nix
 
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.mixins-terminfo
