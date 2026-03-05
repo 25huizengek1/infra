@@ -46,7 +46,7 @@ in
             type = nullOr str;
             default = "root";
           };
-          arch = mkOption {
+          system = mkOption {
             description = "The host architecture";
             type = str;
             default = "x86_64-linux";
@@ -73,15 +73,12 @@ in
   config.flake.nixosConfigurations =
     (mapAttrs (
       name:
-      {
-        arch,
-        ...
-      }@c:
+      { system, ... }@c:
 
       let
         hostname = if c.hostname != null then c.hostname else name;
       in
-      withSystem arch (
+      withSystem system (
         {
           pkgs,
           stablePkgs,
@@ -90,7 +87,7 @@ in
         }:
 
         inputs.nixpkgs.lib.nixosSystem {
-          inherit pkgs;
+          inherit pkgs system;
 
           specialArgs = { inherit inputs stablePkgs personalPkgs; };
 

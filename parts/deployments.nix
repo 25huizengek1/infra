@@ -3,6 +3,10 @@
     nixos = {
       bart-server.sshUser = "root";
       bart-laptop-new.sshUser = "bart";
+      atlas = {
+        sshUser = "root";
+        system = "aarch64-linux";
+      };
       # bart-pc.sshUser = "bart";
     };
 
