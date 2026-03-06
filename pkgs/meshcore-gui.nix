@@ -6,6 +6,7 @@
   local,
 }:
 
+# TODO: actually properly package this using pyproject/setuptools, probably best to submit something upstream
 python313Packages.buildPythonApplication (_finalAttrs: {
   pname = "meshcore-gui";
   version = "unstable-2026-02-05";
@@ -41,6 +42,5 @@ python313Packages.buildPythonApplication (_finalAttrs: {
     license = lib.licenses.mit;
     mainProgram = "meshcore-gui";
     platforms = lib.platforms.all;
-    broken = true; # TODO: actually properly package this using pyproject/setuptools, probably best to submit something upstream
   };
 })
