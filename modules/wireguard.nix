@@ -53,7 +53,9 @@ let
   peersFor =
     hostname:
     attrsToList metadata
-    |> builtins.filter ({ name, value }: name != hostname && (metadata.${hostname} ? endpoint || value ? endpoint))
+    |> builtins.filter (
+      { name, value }: name != hostname && (metadata.${hostname} ? endpoint || value ? endpoint)
+    )
     |> map (
       { name, value }:
       {
