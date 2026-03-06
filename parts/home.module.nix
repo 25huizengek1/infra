@@ -44,7 +44,7 @@ in
           type = nullOr str;
           default = null;
         };
-        arch = mkOption {
+        system = mkOption {
           description = "The host architecture";
           type = str;
           default = "x86_64-linux";
@@ -57,11 +57,11 @@ in
     {
       username,
       hostname,
-      arch,
+      system,
       ...
     }:
 
-    withSystem arch (
+    withSystem system (
       { pkgs, stablePkgs, ... }:
 
       nameValuePair "${username}@${hostname}" (

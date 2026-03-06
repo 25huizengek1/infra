@@ -23,7 +23,7 @@ in
           ip ? null,
           username,
           sshUser ? null,
-          arch,
+          system,
           ...
         }:
         nameValuePair hostname {
@@ -36,7 +36,7 @@ in
             interactiveSudo = username == "root" && sshUser != "root";
 
             path =
-              inputs.deploy-rs.lib.${arch}.activate.home-manager
+              inputs.deploy-rs.lib.${system}.activate.home-manager
                 self.homeConfigurations."${username}@${hostname}";
           };
         }
@@ -49,7 +49,7 @@ in
             hostname ? null,
             sshUser ? null,
             username,
-            arch,
+            system,
             ...
           }:
 
@@ -71,7 +71,7 @@ in
 
               interactiveSudo = username == "root" && sshUser != "root";
 
-              path = inputs.deploy-rs.lib.${arch}.activate.nixos self.nixosConfigurations.${name};
+              path = inputs.deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.${name};
             };
           }
         ) config.deployments.nixos
