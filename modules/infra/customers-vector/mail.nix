@@ -89,8 +89,6 @@ in
       };
       postfix = {
         filter = "(&(objectClass=user)(sAMAccountName=%u))";
-
-        mailAttribute = "sAMAccountName";
         uidAttribute = "sAMAccountName";
       };
       bind = {
