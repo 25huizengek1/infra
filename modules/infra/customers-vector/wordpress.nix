@@ -1,9 +1,15 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  inputs,
+  config,
+  ...
+}:
 
 let
-  fqdn = "bartoostveen.nl";
-  wpVhost = "wordpress-test.${fqdn}";
+  fqdn = "vector.bartoostveen.nl";
+  wpVhost = fqdn; # TODO: clean up
 
+  # TODO: group these wordpress packages into something like wordpressPackages.nix
   # keep-sorted start
   generic-oidc =
     with pkgs;
@@ -44,6 +50,17 @@ let
 
       installPhase = "mkdir -p $out; cp -R * $out/";
     });
+  wp-language-nl =
+    with pkgs;
+    stdenv.mkDerivation {
+      name = "wp-language-nl";
+      src = fetchzip {
+        url = "https://nl.wordpress.org/wordpress-${wordpress_6_9.version}-nl_NL.zip";
+        name = "wp-${wordpress_6_9.version}-language-nl";
+        hash = "sha256-Wev3K0GexZviRZ01USYQibcPjqd5tqY7kP4qvhLjMX4=";
+      };
+      installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
+    };
   view-transitions =
     with pkgs;
     stdenv.mkDerivation (finalAttrs: {
@@ -62,7 +79,7 @@ in
 {
   services.wordpress = {
     webserver = "nginx";
-    sites.${wpVhost} = {
+    sites."vector.bartoostveen.nl" = {
       settings = {
         WP_DEFAULT_THEME = "twentytwentyfive";
         WP_SITEURL = "https://${wpVhost}";
@@ -96,20 +113,7 @@ in
       themes = {
         inherit (pkgs.wordpressPackages.themes) twentytwentyfive;
       };
-      languages = [
-        (
-          with pkgs;
-          stdenv.mkDerivation {
-            name = "wp-language-nl";
-            src = fetchzip {
-              url = "https://nl.wordpress.org/wordpress-${wordpress_6_9.version}-nl_NL.zip";
-              name = "wp-${wordpress_6_9.version}-language-nl";
-              hash = "sha256-Wev3K0GexZviRZ01USYQibcPjqd5tqY7kP4qvhLjMX4=";
-            };
-            installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
-          }
-        )
-      ];
+      languages = [ wp-language-nl ];
       package = pkgs.wordpress_6_9;
     };
   };

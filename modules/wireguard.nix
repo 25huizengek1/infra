@@ -46,6 +46,18 @@ let
         "fd42:42:42::4/128"
       ];
     };
+
+    vector = {
+      ips = [
+        "10.0.0.5/32"
+        "fd42:42:42::5/128"
+      ];
+      allowedIPs = [
+        "10.0.0.0/24"
+        "fd42:42:42::/64"
+      ];
+      endpoint = "46.225.142.85:${toString listenPort}";
+    };
   };
 
   listenPort = 51820;
@@ -61,7 +73,11 @@ let
       {
         inherit name;
         publicKey = builtins.readFile ../secrets/wireguard/${name}.public;
-        allowedIPs = if (value ? allowedIPs) then value.allowedIPs else value.ips;
+        allowedIPs =
+          if (value ? allowedIPs && !(metadata.${hostname} ? allowedIPs)) then
+            value.allowedIPs
+          else
+            value.ips;
         endpoint = mkIf (value ? endpoint) value.endpoint;
         persistentKeepalive = 25;
       }

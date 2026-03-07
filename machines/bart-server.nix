@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 
 {
   imports = [
@@ -34,7 +34,6 @@
     ../modules/infra/nginx.nix
     ../modules/infra/podman.nix
     ../modules/infra/search.nix
-    ../modules/infra/wordpress-test.nix
   ];
 
   facter.reportPath = ./bart-server.json;
@@ -48,6 +47,26 @@
   };
 
   infra.wireguard.enable = true;
+
+  infra.authentik = {
+    enable = true;
+    enablePrometheus = true;
+    environmentFile = config.sops.secrets.authentik-env.path;
+  };
+
+  sops.secrets.authentik-env = {
+    format = "binary";
+    sopsFile = ../secrets/authentik.env.secret;
+
+    owner = "authentik";
+    group = "authentik";
+    mode = "0660";
+    restartUnits = [
+      "authentik.service"
+      "authentik-worker.service"
+      "authentik-ldap.service"
+    ];
+  };
 
   system.stateVersion = "26.05";
 }

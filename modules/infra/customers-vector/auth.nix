@@ -1,0 +1,40 @@
+{ config, ... }:
+
+{
+  imports = [
+    ../authentik.nix
+  ];
+
+  infra.authentik = {
+    enable = true;
+    environmentFile = config.sops.secrets.authentik-env.path;
+    domain = "auth.vector.bartoostveen.nl";
+  };
+
+  sops.secrets.authentik-env = {
+    format = "binary";
+    sopsFile = ../../../secrets/vector-authentik.env.secret;
+
+    owner = "authentik";
+    group = "authentik";
+    mode = "0660";
+    restartUnits = [
+      "authentik.service"
+      "authentik-worker.service"
+      "authentik-ldap.service"
+    ];
+  };
+
+  sops.secrets.ldap-bind-password = {
+    format = "binary";
+    sopsFile = ../../../secrets/vector-ldap-bind-password.secret;
+    restartUnits = [
+      "authentik.service"
+      "authentik-worker.service"
+      "authentik-ldap.service"
+      "dovecot.service"
+      "rspamd.service"
+      "postfix.service"
+    ];
+  };
+}

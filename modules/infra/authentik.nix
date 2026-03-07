@@ -1,93 +1,125 @@
-{ inputs, config, ... }:
+{
+  inputs,
+  lib,
+  config,
+  ...
+}:
 
 let
-  fqdn = "bartoostveen.nl";
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkIf
+    types
+    ;
+  inherit (types) int str path;
 
-  metrics-port = 64151;
-  ldap-metrics-port = 64152;
+  cfg = config.infra.authentik;
 in
 {
   imports = [
     inputs.authentik.nixosModules.default
   ];
 
-  services.authentik = {
-    enable = true;
-    environmentFile = config.sops.secrets.authentik-env.path;
-    worker.listenMetrics = "[::1]:${toString metrics-port}";
-    settings = {
-      email = {
-        host = fqdn;
-        port = 587;
-        username = "auth@${fqdn}";
-        use_tls = true;
-        use_ssl = false;
-        from = "auth@${fqdn}";
-      };
-      disable_startup_analytics = true;
-      avatars = "initials";
+  options.infra.authentik = {
+    enable = mkEnableOption "authentik";
+    enablePrometheus = mkEnableOption "Prometheus monitoring of authentik";
+    environmentFile = mkOption {
+      description = "File outside of nix store containing environment variables such as the email passwords";
+      type = path;
     };
-    nginx = {
+    metricsPort = mkOption {
+      description = "Prometheus metrics port";
+      type = int;
+      default = 64151;
+    };
+    ldapMetricsPort = mkOption {
+      description = "Prometheus LDAP metrics port";
+      type = int;
+      default = 64152;
+    };
+    domain = mkOption {
+      description = "Domain of the authentik server";
+      type = str;
+      default = "auth.bartoostveen.nl";
+    };
+    emailHost = mkOption {
+      description = "Email host";
+      type = str;
+      default = "bartoostveen.nl";
+    };
+    email = mkOption {
+      description = "Email of the authentik server";
+      type = str;
+      default = "auth@bartoostveen.nl";
+    };
+  };
+
+  config = mkIf cfg.enable {
+    services.authentik = {
       enable = true;
-      enableACME = true;
-      host = "auth.${fqdn}";
+      inherit (cfg) environmentFile;
+      worker.listenMetrics = "[::1]:${toString cfg.metricsPort}";
+      settings = {
+        email = {
+          host = cfg.emailHost;
+          port = 587;
+          username = cfg.email;
+          use_tls = true;
+          use_ssl = false;
+          from = cfg.email;
+        };
+        disable_startup_analytics = true;
+        avatars = "initials";
+      };
+      nginx = {
+        enable = true;
+        enableACME = true;
+        host = cfg.domain;
+      };
     };
-  };
 
-  services.authentik-ldap = {
-    enable = true;
-    environmentFile = config.sops.secrets.authentik-env.path;
-    listenMetrics = "[::1]:${toString ldap-metrics-port}";
-  };
+    services.authentik-ldap = {
+      enable = true;
+      inherit (cfg) environmentFile;
+      listenMetrics = "[::1]:${toString cfg.ldapMetricsPort}";
+    };
 
-  services.prometheus = {
-    scrapeConfigs = [
-      {
-        job_name = "authentik";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString metrics-port}" ];
-          }
-        ];
-      }
-      {
-        job_name = "authentik-ldap";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString ldap-metrics-port}" ];
-          }
-        ];
-      }
+    services.prometheus = mkIf cfg.enablePrometheus {
+      scrapeConfigs = [
+        {
+          job_name = "authentik";
+          static_configs = [
+            {
+              targets = [ "localhost:${toString cfg.metricsPort}" ];
+            }
+          ];
+        }
+        {
+          job_name = "authentik-ldap";
+          static_configs = [
+            {
+              targets = [ "localhost:${toString cfg.ldapMetricsPort}" ];
+            }
+          ];
+        }
+      ];
+    };
+
+    users.users.authentik = {
+      isSystemUser = true;
+      group = "authentik";
+    };
+    users.groups.authentik = { };
+
+    users.users.authentik-ldap = {
+      isSystemUser = true;
+      group = "authentik";
+    };
+
+    networking.firewall.allowedTCPPorts = [
+      3389 # LDAP
+      6636 # LDAPS
     ];
   };
-
-  users.users.authentik = {
-    isSystemUser = true;
-    group = "authentik";
-  };
-  users.groups.authentik = { };
-
-  users.users.authentik-ldap = {
-    isSystemUser = true;
-    group = "authentik";
-  };
-
-  sops.secrets.authentik-env = {
-    format = "binary";
-    sopsFile = ../../secrets/authentik.env.secret;
-
-    owner = "authentik";
-    group = "authentik";
-    mode = "0660";
-    restartUnits = [
-      "authentik.service"
-      "authentik-worker.service"
-      "authentik-ldap.service"
-    ];
-  };
-
-  networking.firewall.allowedTCPPorts = [
-    3389 # LDAP
-    6636 # LDAPS
-  ];
 }
