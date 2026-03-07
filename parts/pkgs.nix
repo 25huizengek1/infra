@@ -33,6 +33,7 @@
           self.overlays.default
           self.overlays.nix-auth
           self.overlays.invoice
+          self.overlays.fix-jabref
 
           inputs.copyparty.overlays.default
           inputs.deploy-rs.overlays.default

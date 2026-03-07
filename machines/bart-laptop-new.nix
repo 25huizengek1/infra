@@ -28,6 +28,8 @@
     ../modules/desktop/wireshark.nix
   ];
 
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   boot.loader = {
     efi.canTouchEfiVariables = true;
 
@@ -85,6 +87,12 @@
     sopsFile = ../secrets/non-infra/wg-snt.secret;
     reloadUnits = [ "systemd-networkd.service" ];
   };
+
+  programs.firefox = {
+    enable = true;
+    nativeMessagingHosts.packages = [ pkgs.jabref ];
+  };
+  environment.systemPackages = [ pkgs.jabref ];
 
   infra.wireguard.enable = true;
 
