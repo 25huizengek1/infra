@@ -1,13 +1,10 @@
-{
-  pkgs,
-  inputs,
-  config,
-  ...
-}:
+{ pkgs, ... }:
 
 let
   fqdn = "vector.bartoostveen.nl";
   wpVhost = fqdn; # TODO: clean up
+
+  wpPackage = pkgs.wordpress_6_9;
 
   # TODO: group these wordpress packages into something like wordpressPackages.nix
   # keep-sorted start
@@ -55,8 +52,8 @@ let
     stdenv.mkDerivation {
       name = "wp-language-nl";
       src = fetchzip {
-        url = "https://nl.wordpress.org/wordpress-${wordpress_6_9.version}-nl_NL.zip";
-        name = "wp-${wordpress_6_9.version}-language-nl";
+        url = "https://nl.wordpress.org/wordpress-${wpPackage.version}-nl_NL.zip";
+        name = "wp-${wpPackage.version}-language-nl";
         hash = "sha256-Wev3K0GexZviRZ01USYQibcPjqd5tqY7kP4qvhLjMX4=";
       };
       installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
@@ -65,11 +62,11 @@ let
     with pkgs;
     stdenv.mkDerivation (finalAttrs: {
       pname = "wp-view-transitions";
-      version = "1.1.2";
+      version = "1.2.0";
 
       src = fetchzip {
         url = "https://downloads.wordpress.org/plugin/view-transitions.${finalAttrs.version}.zip";
-        hash = "sha256-k2ksUSc/wqtNpVUsXcb+aBtlLXUOgxvAWc6gBc7WTUA=";
+        hash = "sha256-mHdek0LI51mfurpyXpM8QOK2E38PwoL8Ad3OQl9yW28=";
       };
 
       installPhase = "mkdir -p $out; cp -R * $out/";
@@ -114,7 +111,7 @@ in
         inherit (pkgs.wordpressPackages.themes) twentytwentyfive;
       };
       languages = [ wp-language-nl ];
-      package = pkgs.wordpress_6_9;
+      package = wpPackage;
     };
   };
 
