@@ -1,6 +1,6 @@
 {
   flake.overlays.fix-jabref = (
-    final: prev: {
+    _final: prev: {
       jabref = prev.jabref.overrideAttrs (old: {
         postFixup = old.postFixup + ''
           for bin in jabgui jabkit jabsrv-cli; do

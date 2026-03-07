@@ -47,17 +47,6 @@ let
 
       installPhase = "mkdir -p $out; cp -R * $out/";
     });
-  wp-language-nl =
-    with pkgs;
-    stdenv.mkDerivation {
-      name = "wp-language-nl";
-      src = fetchzip {
-        url = "https://nl.wordpress.org/wordpress-${wpPackage.version}-nl_NL.zip";
-        name = "wp-${wpPackage.version}-language-nl";
-        hash = "sha256-Wev3K0GexZviRZ01USYQibcPjqd5tqY7kP4qvhLjMX4=";
-      };
-      installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
-    };
   view-transitions =
     with pkgs;
     stdenv.mkDerivation (finalAttrs: {
@@ -71,6 +60,17 @@ let
 
       installPhase = "mkdir -p $out; cp -R * $out/";
     });
+  wp-language-nl =
+    with pkgs;
+    stdenv.mkDerivation {
+      name = "wp-language-nl";
+      src = fetchzip {
+        url = "https://nl.wordpress.org/wordpress-${wpPackage.version}-nl_NL.zip";
+        name = "wp-${wpPackage.version}-language-nl";
+        hash = "sha256-Wev3K0GexZviRZ01USYQibcPjqd5tqY7kP4qvhLjMX4=";
+      };
+      installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
+    };
   # keep-sorted end
 in
 {
