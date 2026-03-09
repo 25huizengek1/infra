@@ -51,9 +51,9 @@ in
           inherit access;
           path = "/root/private/fs";
         };
-        "/m2" = {
+        "/m3" = {
           inherit access;
-          path = "/root/private/fs/rommel/ut/m2";
+          path = "/root/private/fs/rommel/ut/m3";
         };
         "/share" = {
           access = access // {
