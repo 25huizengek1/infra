@@ -153,8 +153,8 @@ in
       };
       monitors.continuwuity = {
         type = "json-query";
-        name = "Matrix federation test [federationtester.matrix.org]";
-        description = "Matrix federation Managed by AutoKuma";
+        name = "Matrix federation test (${cfg.fqdn}) [federationtester.matrix.org]";
+        description = "Matrix federation for ${cfg.fqdn} Managed by AutoKuma";
         url = "https://federationtester.matrix.org/api/report?server_name=${cfg.fqdn}";
         notification_name_list = [ "autokuma-matrix" ];
         tag_names = [

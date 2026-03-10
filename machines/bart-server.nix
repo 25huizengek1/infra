@@ -34,6 +34,7 @@
     ../modules/infra/nginx.nix
     ../modules/infra/podman.nix
     ../modules/infra/search.nix
+    ../modules/infra/wireguard.monitoring.nix
   ];
 
   facter.reportPath = ./bart-server.json;
