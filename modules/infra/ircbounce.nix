@@ -13,18 +13,44 @@ in
   services.nginx.virtualHosts.${vHost} = {
     enableACME = true;
     forceSSL = true;
+
+    locations."/".proxyPass = "http://127.0.0.1:${toString config.services.znc.config.Listener.l.Port}";
   };
 
   services.znc = {
     enable = true;
     mutable = false;
     useLegacyConfig = false;
-    openFirewall = false;
+    openFirewall = true;
     config = {
       SSLCertFile = cert;
       SSLKeyFile = key;
       SSLDHParamFile = dhParams;
+      TrustedProxy = [
+        "127.0.0.1"
+        "::1"
+      ];
 
+      Listener = {
+        l = {
+          AllowIRC = true;
+          AllowWeb = true;
+          Port = 5000;
+          SSL = true;
+          IPv4 = true;
+          IPv6 = false;
+          URIPrefix = "/";
+        };
+        l6 = {
+          AllowIRC = true;
+          AllowWeb = true;
+          Port = 5000;
+          SSL = true;
+          IPv4 = false;
+          IPv6 = true;
+          URIPrefix = "/";
+        };
+      };
       LoadModule = [
         "adminlog"
         "fail2ban"
@@ -80,13 +106,9 @@ in
     };
   };
 
-  networking.firewall = {
-    interfaces.wg-infra.allowedTCPPorts = [
-      config.services.znc.config.Listener.l.Port
-    ];
-
-    allowedTCPPorts = [ 113 ]; # oidentd
-  };
+  networking.firewall.allowedTCPPorts = [
+    113 # oidentd
+  ];
 
   users.users.znc.extraGroups = [ "nginx" ];
 
