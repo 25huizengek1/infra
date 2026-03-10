@@ -29,7 +29,7 @@ let
 
       src = fetchzip {
         url = "https://downloads.wordpress.org/plugin/carousel-block.${finalAttrs.version}.zip";
-        hash = "sha256-BBw5lK0/kGaGePMtGcw/RXqGZz/aTxIke9IOC5TWwGA=";
+        hash = "sha256-mUDnMPR5fIcLVx/sL/Gh7Nq7I0xgmvrRMpVyubWXFSg=";
       };
 
       installPhase = "mkdir -p $out; cp -R * $out/";
@@ -67,7 +67,7 @@ let
       src = fetchzip {
         url = "https://nl.wordpress.org/wordpress-${wpPackage.version}-nl_NL.zip";
         name = "wp-${wpPackage.version}-language-nl";
-        hash = "sha256-Wev3K0GexZviRZ01USYQibcPjqd5tqY7kP4qvhLjMX4=";
+        hash = "sha256-HrZaGTawPHxlO81P9NWCwL4H860nyys3b6cUtv8jpAo=";
       };
       installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
     };
