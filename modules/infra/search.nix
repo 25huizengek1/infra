@@ -88,6 +88,14 @@
             '';
         }
         {
+          modules = [ inputs.meshcoretomqtt.nixosModules.default ];
+          name = "Meshcore to MQTT";
+          urlPrefix = "https://github.com/Cisien/meshcoretomqtt/blob/main/";
+          specialArgs = {
+            inherit pkgs;
+          };
+        }
+        {
           optionsJSON =
             (import "${inputs.nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
           name = "NixOS unstable";

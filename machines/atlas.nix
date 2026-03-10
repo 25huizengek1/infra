@@ -9,6 +9,7 @@
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.mixins-terminfo
 
+    ../modules/infra/meshcore/mc2mqtt.nix
     ../modules/infra/common.nix
     ../modules/infra/git.nix
     ../modules/infra/networking.nix

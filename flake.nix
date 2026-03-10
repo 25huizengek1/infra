@@ -103,6 +103,16 @@
       flake = false;
     };
 
+    meshcoretomqtt = {
+      url = "github:Cisien/meshcoretomqtt";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        flake-utils.follows = "flake-utils";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
+
     nix-auth = {
       url = "github:numtide/nix-auth";
       inputs = {

@@ -505,6 +505,35 @@
         "type": "github"
       }
     },
+    "meshcoretomqtt": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772157883,
+        "narHash": "sha256-tO+Im3poeWEhumxEg7dvrI6HwBozgHZUkxdtendqzr8=",
+        "owner": "Cisien",
+        "repo": "meshcoretomqtt",
+        "rev": "31aad7d8ddfc67259969bc35074a691377edaf99",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Cisien",
+        "repo": "meshcoretomqtt",
+        "type": "github"
+      }
+    },
     "napalm": {
       "inputs": {
         "flake-utils": [
@@ -868,6 +897,7 @@
         "invoice": "invoice",
         "licenseit": "licenseit",
         "maubot-spotify": "maubot-spotify",
+        "meshcoretomqtt": "meshcoretomqtt",
         "nix-auth": "nix-auth",
         "nix-index-database": "nix-index-database",
         "nixos-apple-silicon": "nixos-apple-silicon",
