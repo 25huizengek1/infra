@@ -145,5 +145,35 @@ in
     systemd.services.nginx.serviceConfig.SupplementaryGroups = [
       config.services.matrix-continuwuity.group
     ];
+
+    infra.autokuma.instances.local = {
+      tags.matrix = {
+        name = "Matrix";
+        color = "#0037ff";
+      };
+      monitors.continuwuity = {
+        type = "json-query";
+        name = "Matrix federation test [federationtester.matrix.org]";
+        description = "Matrix federation Managed by AutoKuma";
+        url = "https://federationtester.matrix.org/api/report?server_name=${cfg.fqdn}";
+        notification_name_list = [ "autokuma-matrix" ];
+        tag_names = [
+          {
+            name = "autokuma";
+            value = "Matrix";
+          }
+          {
+            name = "matrix";
+            value = cfg.fqdn;
+          }
+        ];
+        json_path = "FederationOK";
+        json_path_operator = "==";
+        expected_value = "true";
+        timeout = 60;
+        interval = 120;
+        retry_interval = 120;
+      };
+    };
   };
 }

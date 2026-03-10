@@ -11,6 +11,12 @@ let
   grafanaVHost = "grafana.vitune.app";
 
   email = "alerts@${config.mailserver.fqdn}";
+
+  inherit (lib)
+    genAttrs
+    attrNames
+    mkDefault
+    ;
 in
 {
   imports = [
@@ -226,7 +232,10 @@ in
     group = "grafana";
   };
 
-  services.uptime-kuma.enable = true;
+  services.uptime-kuma = {
+    enable = true;
+    settings.HOST = "127.0.0.1";
+  };
 
   services.anubis.instances.uptime-kuma.settings = {
     BIND = "/run/anubis/anubis-uptime-kuma/anubis-uptime-kuma.sock";
@@ -245,7 +254,8 @@ in
   };
 
   infra.autokuma = {
-    enable = lib.mkDefault true;
+    enable = mkDefault true;
+    package = pkgs.local.autokuma;
     defaultEnvFile = config.sops.secrets.autokuma-env.path;
     defaultSettings = {
       kuma = {
@@ -256,14 +266,21 @@ in
       tag_color = "#ea2121";
     };
     instances.local = {
-      tags.nginx = {
-        name = "nginx @ ${config.networking.hostName}";
-        color = "#17964a";
+      additionalMonitorFiles = [ config.sops.secrets.autokuma-matrix.path ];
+      tags = {
+        nginx = {
+          name = "nginx @ ${config.networking.hostName}";
+          color = "#17964a";
+        };
+        autokuma = {
+          name = "Managed by AutoKuma";
+          color = "#ea2121";
+        };
       };
       monitors =
-        lib.genAttrs
+        genAttrs
           (builtins.filter (kumaVHost: kumaVHost != "localhost") (
-            lib.attrNames config.services.nginx.virtualHosts
+            attrNames config.services.nginx.virtualHosts
           ))
           (kumaVHost: {
             type = "http";
@@ -272,15 +289,25 @@ in
             expiry_notification = true;
             url = "https://${kumaVHost}";
             accepted_statuscodes = [ "200-399" ];
+            notification_name_list = [ "autokuma-matrix" ];
             tag_names = [
               {
                 name = "nginx";
                 value = kumaVHost;
               }
+              {
+                name = "autokuma";
+                value = "nginx";
+              }
             ];
+            timeout = 10;
+            interval = 20;
+            retry_interval = 20;
           });
     };
   };
+
+  systemd.services.autokuma-local.serviceConfig.SupplementaryGroups = "podman";
 
   sops.secrets.autokuma-env = {
     owner = "root";
@@ -289,6 +316,17 @@ in
 
     sopsFile = ../../secrets/autokuma.env.secret;
     format = "binary";
+    restartUnits = [ "autokuma-local.service" ];
+  };
+
+  sops.secrets.autokuma-matrix = {
+    owner = "autokuma";
+    group = "autokuma";
+    mode = "0600";
+
+    sopsFile = ../../secrets/autokuma-matrix.toml.secret;
+    format = "binary";
+    restartUnits = [ "autokuma-local.service" ];
   };
 
   services.loki = {

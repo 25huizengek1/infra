@@ -27,6 +27,7 @@ let
     mkPackageOption
     nameValuePair
     recursiveUpdate
+    removeSuffix
     types
     # keep-sorted end
     ;
@@ -316,6 +317,24 @@ in
             type = nullOr str;
             example = "autokuma";
           };
+          logLevel = mkOption {
+            description = "Log level of AutoKuma";
+            default = "info";
+            type = enum [
+              "error"
+              "warn"
+              "info"
+              "debug"
+              "trace"
+            ];
+            example = "debug";
+          };
+          additionalMonitorFiles = mkOption {
+            description = "Additional monitor files to load. Can/should be used for secrets.";
+            default = [ ];
+            type = listOf path;
+            example = [ "/run/secrets/alert-that-contains-private-access-tokens.toml" ];
+          };
           settings = mkOption {
             description = "Autokuma settings";
             default = { };
@@ -489,30 +508,40 @@ in
       let
         serviceName = "autokuma-${name}";
         dir = "/run/autokuma/${name}";
+        monitorsDir = "${dir}/monitors";
         monitorsTOML = map ({ name, value }: format.generate "${name}.toml" value) (
           attrsToList (mkMonitorAttrs instance)
         );
-        monitorsDir = pkgs.runCommand "autokuma-${name}-monitors" { } (
-          concatStringsSep "\n" (
-            [ "mkdir -p $out" ] ++ (map (path: "cp ${path} $out/${trimHash path}") monitorsTOML)
-          )
-        );
         settings = {
-          static_monitors = "${monitorsDir}";
+          static_monitors = monitorsDir;
         }
         // (recursiveUpdate (validTOML cfg.defaultSettings) (validTOML instance.settings));
         configTOML = format.generate "${serviceName}.toml" settings;
       in
       nameValuePair serviceName {
         description = "AutoKuma ${name}";
-        after = [ "network.target" ];
+        requires = [ "network-online.target" ];
+        after = [ "network-online.target" ];
         wantedBy = [ "multi-user.target" ];
         preStart = ''
+          mkdir -p ${monitorsDir} | true
+          rm -rf ${monitorsDir}/*
+          rm -f ${dir}/autokuma.toml
           cp -f ${configTOML} ${dir}/autokuma.toml
           chmod 664 ${dir}/autokuma.toml
+          ${map (path: "cp ${path} ${monitorsDir}/${trimHash path}") monitorsTOML |> concatStringsSep "\n"}
+          ${
+            map (
+              path: "cp ${path} ${monitorsDir}/${baseNameOf path |> removeSuffix ".toml"}.toml"
+            ) instance.additionalMonitorFiles
+            |> concatStringsSep "\n"
+          }
         '';
         path = with pkgs; [ cacert ];
-        environment.XDG_CONFIG_HOME = dir; # yes this is required
+        environment = {
+          XDG_CONFIG_HOME = dir; # yes this is required
+          RUST_LOG = instance.logLevel;
+        };
         serviceConfig = {
           Type = "simple";
           StateDirectory = "autokuma-${name}";
@@ -530,7 +559,6 @@ in
           PrivateDevices = true;
           PrivateMounts = true;
           PrivateTmp = true;
-          PrivateUsers = true;
           ProtectClock = true;
           ProtectControlGroups = "strict";
           ProtectHome = true;
@@ -540,8 +568,13 @@ in
           ProtectKernelTunables = true;
           ProtectProc = "invisible";
           ProtectSystem = "strict";
+          ReadWritePaths = dir;
           RemoveIPC = true;
-          RestrictAddressFamilies = "AF_INET AF_INET6 AF_UNIX";
+          RestrictAddressFamilies = [
+            "AF_INET"
+            "AF_INET6"
+            "AF_UNIX"
+          ];
           RestrictNamespaces = true;
           RestrictRealtime = true;
           RestrictSUIDSGID = true;
