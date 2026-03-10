@@ -5,8 +5,8 @@
 
   services.mctomqtt = {
     enable = true;
-    iata = "EUR";
-    serialPorts = [ "/dev/ttyUSB0" ];
+    iata = "ENS";
+    serialPorts = [ "/dev/ttyACM0" ];
     defaults = {
       letsmesh-us.enable = false;
       letsmesh-eu.enable = true;
