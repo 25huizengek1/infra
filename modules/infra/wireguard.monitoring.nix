@@ -35,7 +35,7 @@ in
           tag_names = [
             {
               name = "autokuma";
-              value = "Matrix";
+              value = "Wireguard";
             }
             {
               name = "wireguard";
