@@ -6,7 +6,7 @@
   openssl,
 }:
 
-rustPlatform.buildRustPackage (finalAttrs: {
+rustPlatform.buildRustPackage (_finalAttrs: {
   pname = "autokuma";
   version = "2.0.0";
 
