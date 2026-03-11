@@ -56,5 +56,19 @@
       packages.tilp = pkgs.callPackage ../pkgs/tilp/package.nix { };
       packages.wp-oidc-roles = pkgs.callPackage ../pkgs/wp-oidc-roles/package.nix { };
       # keep-sorted end
+
+      packages.sops-rotate =
+        with pkgs;
+        writeShellApplication {
+          name = "sops-rotate";
+          text = ''
+            set -x
+            find secrets/**/*.secret -exec sops rotate -i {} ";"
+          '';
+          runtimeInputs = [
+            sops
+            findutils
+          ];
+        };
     };
 }
