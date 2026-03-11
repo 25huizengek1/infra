@@ -1,7 +1,7 @@
 {
   sops.secrets.alertmanager-email-password-encrypted = {
     format = "binary";
-    sopsFile = ../../../secrets/email-passwords/alertmanager.enc.secret;
+    sopsFile = ../../../../../secrets/email-passwords/alertmanager.enc.secret;
 
     restartUnits = [
       "postfix-setup.service"
@@ -13,7 +13,7 @@
     format = "binary";
     mode = "0600";
 
-    sopsFile = ../../../secrets/email-passwords/alertmanager.secret;
+    sopsFile = ../../../../../secrets/email-passwords/alertmanager.secret;
     restartUnits = [ "alertmanager.service" ];
     owner = "alertmanager";
     group = "alertmanager";
@@ -21,7 +21,7 @@
 
   sops.secrets.authentik-email-password-encrypted = {
     format = "binary";
-    sopsFile = ../../../secrets/email-passwords/auth.enc.secret;
+    sopsFile = ../../../../../secrets/email-passwords/auth.enc.secret;
 
     restartUnits = [
       "postfix-setup.service"
@@ -31,7 +31,7 @@
 
   sops.secrets.bart-email-password-encrypted = {
     format = "binary";
-    sopsFile = ../../../secrets/email-passwords/bart.enc.secret;
+    sopsFile = ../../../../../secrets/email-passwords/bart.enc.secret;
 
     restartUnits = [
       "postfix-setup.service"

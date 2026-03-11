@@ -15,7 +15,6 @@
         sshUser = "root";
         ip = "vector.bartoostveen.nl";
       };
-      # bart-pc.sshUser = "bart";
     };
 
     extraNixOSConfigurations = {
@@ -28,10 +27,6 @@
         username = "bart";
         hostname = "bart-laptop-new";
       }
-      # {
-      #   username = "bart";
-      #   hostname = "bart-pc";
-      # }
     ];
   };
 }

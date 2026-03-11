@@ -165,7 +165,7 @@ in
     group = "rspamd";
     mode = "0600";
 
-    sopsFile = ../../../secrets/vector.bartoostveen.nl.mail.key.secret;
+    sopsFile = ../../../../secrets/vector.bartoostveen.nl.mail.key.secret;
 
     path = "${config.mailserver.dkimKeyDirectory}/vector.bartoostveen.nl.mail.key";
     restartUnits = [ "rspamd.service" ];

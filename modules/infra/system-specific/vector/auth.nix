@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../authentik.nix
+    ../../authentik.nix
   ];
 
   infra.authentik = {
@@ -13,7 +13,7 @@
 
   sops.secrets.authentik-env = {
     format = "binary";
-    sopsFile = ../../../secrets/vector-authentik.env.secret;
+    sopsFile = ../../../../secrets/vector-authentik.env.secret;
 
     owner = "authentik";
     group = "authentik";
@@ -27,7 +27,7 @@
 
   sops.secrets.ldap-bind-password = {
     format = "binary";
-    sopsFile = ../../../secrets/vector-ldap-bind-password.secret;
+    sopsFile = ../../../../secrets/vector-ldap-bind-password.secret;
     restartUnits = [
       "authentik.service"
       "authentik-worker.service"

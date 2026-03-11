@@ -17,11 +17,11 @@ rustPlatform.buildRustPackage (_finalAttrs: {
     hash = "sha256-IxizYf6fwZ1VhEXZLGHlWkN3+p45mDXSd2nIu40sEM4=";
   };
 
-  cargoLock.lockFile = ./autokuma/Cargo.lock;
+  cargoLock.lockFile = ./Cargo.lock;
 
   patches = [
-    ./autokuma/no-doctest.patch
-    ./autokuma/fix-dynamic-dispatch.patch
+    ./no-doctest.patch
+    ./fix-dynamic-dispatch.patch
   ];
 
   nativeBuildInputs = [ pkg-config ];

@@ -167,8 +167,6 @@
       };
     };
 
-    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
-
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs = {

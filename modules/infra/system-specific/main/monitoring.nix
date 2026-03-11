@@ -213,7 +213,7 @@ in
     format = "binary";
     mode = "0600";
 
-    sopsFile = ../../secrets/alertmanager-discord-webhook.secret;
+    sopsFile = ../../../../secrets/alertmanager-discord-webhook.secret;
     restartUnits = [ "alertmanager.service" ];
     owner = "alertmanager";
     group = "alertmanager";
@@ -223,7 +223,7 @@ in
     format = "binary";
     mode = "0600";
 
-    sopsFile = ../../secrets/grafana.secret;
+    sopsFile = ../../../../secrets/grafana.secret;
     restartUnits = [ "grafana.service" ];
     owner = "grafana";
     group = "grafana";
@@ -311,7 +311,7 @@ in
     group = "root";
     mode = "0600";
 
-    sopsFile = ../../secrets/autokuma.env.secret;
+    sopsFile = ../../../../secrets/autokuma.env.secret;
     format = "binary";
     restartUnits = [ "autokuma-local.service" ];
   };
@@ -321,7 +321,7 @@ in
     group = "autokuma";
     mode = "0600";
 
-    sopsFile = ../../secrets/autokuma-matrix.toml.secret;
+    sopsFile = ../../../../secrets/autokuma-matrix.toml.secret;
     format = "binary";
     restartUnits = [ "autokuma-local.service" ];
   };

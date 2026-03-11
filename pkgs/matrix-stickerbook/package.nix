@@ -16,7 +16,7 @@ buildGoModule (_finalAttrs: {
     hash = "sha256-IA8tHcOlAN1YgujqH0WNrS//axnKhm9OMQ2ukRmVuo8=";
   };
 
-  patches = [ ./matrix-stickerbook/0001-fix-go-1.25.5.patch ];
+  patches = [ ./0001-fix-go-1.25.5.patch ];
 
   vendorHash = "sha256-oT9VwHQALPWe7eMUrOHOxHP/qzt3laW6FmFzf2phnyg=";
 
@@ -28,7 +28,6 @@ buildGoModule (_finalAttrs: {
     description = "Sticker management system for Matrix";
     homepage = "https://github.com/liminalpurple/matrix-stickerbook";
     license = lib.licenses.asl20;
-    maintainers = with lib.maintainers; [ ];
     mainProgram = "stickerbook";
   };
 })

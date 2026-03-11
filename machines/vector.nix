@@ -21,10 +21,10 @@
     ../modules/infra/nginx.nix
     ../modules/infra/podman.nix
 
-    ../modules/infra/customers-vector/auth.nix
-    ../modules/infra/customers-vector/mail.nix
-    ../modules/infra/customers-vector/monitoring.nix
-    ../modules/infra/customers-vector/wordpress.nix
+    ../modules/infra/system-specific/vector/auth.nix
+    ../modules/infra/system-specific/vector/mail.nix
+    ../modules/infra/system-specific/vector/monitoring.nix
+    ../modules/infra/system-specific/vector/wordpress.nix
   ];
 
   facter.reportPath = ./vector.json;

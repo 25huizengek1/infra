@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    ./dawn/0001-fix-correct-cmake-libdir.patch
+    ./0001-fix-correct-cmake-libdir.patch
   ];
 
   nativeBuildInputs = [

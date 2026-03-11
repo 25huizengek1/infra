@@ -20,14 +20,14 @@ buildNpmPackage (finalAttrs: {
 
   patches = [
     # as specified in https://github.com/anuraghazra/github-readme-stats?tab=readme-ov-file#on-other-platforms
-    ./github-readme-stats-fix-express-dependency.patch
+    ./0001-fix-express-dependency.patch
   ];
 
   npmDeps = importNpmLock {
     npmRoot = applyPatches {
       inherit (finalAttrs) src patches;
     };
-    packageLock = builtins.fromJSON (builtins.readFile ./github-readme-stats-package-lock.json);
+    packageLock = builtins.fromJSON (builtins.readFile ./package-lock.json);
   };
   npmConfigHook = importNpmLock.npmConfigHook;
 

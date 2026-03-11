@@ -10,13 +10,20 @@
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.hardware-hetzner-online-amd
 
-    ../containers/tcs-bot.nix
-    ../containers/web.nix
-
     ../modules/wireguard.nix
 
+    ../modules/infra/system-specific/main/containers/tcs-bot.nix
+    ../modules/infra/system-specific/main/containers/web.nix
+    ../modules/infra/system-specific/main/attic.nix
+    ../modules/infra/system-specific/main/ical-proxy.nix
+    ../modules/infra/system-specific/main/ircbounce.nix
+    ../modules/infra/system-specific/main/mailserver
+    ../modules/infra/system-specific/main/maubot.nix
+    ../modules/infra/system-specific/main/monitoring.nix
+    ../modules/infra/system-specific/main/search.nix
+    ../modules/infra/system-specific/main/wireguard.monitoring.nix
+
     ../modules/infra/anubis.nix
-    ../modules/infra/attic.nix
     ../modules/infra/authentik.nix
     ../modules/infra/autokuma.nix
     ../modules/infra/common.nix
@@ -24,17 +31,10 @@
     ../modules/infra/copyparty.nix
     ../modules/infra/fail2ban.nix
     ../modules/infra/git.nix
-    ../modules/infra/ical-proxy.nix
-    ../modules/infra/ircbounce.nix
-    ../modules/infra/mailserver
-    ../modules/infra/maubot.nix
-    ../modules/infra/monitoring.nix
     ../modules/infra/networking.nix
     ../modules/infra/nix.nix
     ../modules/infra/nginx.nix
     ../modules/infra/podman.nix
-    ../modules/infra/search.nix
-    ../modules/infra/wireguard.monitoring.nix
   ];
 
   facter.reportPath = ./bart-server.json;

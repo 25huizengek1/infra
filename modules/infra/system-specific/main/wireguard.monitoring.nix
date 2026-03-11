@@ -17,7 +17,7 @@ in
     };
     monitors =
       let
-        inherit (import ../wireguard.meta.nix) nodes;
+        inherit (import ../../../wireguard.meta.nix) nodes;
         first = list: builtins.elemAt list 0;
       in
       map (

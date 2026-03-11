@@ -70,8 +70,8 @@
                     {
                       imports = [
                         inputs.sops-nix.nixosModules.sops
-                        (import ./autokuma.nix extraSpecialArgs)
-                        (import ./copyparty.nix extraSpecialArgs)
+                        (import ../../autokuma.nix extraSpecialArgs)
+                        (import ../../copyparty.nix extraSpecialArgs)
                       ];
 
                       system.stateVersion = "26.05";
