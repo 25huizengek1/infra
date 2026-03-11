@@ -23,6 +23,7 @@
 
     ../modules/infra/customers-vector/auth.nix
     ../modules/infra/customers-vector/mail.nix
+    ../modules/infra/customers-vector/monitoring.nix
     ../modules/infra/customers-vector/wordpress.nix
   ];
 

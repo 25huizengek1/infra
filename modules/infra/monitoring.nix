@@ -13,9 +13,11 @@ let
   email = "alerts@${config.mailserver.fqdn}";
 
   inherit (lib)
+    # keep-sorted start
     genAttrs
     attrNames
     mkDefault
+    # keep-sorted end
     ;
 in
 {
@@ -203,14 +205,9 @@ in
     ];
   };
 
-  services.nginx.virtualHosts."prometheus.vitune.app" = {
-    enableACME = true;
-    forceSSL = true;
-    listenAddresses = [ "100.64.0.2" ];
-    locations."/" = {
-      proxyPass = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
-    };
-  };
+  services.nginx.virtualHosts.${config.infra.authentik.domain}.serverAliases = [
+    "prometheus.vitune.app"
+  ];
 
   sops.secrets.alertmanager-discord-webhook = {
     format = "binary";
