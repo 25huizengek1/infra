@@ -5,7 +5,8 @@
 }:
 
 let
-  fqdn = "cloud.vector.bartoostveen.nl";
+  domain = "vector.bartoostveen.nl";
+  fqdn = "cloud.${domain}";
 in
 {
   services.nextcloud = {
@@ -25,12 +26,12 @@ in
       allow_local_remote_servers = true;
       mail_smtpmode = "smtp";
       mail_smtpauth = true;
-      mail_smtphost = "vector.bartoostveen.nl";
+      mail_smtphost = domain;
       mail_smtpport = 465;
       mail_smtpsecure = "ssl";
-      mail_smtpname = "cloud@vector.bartoostveen.nl";
+      mail_smtpname = "cloud@${domain}";
       mail_from_address = "cloud";
-      mail_domain = "vector.bartoostveen.nl";
+      mail_domain = domain;
       defaultapp = "files";
     };
     phpOptions = {
