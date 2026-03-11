@@ -110,6 +110,18 @@ in
     restartUnits = [ "rspamd.service" ];
   };
 
+  sops.secrets."boostveen.nl.mail.key" = {
+    format = "binary";
+    owner = "rspamd";
+    group = "rspamd";
+    mode = "0600";
+
+    sopsFile = ../../../../../secrets/boostveen.nl.mail.key.secret;
+
+    path = "${config.mailserver.dkimKeyDirectory}/boostveen.nl.mail.key";
+    restartUnits = [ "rspamd.service" ];
+  };
+
   sops.secrets."omeduostuurcentenneef.nl.mail.key" = {
     format = "binary";
     owner = "rspamd";
