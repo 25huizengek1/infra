@@ -14,8 +14,8 @@ let
 
   inherit (lib)
     # keep-sorted start
-    genAttrs
     attrNames
+    genAttrs
     mkDefault
     # keep-sorted end
     ;
