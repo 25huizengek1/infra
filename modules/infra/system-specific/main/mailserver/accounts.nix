@@ -12,6 +12,7 @@
         "tcsbot@bartoostveen.nl"
         "dns@bartoostveen.nl"
         "matrix@bartoostveen.nl"
+        "vimexx@bartoostveen.nl"
 
         "bart@omeduostuurcentenneef.nl"
         "postmaster@omeduostuurcentenneef.nl"
