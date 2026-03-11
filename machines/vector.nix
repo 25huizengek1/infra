@@ -22,6 +22,7 @@
     ../modules/infra/podman.nix
 
     ../modules/infra/system-specific/vector/auth.nix
+    ../modules/infra/system-specific/vector/cloud.nix
     ../modules/infra/system-specific/vector/mail.nix
     ../modules/infra/system-specific/vector/monitoring.nix
     ../modules/infra/system-specific/vector/wordpress.nix
