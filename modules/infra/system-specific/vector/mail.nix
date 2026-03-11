@@ -75,6 +75,7 @@ in
     hierarchySeparator = "/"; # See: https://doc.dovecot.org/main/core/config/namespaces.html#namespaces
 
     enableManageSieve = true;
+    enableImap = true;
     enableSubmission = true; # Enable StartTLS
 
     ldap = {
