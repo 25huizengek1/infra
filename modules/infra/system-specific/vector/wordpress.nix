@@ -1,68 +1,56 @@
 { pkgs, inputs, ... }:
 
 let
-  fqdn = "vector.bartoostveen.nl";
-  wpVhost = fqdn; # TODO: clean up
-
+  wpVhost = "vector.bartoostveen.nl";
   wpPackage = pkgs.callPackage "${inputs.nixpkgs}/pkgs/servers/web-apps/wordpress/generic.nix" {
     version = "6.9.4";
     hash = "sha256-22EK2fVJ4Ku1rz49XGcpxY2HRDllTN8K/qQlsuqJXzU=";
   };
 
+  mkWpPlugin =
+    {
+      pname,
+      id,
+      version,
+      hash,
+      url ? "https://downloads.wordpress.org/plugin/${id}.${version}.zip",
+    }:
+    with pkgs;
+    stdenv.mkDerivation (finalAttrs: {
+      inherit pname version;
+      src = fetchzip {
+        inherit url hash;
+      };
+      installPhase = "mkdir -p $out; cp -R * $out/";
+    });
+
   # TODO: group these wordpress packages into something like wordpressPackages.nix
   # keep-sorted start
-  generic-oidc =
-    with pkgs;
-    stdenv.mkDerivation (finalAttrs: {
-      pname = "wp-generic-oidc";
-      version = "3.11.3";
-
-      src = fetchzip {
-        url = "https://downloads.wordpress.org/plugin/daggerhart-openid-connect-generic.${finalAttrs.version}.zip";
-        hash = "sha256-/mqGWQz1lHsnA2dpQEZQVCWmqFSmDslFd4rzeEC4PA8=";
-      };
-
-      installPhase = "mkdir -p $out; cp -R * $out/";
-    });
-  gutenberg-carousel =
-    with pkgs;
-    stdenv.mkDerivation (finalAttrs: {
-      pname = "wp-gutenberg-carousel";
-      version = "2.0.6";
-
-      src = fetchzip {
-        url = "https://downloads.wordpress.org/plugin/carousel-block.${finalAttrs.version}.zip";
-        hash = "sha256-mUDnMPR5fIcLVx/sL/Gh7Nq7I0xgmvrRMpVyubWXFSg=";
-      };
-
-      installPhase = "mkdir -p $out; cp -R * $out/";
-    });
-  modify-profile-fields =
-    with pkgs;
-    stdenv.mkDerivation (_finalAttrs: {
-      pname = "wp-modify-profile-fields";
-      version = "1.07";
-
-      src = fetchzip {
-        url = "https://downloads.wordpress.org/plugin/modify-profile-fields-dashboard-menu-buttons.zip";
-        hash = "sha256-+wxTQCkmmWYe3B0/XOljWEWyWj/SPk90rxvJwwspbFM=";
-      };
-
-      installPhase = "mkdir -p $out; cp -R * $out/";
-    });
-  view-transitions =
-    with pkgs;
-    stdenv.mkDerivation (finalAttrs: {
-      pname = "wp-view-transitions";
-      version = "1.2.0";
-
-      src = fetchzip {
-        url = "https://downloads.wordpress.org/plugin/view-transitions.${finalAttrs.version}.zip";
-        hash = "sha256-mHdek0LI51mfurpyXpM8QOK2E38PwoL8Ad3OQl9yW28=";
-      };
-
-      installPhase = "mkdir -p $out; cp -R * $out/";
-    });
+  generic-oidc = mkWpPlugin {
+    pname = "wp-generic-oidc";
+    version = "3.11.3";
+    id = "daggerhart-openid-connect-generic";
+    hash = "sha256-/mqGWQz1lHsnA2dpQEZQVCWmqFSmDslFd4rzeEC4PA8=";
+  };
+  gutenberg-carousel = mkWpPlugin {
+    pname = "wp-gutenberg-carousel";
+    version = "2.0.6";
+    id = "carousel-block";
+    hash = "sha256-mUDnMPR5fIcLVx/sL/Gh7Nq7I0xgmvrRMpVyubWXFSg=";
+  };
+  modify-profile-fields = mkWpPlugin {
+    pname = "wp-modify-profile-fields";
+    version = "1.07";
+    id = "modify-profile-fields-dashboa";
+    hash = "sha256-+wxTQCkmmWYe3B0/XOljWEWyWj/SPk90rxvJwwspbFM=";
+  };
+  view-transitions = mkWpPlugin {
+    pname = "wp-view-transitions";
+    version = "1.2.0";
+    id = "view-transitions";
+    hash = "sha256-mHdek0LI51mfurpyXpM8QOK2E38PwoL8Ad3OQl9yW28=";
+  };
+  # keep-sorted end
   wp-language-nl =
     with pkgs;
     stdenv.mkDerivation {
@@ -74,7 +62,6 @@ let
       };
       installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
     };
-  # keep-sorted end
 in
 {
   services.wordpress = {
