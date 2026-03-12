@@ -181,7 +181,7 @@
     };
 
     srvos = {
-      url = "github:numtide/srvos";
+      url = "github:bartoostveen/srvos/fix-nginx-infinite-recursion";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
