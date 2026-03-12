@@ -1,10 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
   fqdn = "vector.bartoostveen.nl";
   wpVhost = fqdn; # TODO: clean up
 
-  wpPackage = pkgs.wordpress_6_9;
+  wpPackage = pkgs.callPackage "${inputs.nixpkgs}/pkgs/servers/web-apps/wordpress/generic.nix" {
+    version = "6.9.4";
+    hash = "sha256-22EK2fVJ4Ku1rz49XGcpxY2HRDllTN8K/qQlsuqJXzU=";
+  };
 
   # TODO: group these wordpress packages into something like wordpressPackages.nix
   # keep-sorted start
@@ -65,9 +68,9 @@ let
     stdenv.mkDerivation {
       name = "wp-language-nl";
       src = fetchzip {
-        url = "https://nl.wordpress.org/wordpress-${wpPackage.version}-nl_NL.zip";
+        url = "https://nl.wordpress.org/wordpress-6.9.3-nl_NL.zip";
         name = "wp-${wpPackage.version}-language-nl";
-        hash = "sha256-HrZaGTawPHxlO81P9NWCwL4H860nyys3b6cUtv8jpAo=";
+        hash = "sha256-5OxQDpkBrE1WWwFGL292Z8RQpFFehfbOIwWcmsVhPa4=";
       };
       installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
     };

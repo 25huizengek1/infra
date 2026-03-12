@@ -42,7 +42,7 @@ in
       "opcache.enable_cli" = "1";
     };
     extraApps = {
-      inherit (pkgs.nextcloud33Packages.apps) user_oidc;
+      inherit (pkgs.nextcloud33Packages.apps) user_oidc groupfolders;
     };
     extraAppsEnable = true;
   };
