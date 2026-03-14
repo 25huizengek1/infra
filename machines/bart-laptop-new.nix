@@ -41,7 +41,7 @@
     };
   };
 
-  boot.kernel.sysctl."vm.swappiness" = 0;
+  boot.kernel.sysctl."vm.swappiness" = 20;
 
   hardware.graphics = {
     enable = true;
