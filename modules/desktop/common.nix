@@ -117,6 +117,14 @@
     };
   };
 
+  nix = {
+    daemonIOSchedClass = lib.mkDefault "idle";
+    daemonCPUSchedPolicy = lib.mkDefault "idle";
+  };
+
+  systemd.services.nix-daemon.serviceConfig.Slice = "-.slice";
+  environment.variables.NIX_REMOTE = "daemon";
+
   services.libinput.enable = lib.mkForce true;
   services.flatpak.enable = lib.mkDefault true;
 }
