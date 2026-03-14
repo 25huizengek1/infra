@@ -1,31 +1,25 @@
 let
   redisSocket = "/run/redis-anubis/redis.sock";
+  difficulty = 8;
 in
 {
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "anubis" ];
   services.anubis.defaultOptions = {
     settings = {
-      DIFFICULTY = 4;
+      DIFFICULTY = difficulty;
       SERVE_ROBOTS_TXT = true;
       WEBMASTER_EMAIL = "anubis@bartoostveen.nl";
     };
-    policy = {
-      settings.store = {
+    policy.settings = {
+      store = {
         backend = "valkey";
         parameters.url = "unix://${redisSocket}";
       };
-      extraBots = [
-        {
-          name = "telegram";
-          user_agent_regex = "TelegramBot \\(like TwitterBot\\)";
-          action = "ALLOW";
-        }
-        {
-          name = "wireguard";
-          remote_addresses = [ "10.0.0.0/24" ];
-          action = "ALLOW";
-        }
-      ];
+      action = "CHALLENGE";
+      challenge = {
+        inherit difficulty;
+        algorithm = "fast";
+      };
     };
   };
 
