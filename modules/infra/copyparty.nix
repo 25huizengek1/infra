@@ -67,7 +67,7 @@ in
         };
         "/drop" = {
           access = access // {
-            wG = "*";
+            G = "*";
           };
           path = "/srv/copyparty/fs/drop/";
           flags = {
