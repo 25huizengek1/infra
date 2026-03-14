@@ -92,7 +92,10 @@ in
         allow_registration = false;
         allow_encryption = true;
         allow_federation = true;
-        trusted_servers = [ "matrix.org" ];
+        trusted_servers = [
+          "matrix.org"
+          "utwente.io"
+        ];
 
         address = null;
         unix_socket_path = "/run/continuwuity/continuwuity.sock";
