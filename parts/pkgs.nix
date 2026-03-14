@@ -53,6 +53,7 @@
       packages.meshcore-gui = pkgs.callPackage ../pkgs/meshcore-gui/package.nix { };
       packages.meshcore-scan = pkgs.callPackage ../pkgs/meshcore-scan/package.nix { };
       packages.meshcoredecoder = pkgs.callPackage ../pkgs/meshcoredecoder/package.nix { };
+      packages.roundcube-oidc = pkgs.callPackage ../pkgs/roundcube-oidc/package.nix { };
       packages.tilp = pkgs.callPackage ../pkgs/tilp/package.nix { };
       packages.wp-oidc-roles = pkgs.callPackage ../pkgs/wp-oidc-roles/package.nix { };
       # keep-sorted end

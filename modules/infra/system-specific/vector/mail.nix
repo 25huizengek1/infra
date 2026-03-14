@@ -39,19 +39,13 @@ let
     destination = ldapGroupsFile;
   };
 
-  roundcubeWithPlugins = pkgs.roundcube.overrideAttrs (old: {
-    postInstall = (old.postInstall or "") + ''
-      mkdir -p $out/share/roundcube/plugins
-      cp -r ${
-        pkgs.fetchFromGitHub {
-          owner = "pulsejet";
-          repo = "roundcube-oidc";
-          tag = "1.2.13";
-          sha256 = "sha256-sFarGyC3NwjQs+NLPJNt9TbtwQcBXAowe7lW4GYO+wY==";
-        }
-      } $out/share/roundcube/plugins/oidc_login
-    '';
-  });
+  roundcubeWithPlugins = pkgs.roundcube.withPlugins (_: [ pkgs.local.roundcube-oidc ]);
+
+  dovecotSeparator = "*";
+  dovecotMasterUser = "master";
+  dovecotMasterPasswordFile = config.sops.secrets.dovecot-master-password.path;
+  dovecotMasterPasswdFile = config.sops.secrets.dovecot-master-passwd.path;
+  roundcubeClientSecretFile = config.sops.secrets.roundcube-client-secret.path;
 in
 {
   imports = [
@@ -109,6 +103,21 @@ in
     stateVersion = 3; # Do not change this line, unless a new version needs to be migrated to
   };
 
+  services.dovecot2.extraConfig = ''
+    auth_master_user_separator = ${dovecotSeparator}
+
+    passdb {
+        driver = static
+        args = ${dovecotMasterPasswdFile}
+        result_success = continue
+        master = yes
+    }
+
+    plugin {
+      master_user = ${dovecotMasterUser}
+    }
+  '';
+
   services.postfix.settings.main = {
     inet_protocols = "ipv4";
     bounce_template_file = "${./bounce-template.cf}";
@@ -123,6 +132,7 @@ in
     enable = true;
     package = roundcubeWithPlugins;
     hostName = "webmail.${domain}";
+    plugins = [ "roundcube_oidc" ];
     extraConfig = ''
       // always, except when replying to plain text message
       $config['htmleditor'] = 4;
@@ -157,6 +167,15 @@ in
           'bind_pass'         => file_get_contents("${ldapPasswordFile}"),
           'filter'            => '(objectClass=inetOrgPerson)'
       );
+
+      $config['oidc_imap_master_password'] = file_get_contents("${dovecotMasterPasswordFile}");
+      $config['oidc_master_user_separator'] = '${dovecotSeparator}';
+      $config['oidc_config_master_user'] = '${dovecotMasterUser}';
+      $config['oidc_url'] = 'https://auth.vector.bartoostveen.nl/application/o/webmail/';
+      $config['oidc_client'] = 'VZITfwq9s64f2JJp6Rdb7EGPWnYrQqRU0S1ZrUw5';
+      $config['oidc_secret'] = file_get_contents("${roundcubeClientSecretFile}");
+      $config['oidc_scope'] = 'openid roundcube';
+      $config['oidc_field_uid'] = 'webmail_email';
     '';
   };
 
@@ -170,5 +189,41 @@ in
 
     path = "${config.mailserver.dkimKeyDirectory}/vector.bartoostveen.nl.mail.key";
     restartUnits = [ "rspamd.service" ];
+  };
+
+  sops.secrets.dovecot-master-password = {
+    format = "binary";
+    sopsFile = ../../../../secrets/dovecot-master-password.secret;
+
+    restartUnits = [
+      "phpfpm-roundcube.service"
+      "dovecot.service"
+      "postfix.service"
+    ];
+  };
+
+  sops.secrets.dovecot-master-passwd = {
+    format = "binary";
+    owner = "dovecot2";
+    group = "dovecot2";
+
+    sopsFile = ../../../../secrets/dovecot-master-passwd.secret;
+
+    restartUnits = [
+      "phpfpm-roundcube.service"
+      "dovecot.service"
+      "postfix.service"
+    ];
+  };
+
+  sops.secrets.roundcube-client-secret = {
+    format = "binary";
+    sopsFile = ../../../../secrets/roundcube-client.secret;
+
+    restartUnits = [
+      "phpfpm-roundcube.service"
+      "dovecot.service"
+      "postfix.service"
+    ];
   };
 }
