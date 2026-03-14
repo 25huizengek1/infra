@@ -35,6 +35,34 @@ in
       "0.0.0.0"
       "[::0]"
     ];
+
+    commonHttpConfig = ''
+      log_format main '$remote_addr - $remote_user [$time_local] '
+                      '"$request" $status $body_bytes_sent '
+                      '"$http_referer" "$http_user_agent"';
+
+      access_log /var/log/nginx/access.log main;
+      error_log /var/log/nginx/error.log warn;
+
+      limit_req_zone $binary_remote_addr zone=zone:10m rate=10r/s;
+      limit_req_log_level warn;
+    '';
+  };
+
+  services.fail2ban.jails = {
+    nginx-http-auth = ''
+      enabled = true
+      filter = nginx-http-auth
+      logpath = /var/log/nginx/error.log
+      maxretry = 5
+    '';
+
+    nginx-badbots = ''
+      enabled = true
+      filter = nginx-badbots
+      logpath = /var/log/nginx/access.log
+      maxretry = 2
+    '';
   };
 
   # Skip cloudflare when resolving own virtualHosts for some reason
