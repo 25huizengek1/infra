@@ -16,7 +16,7 @@ let
       url ? "https://downloads.wordpress.org/plugin/${id}.${version}.zip",
     }:
     with pkgs;
-    stdenv.mkDerivation (finalAttrs: {
+    stdenv.mkDerivation (_finalAttrs: {
       inherit pname version;
       src = fetchzip {
         inherit url hash;
@@ -25,7 +25,6 @@ let
     });
 
   # TODO: group these wordpress packages into something like wordpressPackages.nix
-  # keep-sorted start
   generic-oidc = mkWpPlugin {
     pname = "wp-generic-oidc";
     version = "3.11.3";
@@ -50,7 +49,6 @@ let
     id = "view-transitions";
     hash = "sha256-mHdek0LI51mfurpyXpM8QOK2E38PwoL8Ad3OQl9yW28=";
   };
-  # keep-sorted end
   wp-language-nl =
     with pkgs;
     stdenv.mkDerivation {
