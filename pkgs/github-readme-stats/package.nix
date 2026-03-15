@@ -3,7 +3,7 @@
   buildNpmPackage,
   fetchFromGitHub,
   importNpmLock,
-  nodejs_25,
+  nodejs_24,
   applyPatches,
 }:
 
@@ -36,7 +36,7 @@ buildNpmPackage (finalAttrs: {
   installPhase = ''
     runHook preInstall
     cp -r . $out/
-    makeWrapper ${lib.getExe nodejs_25} $out/bin/${finalAttrs.pname} --append-flag "$out/express.js"
+    makeWrapper ${lib.getExe nodejs_24} $out/bin/${finalAttrs.pname} --append-flag "$out/express.js"
     runHook postInstall
   '';
 
