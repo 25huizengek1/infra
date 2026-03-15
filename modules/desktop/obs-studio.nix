@@ -1,9 +1,14 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
   programs.obs-studio = {
     enable = true;
-    enableVirtualCamera = true;
+    enableVirtualCamera = lib.mkDefault;
 
     plugins = with pkgs.obs-studio-plugins; [
       wlrobs
@@ -11,7 +16,7 @@
     ];
 
     package = pkgs.obs-studio.override {
-      cudaSupport = true;
+      cudaSupport = config.hardware.nvidia.enabled;
     };
   };
 }
