@@ -1,8 +1,8 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
   programs.rclone = {
-    enable = true;
+    enable = lib.mkDefault true;
     remotes.omeduoparty-dav = {
       config = {
         type = "webdav";

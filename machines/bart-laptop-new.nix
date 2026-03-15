@@ -88,12 +88,6 @@
     reloadUnits = [ "systemd-networkd.service" ];
   };
 
-  programs.firefox = {
-    enable = true;
-    nativeMessagingHosts.packages = [ pkgs.jabref ];
-  };
-  environment.systemPackages = [ pkgs.jabref ];
-
   infra.wireguard.enable = true;
 
   programs.steam.enable = true;

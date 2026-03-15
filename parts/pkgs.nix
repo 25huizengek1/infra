@@ -46,7 +46,6 @@
       packages.fail2ban-prometheus-exporter =
         pkgs.callPackage ../pkgs/fail2ban-prometheus-exporter/package.nix
           { };
-      packages.gh-branch = pkgs.callPackage ../pkgs/gh-branch/package.nix { };
       packages.github-readme-stats = pkgs.callPackage ../pkgs/github-readme-stats/package.nix { };
       packages.librepods = pkgs.callPackage ../pkgs/librepods/package.nix { };
       packages.matrix-stickerbook = pkgs.callPackage ../pkgs/matrix-stickerbook/package.nix { };

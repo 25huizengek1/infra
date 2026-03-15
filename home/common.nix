@@ -52,10 +52,10 @@ in
           gh
           glab
           gopass
+          htop
           inputs.licenseit.packages.${pkgs.stdenv.system}.default
           invoice
           jq
-          local.dawn
           meteor-git
           nano
           nix-init
@@ -71,19 +71,17 @@ in
           # keep-sorted start
           discord
           element-desktop
+          jabref
           kdePackages.kate
           kdePackages.krdc
           kdePackages.krfb
-          keystore-explorer
           libreoffice
           localsend
           mpv
           nerd-fonts.jetbrains-mono
-          obsidian
           pavucontrol
           pdfarranger
           signal-desktop
-          teams-for-linux
           telegram-desktop
           thunderbird
           vlc
@@ -92,12 +90,9 @@ in
         ];
     };
 
-    xdg.configFile = {
-      "gh-dash/config.yml".source = ./gh-dash.yml;
-      "google-chrome/NativeMessagingHosts" = lib.mkIf cfg.gui {
-        source = "${pkgs.kdePackages.plasma-browser-integration}/etc/chromium/native-messaging-hosts";
-        recursive = true;
-      };
+    xdg.configFile."google-chrome/NativeMessagingHosts" = lib.mkIf cfg.gui {
+      source = "${pkgs.kdePackages.plasma-browser-integration}/etc/chromium/native-messaging-hosts";
+      recursive = true;
     };
 
     fonts.fontconfig.enable = true;
@@ -105,28 +100,36 @@ in
     programs.home-manager.enable = true;
 
     programs.oh-my-posh = {
-      enable = true;
+      enable = lib.mkDefault true;
       enableBashIntegration = true;
       settings = fromJSON (readFile ./oh-my-posh.json);
     };
 
     programs.direnv = {
-      enable = true;
+      enable = lib.mkDefault true;
       enableBashIntegration = true;
       nix-direnv.enable = true;
       config.hide_env_diff = true;
+    };
+
+    programs.librewolf = {
+      enable = lib.mkDefault cfg.gui;
+      nativeMessagingHosts = with pkgs; [
+        jabref
+        kdePackages.plasma-browser-integration
+      ];
     };
 
     programs.google-chrome.enable = lib.mkDefault cfg.gui;
     programs.vscode.enable = lib.mkDefault cfg.gui;
 
     programs.yt-dlp = {
-      enable = true;
+      enable = lib.mkDefault true;
       settings.sponsorblock-mark = "all,-preview";
     };
 
     programs.bash = {
-      enable = true;
+      enable = lib.mkDefault true;
       enableCompletion = true;
       historyControl = [ "erasedups" ];
       sessionVariables.PROMPT_COMMAND = "history -a; history -n";
