@@ -505,6 +505,32 @@
         "type": "github"
       }
     },
+    "meowbot": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1773711629,
+        "narHash": "sha256-ossbjmX+W/CK01PXvx3Il0k975aiPPISW3uU5foL7uM=",
+        "owner": "bartoostveen",
+        "repo": "meowbot",
+        "rev": "f40604ecbc366072c170592295960dc2a71a94ea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bartoostveen",
+        "repo": "meowbot",
+        "type": "github"
+      }
+    },
     "meshcoretomqtt": {
       "inputs": {
         "flake-parts": [
@@ -898,6 +924,7 @@
         "invoice": "invoice",
         "licenseit": "licenseit",
         "maubot-spotify": "maubot-spotify",
+        "meowbot": "meowbot",
         "meshcoretomqtt": "meshcoretomqtt",
         "nix-auth": "nix-auth",
         "nix-index-database": "nix-index-database",

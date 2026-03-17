@@ -103,6 +103,15 @@
       flake = false;
     };
 
+    meowbot = {
+      url = "github:bartoostveen/meowbot";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
+
     meshcoretomqtt = {
       url = "github:Cisien/meshcoretomqtt";
       inputs = {

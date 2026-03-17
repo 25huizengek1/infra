@@ -19,6 +19,7 @@
     ../modules/infra/system-specific/main/ircbounce.nix
     ../modules/infra/system-specific/main/mailserver
     ../modules/infra/system-specific/main/maubot.nix
+    ../modules/infra/system-specific/main/meowbot.nix
     ../modules/infra/system-specific/main/monitoring.nix
     ../modules/infra/system-specific/main/search.nix
     ../modules/infra/system-specific/main/wireguard.monitoring.nix
