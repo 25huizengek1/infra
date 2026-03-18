@@ -13,6 +13,11 @@
     "i2c_bcm2835"
   ];
 
+  fileSystems."/var/lib/borg" = {
+    device = "/dev/disk/by-uuid/F21CE9801CE94069";
+    fsType = "ext4";
+  };
+
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;

@@ -13,6 +13,7 @@
     ../modules/wireguard.nix
 
     # ../modules/infra/anubis.nix # TODO: authentik behind anubis
+    ../modules/infra/backup
     ../modules/infra/common.nix
     ../modules/infra/fail2ban.nix
     ../modules/infra/git.nix
@@ -32,6 +33,8 @@
   systemd.network.networks."10-uplink".networkConfig.Address = "2a01:4f8:1c19:1cd2::1/64";
 
   infra.wireguard.enable = true;
+
+  infra.backup.enableDefaults = true;
 
   system.stateVersion = "26.05";
 }

@@ -9,6 +9,7 @@
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.mixins-terminfo
 
+    ../modules/infra/system-specific/atlas/backshots.nix
     ../modules/infra/system-specific/atlas/mc2mqtt.nix
 
     ../modules/infra/common.nix
