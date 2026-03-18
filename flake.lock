@@ -518,11 +518,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773790965,
-        "narHash": "sha256-qYUQMEJ+mfqMrHJoxV7Rm0HRM4hHwyOV8QAOLYFDXxM=",
+        "lastModified": 1773845594,
+        "narHash": "sha256-GbllSHXCv0wdfFLz48eERz+nmDSa30SrpqthehSekdA=",
         "owner": "bartoostveen",
         "repo": "meowbot",
-        "rev": "cff2c2f908334488af7aa749d88af2cb3b73b9cd",
+        "rev": "da1986273b0bd67e37d8eb3d9db32e883cf0f0f4",
         "type": "github"
       },
       "original": {
