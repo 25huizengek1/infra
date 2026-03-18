@@ -29,6 +29,7 @@ in
           timeout = 20;
           interval = 10;
           retry_interval = 10;
+          max_retries = 1;
           packet_size = 56;
           notification_name_list = [ "autokuma-matrix" ];
           hostname = nodes.${peer.name}.ips |> first |> splitString "/" |> first;
