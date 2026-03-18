@@ -16,7 +16,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-personal.url = "github:rebmit/nixpkgs/cinny/update";
+    nixpkgs-personal.url = "github:nixos/nixpkgs/eaeded1f53770ae97dcd10edf37235172b0059d6";
     # nixpkgs-personal.url = "github:bartoostveen/nixpkgs/bart/continuwuity-0.5.6";
     nixpkgs-stable.url = "github:nixos/nixpkgs/1cd347bf3355fce6c64ab37d3967b4a2cb4b878c"; # /nixos-25.11";
     prismlauncher-nixpkgs.url = "github:nixos/nixpkgs/077cb3aa7d111ff4d36e8bd18d906bb4a3d621f9";
