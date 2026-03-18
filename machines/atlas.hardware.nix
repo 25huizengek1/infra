@@ -14,7 +14,7 @@
   ];
 
   fileSystems."/var/lib/borg" = {
-    device = "/dev/disk/by-uuid/F21CE9801CE94069";
+    device = "/dev/disk/by-uuid/a28033a5-dc12-4f5f-8260-f79076cae272";
     fsType = "ext4";
   };
 
