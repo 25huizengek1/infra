@@ -12,10 +12,7 @@ in
 {
   options.infra.backup.enableDefaults = mkEnableOption "defaults";
   config = mkIf enable {
-    infra.backup = {
-      enable = mkDefault true;
-      postgres.enable = mkDefault true;
-    };
+    infra.backup.enable = mkDefault true;
 
     sops.secrets.borg-ssh-key = mkDefault {
       format = "binary";

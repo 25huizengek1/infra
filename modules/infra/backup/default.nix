@@ -16,6 +16,7 @@ let
     mkIf
     mkOption
     types
+    # keep-sorted end
     ;
 
   inherit (types)

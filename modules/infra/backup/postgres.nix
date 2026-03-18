@@ -25,6 +25,13 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = config.services.postgresql.enable;
+        message = "You should not enable postgres backups when postgres is not enabled!";
+      }
+    ];
+
     services.postgresqlBackup = {
       enable = true;
       compression = "zstd";
