@@ -13,6 +13,8 @@ in
   options.infra.backup.enableDefaults = mkEnableOption "defaults";
   config = mkIf enable {
     infra.backup.enable = mkDefault true;
+    infra.backup.postgres.jobName = mkDefault "state";
+    infra.backup.mysql.jobName = mkDefault "state";
 
     sops.secrets.borg-ssh-key = mkDefault {
       format = "binary";

@@ -1,5 +1,13 @@
-{ inputs, config, ... }:
+{
+  inputs,
+  config,
+  lib,
+  ...
+}:
 
+let
+  inherit (lib) mapAttrsToList;
+in
 {
   imports = [
     inputs.disko.nixosModules.disko
@@ -12,9 +20,10 @@
 
     ../modules/wireguard.nix
 
+    # keep-sorted start
+    ../modules/infra/system-specific/main/attic.nix
     ../modules/infra/system-specific/main/containers/tcs-bot.nix
     ../modules/infra/system-specific/main/containers/web.nix
-    ../modules/infra/system-specific/main/attic.nix
     ../modules/infra/system-specific/main/ical-proxy.nix
     ../modules/infra/system-specific/main/ircbounce.nix
     ../modules/infra/system-specific/main/mailserver
@@ -23,19 +32,23 @@
     ../modules/infra/system-specific/main/monitoring.nix
     ../modules/infra/system-specific/main/search.nix
     ../modules/infra/system-specific/main/wireguard.monitoring.nix
+    # keep-sorted end
 
+    # keep-sorted start
     ../modules/infra/anubis.nix
     ../modules/infra/authentik.nix
     ../modules/infra/autokuma.nix
+    ../modules/infra/backup
     ../modules/infra/common.nix
-    ../modules/infra/matrix
     ../modules/infra/copyparty.nix
     ../modules/infra/fail2ban.nix
     ../modules/infra/git.nix
+    ../modules/infra/matrix
     ../modules/infra/networking.nix
-    ../modules/infra/nix.nix
     ../modules/infra/nginx.nix
+    ../modules/infra/nix.nix
     ../modules/infra/podman.nix
+    # keep-sorted end
   ];
 
   facter.reportPath = ./bart-server.json;
@@ -54,6 +67,13 @@
     enable = true;
     enablePrometheus = true;
     environmentFile = config.sops.secrets.authentik-env.path;
+  };
+
+  infra.backup = {
+    enableDefaults = true;
+    postgres.enable = true;
+    jobs.state.paths = config.infra.copyparty.volumes |> mapAttrsToList (_: v: v.path);
+    jobs.state.exclude = [ "/root/private/fs/muziek/" ];
   };
 
   sops.secrets.authentik-env = {

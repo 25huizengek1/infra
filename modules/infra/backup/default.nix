@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 
@@ -89,14 +90,31 @@ let
           compression = "auto,zstd";
           extraCreateArgs = "--stats";
         };
+
+        environment.systemPackages = [
+          (
+            with pkgs;
+            writeShellApplication {
+              name = "borg-${name}";
+              runtimeInputs = [ borgbackup ];
+              runtimeEnv = config.systemd.services."borgbackup-job-${name}".environment;
+              text = ''
+                borg "$@"
+              '';
+            }
+          )
+        ];
       }
     )
     |> mergeAttrsList;
 in
 {
   imports = [
+    # keep-sorted start
     ./defaults.nix
+    ./mysql.nix
     ./postgres.nix
+    # keep-sorted end
   ];
 
   options.infra.backup = {
@@ -195,6 +213,7 @@ in
       programs
       systemd
       services
+      environment
       ;
   };
 }

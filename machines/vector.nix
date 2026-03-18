@@ -34,8 +34,11 @@
 
   infra.wireguard.enable = true;
 
-  infra.backup.enableDefaults = true;
-  infra.backup.postgres.enable = true;
+  infra.backup = {
+    enableDefaults = true;
+    postgres.enable = true;
+    mysql.enable = true;
+  };
 
   system.stateVersion = "26.05";
 }

@@ -208,4 +208,6 @@ in
       smtpd_client_restrictions = lib.mkForce [ "permit_mynetworks" ];
     };
   };
+
+  infra.backup.jobs.state.paths = [ config.mailserver.mailDirectory ];
 }

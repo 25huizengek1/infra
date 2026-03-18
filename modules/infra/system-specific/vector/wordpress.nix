@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }:
 
 let
+  siteName = "vector.bartoostveen.nl";
   wpVhost = "vector.bartoostveen.nl";
   wpPackage = pkgs.callPackage "${inputs.nixpkgs}/pkgs/servers/web-apps/wordpress/generic.nix" {
     version = "6.9.4";
@@ -64,7 +65,7 @@ in
 {
   services.wordpress = {
     webserver = "nginx";
-    sites."vector.bartoostveen.nl" = {
+    sites.${siteName} = {
       settings = {
         WP_DEFAULT_THEME = "twentytwentyfive";
         WP_SITEURL = "https://${wpVhost}";
@@ -107,4 +108,6 @@ in
     enableACME = true;
     forceSSL = true;
   };
+
+  infra.backup.jobs.state.paths = [ "/var/lib/wordpress/${siteName}" ];
 }
