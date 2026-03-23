@@ -15,10 +15,46 @@ let
   inherit (lib)
     # keep-sorted start
     attrNames
-    genAttrs
-    mkDefault
+    filterAttrs
+    optionals
     # keep-sorted end
     ;
+
+  staticConfigsFor =
+    {
+      host,
+      name,
+      config' ? inputs.self.nixosConfigurations.${name}.config,
+    }:
+    (
+      config'.services.prometheus.exporters
+      |> filterAttrs (
+        _: e:
+        let
+          evaluated = builtins.tryEval e;
+        in
+        evaluated.success && e ? enable && e.enable
+      )
+      |> attrNames
+      |> map (jobName: {
+        job_name = "${name}-${jobName}";
+        static_configs = [
+          {
+            targets = [ "${host}:${toString config'.services.prometheus.exporters.${jobName}.port}" ];
+          }
+        ];
+      })
+    )
+    ++ (optionals config'.services.telegraf.enable [
+      {
+        job_name = "${name}-telegraf";
+        static_configs = [
+          {
+            targets = [ "${host}${config'.services.telegraf.extraConfig.outputs.prometheus_client.listen}" ];
+          }
+        ];
+      }
+    ]);
 in
 {
   imports = [
@@ -125,10 +161,12 @@ in
     globalConfig.scrape_interval = "15s";
     retentionTime = "180d";
 
-    exporters.nginx.enable = true;
-    exporters.systemd.enable = true;
-    exporters.postgres.enable = true;
-    exporters.node.enable = true;
+    exporters = {
+      nginx.enable = true;
+      systemd.enable = true;
+      postgres.enable = true;
+      node.enable = true;
+    };
 
     ruleFiles = [
       (pkgs.writeText "up.rules" (
@@ -155,46 +193,6 @@ in
 
     scrapeConfigs = [
       {
-        job_name = "nginx";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.nginx.port}" ];
-          }
-        ];
-      }
-      {
-        job_name = "systemd";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.systemd.port}" ];
-          }
-        ];
-      }
-      {
-        job_name = "node";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
-          }
-        ];
-      }
-      {
-        job_name = "postgres";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.postgres.port}" ];
-          }
-        ];
-      }
-      {
-        job_name = "telegraf";
-        static_configs = [
-          {
-            targets = [ "localhost${config.services.telegraf.extraConfig.outputs.prometheus_client.listen}" ];
-          }
-        ];
-      }
-      {
         job_name = "uptime-kuma-anubis";
         static_configs = [
           {
@@ -202,7 +200,19 @@ in
           }
         ];
       }
-    ];
+    ]
+    ++ (staticConfigsFor {
+      host = "localhost";
+      name = "bart-server";
+    })
+    ++ (staticConfigsFor {
+      host = "10.0.0.5";
+      name = "vector";
+    })
+    ++ (staticConfigsFor {
+      host = "10.0.0.4";
+      name = "atlas";
+    });
   };
 
   services.nginx.virtualHosts.${config.infra.authentik.domain}.serverAliases = [
@@ -231,7 +241,7 @@ in
 
   services.uptime-kuma = {
     enable = true;
-    settings.HOST = "127.0.0.1";
+    settings.HOST = "0.0.0.0";
   };
 
   services.anubis.instances.uptime-kuma.settings = {
@@ -248,82 +258,6 @@ in
       proxyPass = "http://unix://${config.services.anubis.instances.uptime-kuma.settings.BIND}";
       proxyWebsockets = true;
     };
-  };
-
-  infra.autokuma = {
-    enable = mkDefault true;
-    package = pkgs.local.autokuma;
-    defaultEnvFile = config.sops.secrets.autokuma-env.path;
-    defaultSettings = {
-      kuma = {
-        url = config.services.anubis.instances.uptime-kuma.settings.TARGET;
-        username = "adm";
-      };
-      tag_name = "Managed by AutoKuma";
-      tag_color = "#ea2121";
-    };
-    instances.local = {
-      additionalMonitorFiles = [ config.sops.secrets.autokuma-matrix.path ];
-      tags = {
-        nginx = {
-          name = "nginx @ ${config.networking.hostName}";
-          color = "#17964a";
-        };
-        autokuma = {
-          name = "Managed by AutoKuma";
-          color = "#ea2121";
-        };
-      };
-      monitors =
-        genAttrs
-          (builtins.filter (kumaVHost: kumaVHost != "localhost") (
-            attrNames config.services.nginx.virtualHosts
-          ))
-          (kumaVHost: {
-            type = "http";
-            name = kumaVHost;
-            description = "nginx Managed by AutoKuma @ ${config.networking.hostName}";
-            expiry_notification = true;
-            url = "https://${kumaVHost}";
-            accepted_statuscodes = [ "200-399" ];
-            notification_name_list = [ "autokuma-matrix" ];
-            tag_names = [
-              {
-                name = "nginx";
-                value = kumaVHost;
-              }
-              {
-                name = "autokuma";
-                value = "nginx";
-              }
-            ];
-            timeout = 10;
-            interval = 20;
-            retry_interval = 20;
-          });
-    };
-  };
-
-  systemd.services.autokuma-local.serviceConfig.SupplementaryGroups = "podman";
-
-  sops.secrets.autokuma-env = {
-    owner = "root";
-    group = "root";
-    mode = "0600";
-
-    sopsFile = ../../../../secrets/autokuma.env.secret;
-    format = "binary";
-    restartUnits = [ "autokuma-local.service" ];
-  };
-
-  sops.secrets.autokuma-matrix = {
-    owner = "autokuma";
-    group = "autokuma";
-    mode = "0600";
-
-    sopsFile = ../../../../secrets/autokuma-matrix.toml.secret;
-    format = "binary";
-    restartUnits = [ "autokuma-local.service" ];
   };
 
   services.loki = {
@@ -354,38 +288,6 @@ in
       storage_config.filesystem.directory = "/tmp/loki/chunks";
     };
   };
-
-  services.alloy = {
-    enable = true;
-    extraFlags = [ "--disable-reporting" ];
-  };
-  environment.etc."alloy/config.alloy".text = ''
-    loki.source.journal "journal" {
-      max_age       = "24h0m0s"
-      forward_to    = [loki.write.default.receiver]
-      labels        = {
-        host = "${config.networking.hostName}",
-        job  = "systemd_journal",
-      }
-      relabel_rules = loki.relabel.journal.rules
-    }
-
-    loki.relabel "journal" {
-      forward_to = []
-      
-      rule {
-        source_labels = ["__journal__systemd_unit"]
-        target_label  = "unit"
-      }
-    }
-
-    loki.write "default" {
-      endpoint {
-        url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}/loki/api/v1/push"
-      }
-      external_labels = {}
-    }
-  '';
 
   users.groups.alertmanager = { };
   users.users.alertmanager = {

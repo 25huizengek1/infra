@@ -121,5 +121,7 @@ in
       3389 # LDAP
       6636 # LDAPS
     ];
+
+    infra.backup.jobs.state.paths = [ config.services.authentik.settings.storage.media.file.path ];
   };
 }

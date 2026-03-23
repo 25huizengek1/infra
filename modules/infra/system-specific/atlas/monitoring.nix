@@ -6,9 +6,6 @@
   ];
 
   services.prometheus.exporters = {
-    postgres.enable = true;
-    nginx.enable = true;
-    systemd.enable = true;
     node.enable = true;
   };
 }

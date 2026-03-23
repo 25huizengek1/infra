@@ -178,5 +178,9 @@ in
         retry_interval = 120;
       };
     };
+
+    infra.backup.jobs.state.paths = [
+      config.services.matrix-continuwuity.settings.global.database_path
+    ];
   };
 }

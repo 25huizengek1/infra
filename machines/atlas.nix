@@ -9,14 +9,20 @@
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.mixins-terminfo
 
+    # keep-sorted start
     ../modules/infra/system-specific/atlas/backshots.nix
     ../modules/infra/system-specific/atlas/mc2mqtt.nix
+    ../modules/infra/system-specific/atlas/monitoring.nix
+    # keep-sorted end
 
+    # keep-sorted start
+    ../modules/infra/alloy.nix
     ../modules/infra/common.nix
     ../modules/infra/git.nix
     ../modules/infra/networking.nix
     ../modules/infra/podman.nix
     ../modules/wireguard.nix
+    # keep-sorted end
   ];
 
   srvos.boot.consoles = [ ];

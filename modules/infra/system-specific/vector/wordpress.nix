@@ -34,9 +34,9 @@ let
   };
   gutenberg-carousel = mkWpPlugin {
     pname = "wp-gutenberg-carousel";
-    version = "2.0.6";
+    version = "2.0.8";
     id = "carousel-block";
-    hash = "sha256-mUDnMPR5fIcLVx/sL/Gh7Nq7I0xgmvrRMpVyubWXFSg=";
+    hash = "sha256-p1EpVgePn5TJWga4VHecITAA8KrzJ9lGiT1D8XaZz6U=";
   };
   modify-profile-fields = mkWpPlugin {
     pname = "wp-modify-profile-fields";

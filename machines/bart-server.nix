@@ -21,6 +21,7 @@ in
     ../modules/wireguard.nix
 
     # keep-sorted start
+    ../modules/infra/alloy.nix
     ../modules/infra/system-specific/main/attic.nix
     ../modules/infra/system-specific/main/containers/tcs-bot.nix
     ../modules/infra/system-specific/main/containers/web.nix
@@ -37,7 +38,7 @@ in
     # keep-sorted start
     ../modules/infra/anubis.nix
     ../modules/infra/authentik.nix
-    ../modules/infra/autokuma.nix
+    ../modules/infra/autokuma-config.nix
     ../modules/infra/backup
     ../modules/infra/common.nix
     ../modules/infra/copyparty.nix

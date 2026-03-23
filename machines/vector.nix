@@ -13,20 +13,26 @@
     ../modules/wireguard.nix
 
     # ../modules/infra/anubis.nix # TODO: authentik behind anubis
+    # keep-sorted start
+    ../modules/infra/alloy.nix
+    ../modules/infra/autokuma-config.nix
     ../modules/infra/backup
     ../modules/infra/common.nix
     ../modules/infra/fail2ban.nix
     ../modules/infra/git.nix
     ../modules/infra/networking.nix
-    ../modules/infra/nix.nix
     ../modules/infra/nginx.nix
+    ../modules/infra/nix.nix
     ../modules/infra/podman.nix
+    # keep-sorted end
 
+    # keep-sorted start
     ../modules/infra/system-specific/vector/auth.nix
     ../modules/infra/system-specific/vector/cloud.nix
     ../modules/infra/system-specific/vector/mail.nix
     ../modules/infra/system-specific/vector/monitoring.nix
     ../modules/infra/system-specific/vector/wordpress.nix
+    # keep-sorted end
   ];
 
   facter.reportPath = ./vector.json;

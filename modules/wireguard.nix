@@ -53,7 +53,10 @@ in
     };
   };
   config = mkIf cfg.enable {
-    networking.firewall.allowedUDPPorts = [ listenPort ];
+    networking.firewall = {
+      allowedUDPPorts = [ listenPort ];
+      trustedInterfaces = [ cfg.interface ];
+    };
     networking.wireguard = {
       useNetworkd = mkDefault true;
       interfaces.${cfg.interface} = {
