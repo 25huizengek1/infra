@@ -14,7 +14,7 @@ let
     cp ${config} $out
   '';
 in
-php.buildComposerProject2 (finalAttrs: {
+php.buildComposerProject2 (_finalAttrs: {
   pname = "roundcube-oidc";
   version = "1.2.9";
 
