@@ -52,6 +52,8 @@ in
     enableACME = true;
   };
 
+  infra.backup.jobs.state.paths = [ config.services.nextcloud.home ];
+
   sops.secrets.vector-nextcloud-admin-pass = {
     format = "binary";
     sopsFile = ../../../../secrets/vector-nextcloud-admin-pass.secret;
