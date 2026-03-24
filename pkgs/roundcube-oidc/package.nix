@@ -1,21 +1,36 @@
 {
   lib,
-  stdenv,
-  fetchzip,
+  fetchFromGitHub,
+  php,
+  writeText,
+  runCommand,
+  configText ? "",
 }:
 
-stdenv.mkDerivation (finalAttrs: {
+let
+  config = writeText "roundcube-oidc-config.php" configText;
+  configChecked = runCommand "roundcube-oidc-config-checked" { } ''
+    ${lib.getExe php} -l ${config}
+    cp ${config} $out
+  '';
+in
+php.buildComposerProject2 (finalAttrs: {
   pname = "roundcube-oidc";
   version = "1.2.9";
 
-  src = fetchzip {
-    url = "https://github.com/pulsejet/roundcube-oidc/releases/download/${finalAttrs.version}/roundcube_oidc.zip";
-    hash = "sha256-yGCg4AVr9ADC/c+porZvrON1V0SYyP34MYpi9bWH0bg=";
+  src = fetchFromGitHub {
+    owner = "bartoostveen";
+    repo = "roundcube-oidc";
+    rev = "e8e4e4cd5421c1f01e1e05f9804b04cbf781e1fa";
+    hash = "sha256-VYVWHoYFaNfAg0alIjNS187KoWdAr93744VtKlwqBDU=";
   };
+
+  vendorHash = "sha256-n6xV5LIAyquQr1HsPJa5j/Mb9OVUW+101+hvpFbffO8=";
 
   installPhase = ''
     mkdir -p $out/plugins/roundcube_oidc
     cp -R * $out/plugins/roundcube_oidc/
+    cp ${configChecked} $out/plugins/roundcube_oidc/config.inc.php
   '';
 
   meta = {

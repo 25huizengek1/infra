@@ -39,8 +39,6 @@ let
     destination = ldapGroupsFile;
   };
 
-  roundcubeWithPlugins = pkgs.roundcube.withPlugins (_: [ pkgs.local.roundcube-oidc ]);
-
   dovecotSeparator = "*";
   dovecotMasterUser = "master";
   dovecotMasterPasswordFile = config.sops.secrets.dovecot-master-password.path;
@@ -107,7 +105,7 @@ in
     auth_master_user_separator = ${dovecotSeparator}
 
     passdb {
-        driver = static
+        driver = passwd-file
         args = ${dovecotMasterPasswdFile}
         result_success = continue
         master = yes
@@ -130,10 +128,30 @@ in
 
   services.roundcube = {
     enable = true;
-    package = roundcubeWithPlugins;
+    package =
+      let
+        oidcPlugin = pkgs.local.roundcube-oidc.override {
+          configText = ''
+            <?php
+
+            $config['oidc_imap_master_password'] = trim(file_get_contents("${dovecotMasterPasswordFile}"));
+            $config['oidc_master_user_separator'] = '${dovecotSeparator}';
+            $config['oidc_config_master_user'] = '${dovecotMasterUser}';
+            $config['oidc_url'] = 'https://auth.vector.bartoostveen.nl/application/o/webmail/';
+            $config['oidc_client'] = 'VZITfwq9s64f2JJp6Rdb7EGPWnYrQqRU0S1ZrUw5';
+            $config['oidc_secret'] = trim(file_get_contents("${roundcubeClientSecretFile}"));
+            $config['oidc_scope'] = 'openid profile roundcube';
+            $config['oidc_field_uid'] = 'webmail_email';
+          '';
+        };
+        roundcubeWithPlugins = pkgs.roundcube.withPlugins (_: [ oidcPlugin ]);
+      in
+      roundcubeWithPlugins;
     hostName = "webmail.${domain}";
     plugins = [ "roundcube_oidc" ];
     extraConfig = ''
+      $config['des_key'] = trim(file_get_contents("${config.sops.secrets.roundcube-des.path}"));
+
       // always, except when replying to plain text message
       $config['htmleditor'] = 4;
 
@@ -167,17 +185,11 @@ in
           'bind_pass'         => file_get_contents("${ldapPasswordFile}"),
           'filter'            => '(objectClass=inetOrgPerson)'
       );
-
-      $config['oidc_imap_master_password'] = file_get_contents("${dovecotMasterPasswordFile}");
-      $config['oidc_master_user_separator'] = '${dovecotSeparator}';
-      $config['oidc_config_master_user'] = '${dovecotMasterUser}';
-      $config['oidc_url'] = 'https://auth.vector.bartoostveen.nl/application/o/webmail/';
-      $config['oidc_client'] = 'VZITfwq9s64f2JJp6Rdb7EGPWnYrQqRU0S1ZrUw5';
-      $config['oidc_secret'] = file_get_contents("${roundcubeClientSecretFile}");
-      $config['oidc_scope'] = 'openid roundcube';
-      $config['oidc_field_uid'] = 'webmail_email';
     '';
   };
+
+  services.phpfpm.pools.roundcube.settings."php_admin_value[open_basedir]" =
+    "/run/secrets:/nix/store";
 
   sops.secrets."vector.bartoostveen.nl.mail.key" = {
     format = "binary";
@@ -193,6 +205,8 @@ in
 
   sops.secrets.dovecot-master-password = {
     format = "binary";
+    owner = "roundcube";
+    group = "roundcube";
     sopsFile = ../../../../secrets/dovecot-master-password.secret;
 
     restartUnits = [
@@ -218,6 +232,8 @@ in
 
   sops.secrets.roundcube-client-secret = {
     format = "binary";
+    owner = "roundcube";
+    group = "roundcube";
     sopsFile = ../../../../secrets/roundcube-client.secret;
 
     restartUnits = [
@@ -225,5 +241,14 @@ in
       "dovecot.service"
       "postfix.service"
     ];
+  };
+
+  sops.secrets.roundcube-des = {
+    format = "binary";
+    owner = "roundcube";
+    group = "roundcube";
+    sopsFile = ../../../../secrets/roundcube-des.secret;
+
+    restartUnits = [ "phpfpm-roundcube.service" ];
   };
 }
