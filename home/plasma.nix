@@ -36,6 +36,7 @@
 
     configFile = {
       # keep-sorted start
+      "baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
       "kdeglobals"."General"."AccentColor" = "0,85,255";
       "kdeglobals"."General"."TerminalApplication" = "alacritty";
       "kdeglobals"."General"."TerminalService" = "Alacritty.desktop";

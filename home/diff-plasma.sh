@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+echo "Generating current Plasma config..."
+old=$(mktemp)
+nix run github:nix-community/plasma-manager > $old
+
+echo "Done, make your changes now."
+echo "Press [ENTER] once change has been made"
+read -s
+
+echo "Diffing..."
+new=$(mktemp)
+nix run github:nix-community/plasma-manager > $new
+
+git diff "$old" "$new"
