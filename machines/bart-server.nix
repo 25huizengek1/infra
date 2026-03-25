@@ -55,7 +55,12 @@ in
   facter.reportPath = ./bart-server.json;
   systemd.network.networks."10-uplink".networkConfig.Address = "2a01:4f8:c2c:2f66::1/128";
 
-  srvos.prometheus.ruleGroups.srvosAlerts.alertRules.UnusualDiskReadLatency.enable = false;
+  srvos.prometheus.ruleGroups.srvosAlerts.alertRules = {
+    # keep-sorted start
+    UnusualDiskReadLatency.enable = false;
+    Uptime.enable = false;
+    # keep-sorted end
+  };
 
   infra.copyparty = {
     enable = true;
