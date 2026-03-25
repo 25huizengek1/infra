@@ -118,6 +118,7 @@ in
         xff-hdr = "x-forwarded-for";
         rproxy = 1;
         daw = true;
+        dont-ban = "aa"; # Do not ban folks that have admin anywhere
       };
       accounts.${username}.passwordFile = config.sops.secrets.copyparty-adm-password-enc.path;
       user = group;
