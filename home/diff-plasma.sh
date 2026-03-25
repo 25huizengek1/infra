@@ -13,3 +13,4 @@ new=$(mktemp)
 nix run github:nix-community/plasma-manager > "$new"
 
 git diff "$old" "$new"
+rm "$old" "$new"
