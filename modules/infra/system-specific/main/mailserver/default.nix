@@ -30,6 +30,14 @@ in
       "omeduostuurcentenneef.nl"
     ];
 
+    dkim.domains = {
+      "bartoostveen.nl".selectors.mail.keyFile = config.sops.secrets."bartoostveen.nl.mail.key".path;
+      "boostveen.nl".selectors.mail.keyFile = config.sops.secrets."boostveen.nl.mail.key".path;
+      "omeduostuurcentenneef.nl".selectors.mail.keyFile =
+        config.sops.secrets."omeduostuurcentenneef.nl.mail.key".path;
+      "vitune.app".selectors.mail.keyFile = config.sops.secrets."vitune.app.mail.key".path;
+    };
+
     # DKIM/DMARC
     dmarcReporting.enable = true;
     tlsrpt.enable = true;
@@ -53,7 +61,7 @@ in
 
     useUTF8FolderNames = true;
 
-    stateVersion = 3; # Do not change this line, unless a new version needs to be migrated to
+    stateVersion = 4; # Do not change this line, unless a new version needs to be migrated to
   };
 
   services.prometheus = {
@@ -106,7 +114,6 @@ in
 
     sopsFile = ../../../../../secrets/bartoostveen.nl.mail.private.secret;
 
-    path = "${config.mailserver.dkimKeyDirectory}/bartoostveen.nl.mail.key";
     restartUnits = [ "rspamd.service" ];
   };
 
@@ -118,7 +125,6 @@ in
 
     sopsFile = ../../../../../secrets/boostveen.nl.mail.key.secret;
 
-    path = "${config.mailserver.dkimKeyDirectory}/boostveen.nl.mail.key";
     restartUnits = [ "rspamd.service" ];
   };
 
@@ -130,7 +136,6 @@ in
 
     sopsFile = ../../../../../secrets/omeduostuurcentenneef.nl.mail.private.secret;
 
-    path = "${config.mailserver.dkimKeyDirectory}/omeduostuurcentenneef.nl.mail.key";
     restartUnits = [ "rspamd.service" ];
   };
 
@@ -142,7 +147,6 @@ in
 
     sopsFile = ../../../../../secrets/vitune.app.mail.private.secret;
 
-    path = "${config.mailserver.dkimKeyDirectory}/vitune.app.mail.key";
     restartUnits = [ "rspamd.service" ];
   };
 
@@ -173,41 +177,10 @@ in
     '';
   };
 
-  services.postfix = {
-    submissionOptions = {
-      smtpd_client_restrictions = lib.mkForce "permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination";
-      smtpd_recipient_restrictions = lib.mkForce "permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination";
-    };
-
-    submissionsOptions = {
-      smtpd_client_restrictions = lib.mkForce "permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination";
-      smtpd_recipient_restrictions = lib.mkForce "permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination";
-    };
-
-    settings.main = {
-      inet_protocols = "ipv4";
-      bounce_template_file = "${./bounce-template.cf}";
-
-      mynetworks = [
-        "127.0.0.0/8"
-        "46.224.181.108/32"
-      ];
-
-      smtpd_relay_restrictions = lib.mkForce [
-        "permit_mynetworks"
-        "permit_sasl_authenticated"
-        "reject_unauth_destination"
-      ];
-
-      smtpd_recipient_restrictions = lib.mkForce [
-        "permit_mynetworks"
-        "permit_sasl_authenticated"
-        "reject_unauth_destination"
-      ];
-
-      smtpd_client_restrictions = lib.mkForce [ "permit_mynetworks" ];
-    };
+  services.postfix.settings.main = {
+    inet_protocols = "ipv4";
+    bounce_template_file = "${./bounce-template.cf}";
   };
 
-  infra.backup.jobs.state.paths = [ config.mailserver.mailDirectory ];
+  infra.backup.jobs.state.paths = [ config.mailserver.storage.path ];
 }

@@ -70,45 +70,50 @@ in
     enableImap = true;
     enableSubmission = true; # Enable StartTLS
 
-    ldap = {
-      enable = true;
-      uris = [ "ldap://${ldapHost}" ];
-      dovecot = {
-        userFilter = "(&(objectClass=user)(sAMAccountName=%n))";
-        passFilter = "(&(objectClass=user)(sAMAccountName=%n))";
-        userAttrs = ''
-          =home=/var/vmail/ldap/%{ldap:sAMAccountName}
-        '';
-      };
-      postfix = {
-        filter = "(&(objectClass=user)(sAMAccountName=%u))";
+    dkim.domains.${domain}.selectors.mail.keyFile =
+      config.sops.secrets."vector.bartoostveen.nl.mail.key".path;
+
+    ldap =
+      let
         uidAttribute = "sAMAccountName";
+      in
+      {
+        enable = true;
+        uris = [ "ldap://${ldapHost}" ];
+        attributes = {
+          username = uidAttribute;
+          uuid = "uidNumber";
+        };
+        dovecot = {
+          userFilter = "(&(objectClass=user)(${uidAttribute}=%n))";
+          passFilter = "(&(objectClass=user)(${uidAttribute}=%n))";
+        };
+        postfix.filter = "(&(objectClass=user)(${uidAttribute}=%u))";
+        bind = {
+          dn = ldapBindDN;
+          passwordFile = ldapPasswordFile;
+        };
+        base = "ou=users,${ldapBase}";
+        scope = "sub";
       };
-      bind = {
-        dn = ldapBindDN;
-        passwordFile = ldapPasswordFile;
-      };
-      searchBase = "ou=users,${ldapBase}";
-      searchScope = "sub";
-    };
 
     forwards = {
-      "postmaster@vector.bartoostveen.nl" = "postmaster@bartoostveen.nl";
+      "postmaster@${domain}" = "postmaster@bartoostveen.nl";
     };
 
     useUTF8FolderNames = true;
 
-    stateVersion = 3; # Do not change this line, unless a new version needs to be migrated to
+    stateVersion = 4; # Do not change this line, unless a new version needs to be migrated to
   };
 
   services.dovecot2.extraConfig = ''
     auth_master_user_separator = ${dovecotSeparator}
 
     passdb {
-        driver = passwd-file
-        args = ${dovecotMasterPasswdFile}
-        result_success = continue
-        master = yes
+      driver = passwd-file
+      args = ${dovecotMasterPasswdFile}
+      result_success = continue
+      master = yes
     }
 
     plugin {
@@ -148,9 +153,15 @@ in
       in
       roundcubeWithPlugins;
     hostName = "webmail.${domain}";
-    plugins = [ "roundcube_oidc" ];
+    plugins = [
+      "roundcube_oidc"
+      "managesieve"
+    ];
     extraConfig = ''
       $config['des_key'] = trim(file_get_contents("${config.sops.secrets.roundcube-des.path}"));
+
+      $config['product_name'] = "Vector test webmail";
+      $config['skin_logo'] = "${builtins.readFile ./logo-base64.txt}";
 
       // always, except when replying to plain text message
       $config['htmleditor'] = 4;
@@ -199,7 +210,6 @@ in
 
     sopsFile = ../../../../secrets/vector.bartoostveen.nl.mail.key.secret;
 
-    path = "${config.mailserver.dkimKeyDirectory}/vector.bartoostveen.nl.mail.key";
     restartUnits = [ "rspamd.service" ];
   };
 
@@ -251,4 +261,6 @@ in
 
     restartUnits = [ "phpfpm-roundcube.service" ];
   };
+
+  infra.backup.jobs.state.paths = [ config.mailserver.storage.path ];
 }

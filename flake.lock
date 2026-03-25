@@ -678,15 +678,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1772900845,
-        "narHash": "sha256-y5pfJaUjOwQ1pA2VMT0fYQyF0lVfn4YIhCfkF8n+aV8=",
+        "lastModified": 1774464688,
+        "narHash": "sha256-vqSJjdPWfgg1wywItD0ko2zdhXuVrZgJVGYn9Tg5cg8=",
         "owner": "bartoostveen",
         "repo": "nixos-mailserver",
-        "rev": "50a4cd50900edd6249f69e36e97cc573c886d4c7",
+        "rev": "0315e1675826194d28fb9ff4ee7967f18d258c38",
         "type": "github"
       },
       "original": {
         "owner": "bartoostveen",
+        "ref": "ldap/email",
         "repo": "nixos-mailserver",
         "type": "github"
       }
