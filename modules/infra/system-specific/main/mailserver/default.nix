@@ -178,7 +178,7 @@ in
   };
 
   services.postfix.settings.main = {
-    inet_protocols = "ipv4";
+    inet_protocols = "ipv4, ipv6";
     bounce_template_file = "${./bounce-template.cf}";
   };
 
