@@ -1,7 +1,7 @@
 { config, ... }:
 
 {
-  mailserver.loginAccounts = {
+  mailserver.accounts = {
     "bart@bartoostveen.nl" = {
       hashedPasswordFile = config.sops.secrets.bart-email-password-encrypted.path;
       aliases = [
