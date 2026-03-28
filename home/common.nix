@@ -81,6 +81,7 @@ in
           nerd-fonts.jetbrains-mono
           pavucontrol
           pdfarranger
+          pwvucontrol
           signal-desktop
           telegram-desktop
           thunderbird
