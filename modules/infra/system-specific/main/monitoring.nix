@@ -16,7 +16,9 @@ let
     # keep-sorted start
     attrNames
     filterAttrs
+    mapAttrsToList
     optionals
+    removeAttrs
     # keep-sorted end
     ;
 
@@ -26,6 +28,10 @@ let
       name,
       config' ? inputs.self.nixosConfigurations.${name}.config,
     }:
+
+    let
+      hostName = name;
+    in
     (
       config'.services.prometheus.exporters
       |> filterAttrs (
@@ -37,7 +43,7 @@ let
       )
       |> attrNames
       |> map (jobName: {
-        job_name = "${name}-${jobName}";
+        job_name = "${hostName}-${jobName}";
         static_configs = [
           {
             targets = [ "${host}:${toString config'.services.prometheus.exporters.${jobName}.port}" ];
@@ -47,14 +53,29 @@ let
     )
     ++ (optionals config'.services.telegraf.enable [
       {
-        job_name = "${name}-telegraf";
+        job_name = "${hostName}-telegraf";
         static_configs = [
           {
             targets = [ "${host}${config'.services.telegraf.extraConfig.outputs.prometheus_client.listen}" ];
           }
         ];
       }
-    ]);
+    ])
+    ++ (
+      config'.infra.extraScrapeConfigs
+      |> mapAttrsToList (
+        name: value:
+        (removeAttrs value [ "port" ])
+        // {
+          job_name = "${hostName}-${name}";
+          static_configs = [
+            {
+              targets = [ "${host}:${toString value.port}" ];
+            }
+          ];
+        }
+      )
+    );
 in
 {
   imports = [
