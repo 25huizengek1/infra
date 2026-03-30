@@ -90,6 +90,4 @@ in
       _module.args.deployLib = (inputs.deploy-rs.overlays.default pkgs pkgs).deploy-rs.lib;
       checks = deployLib.deployChecks self.deploy;
     };
-
-  debug = true;
 }
