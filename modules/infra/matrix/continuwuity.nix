@@ -92,6 +92,7 @@ in
         allow_registration = false;
         allow_encryption = true;
         allow_federation = true;
+        allow_legacy_media = false;
         trusted_servers = [
           "matrix.org"
           "utwente.io"
