@@ -33,7 +33,11 @@
 
           inputs.copyparty.overlays.default
           # The design of deploy-rs' flake is truly wonderful, see also deploy.module.nix
-          (_final: prev: { deploy-rs = prev.deploy-rs // { inherit (prev) deploy-rs; }; })
+          (_final: prev: {
+            deploy-rs = prev.deploy-rs // {
+              inherit (prev) deploy-rs;
+            };
+          })
         ];
       };
 
