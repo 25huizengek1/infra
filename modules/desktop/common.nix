@@ -59,7 +59,7 @@
     enable = lib.mkDefault true;
     clean = {
       enable = true;
-      extraArgs = "--keep 3";
+      extraArgs = "--keep 2 --keep-since 2d";
       dates = "monthly";
     };
   };
