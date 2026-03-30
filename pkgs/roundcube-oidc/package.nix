@@ -26,6 +26,7 @@ php.buildComposerProject2 (_finalAttrs: {
   };
 
   vendorHash = "sha256-n6xV5LIAyquQr1HsPJa5j/Mb9OVUW+101+hvpFbffO8=";
+  composerStrictValidation = false;
 
   installPhase = ''
     mkdir -p $out/plugins/roundcube_oidc

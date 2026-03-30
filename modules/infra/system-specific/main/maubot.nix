@@ -1,22 +1,11 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }:
 
 let
   domain = "maubot.bartoostveen.nl";
-
-  spotify =
-    let
-      version = "1.1.2";
-    in
-    config.services.maubot.package.plugins.idonthavespotify.overrideAttrs {
-      inherit version;
-      src = inputs.maubot-spotify;
-      preInstall = "mv de.sosnowkadub.idonthavespotify-v${version}.mbp $pluginName";
-    };
 
   sed = config.services.maubot.package.plugins.sed.overrideAttrs {
     src = pkgs.fetchFromGitHub {
@@ -52,7 +41,6 @@ in
       rss
       rsvc
       sed
-      spotify
       tex
       urlpreview
       wolframalpha

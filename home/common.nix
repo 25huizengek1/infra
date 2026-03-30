@@ -53,7 +53,6 @@ in
           glab
           gopass
           htop
-          inputs.licenseit.packages.${pkgs.stdenv.system}.default
           invoice
           jq
           meteor-git

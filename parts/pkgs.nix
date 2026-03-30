@@ -37,7 +37,6 @@
       };
 
       _module.args.stablePkgs = mkSimplePkgs inputs.nixpkgs-stable;
-      _module.args.personalPkgs = mkSimplePkgs inputs.nixpkgs-personal;
 
       # keep-sorted start
       packages.alertmanager-matrix = pkgs.callPackage ../pkgs/alertmanager-matrix/package.nix { };

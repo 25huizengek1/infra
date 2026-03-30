@@ -1,4 +1,4 @@
-{ lib, personalPkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   imports = [
@@ -12,7 +12,6 @@
 
   infra.matrix = {
     enable = true;
-    package = personalPkgs.matrix-continuwuity;
     fqdn = "bartoostveen.nl";
     domain = "matrix.bartoostveen.nl";
     livekit = {
@@ -29,7 +28,7 @@
     };
     cinny = {
       enable = true;
-      package = personalPkgs.cinny.override {
+      package = pkgs.cinny.override {
         conf = {
           homeserverList = [
             "bartoostveen.nl"
