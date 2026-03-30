@@ -1,8 +1,11 @@
+# Amazing de-shittifier for the deploy-rs flake
+
 {
   self,
   inputs,
   lib,
   config,
+  withSystem,
   ...
 }:
 
@@ -13,6 +16,8 @@ let
     genAttrs'
     nameValuePair
     ;
+
+  deployLibForSystem = system: withSystem system ({ deployLib, ... }: deployLib);
 in
 {
   flake.deploy.nodes =
@@ -36,7 +41,7 @@ in
             interactiveSudo = username == "root" && sshUser != "root";
 
             path =
-              inputs.deploy-rs.lib.${system}.activate.home-manager
+              (deployLibForSystem system).activate.home-manager
                 self.homeConfigurations."${username}@${hostname}";
           };
         }
@@ -71,13 +76,20 @@ in
 
               interactiveSudo = username == "root" && sshUser != "root";
 
-              path = inputs.deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.${name};
+              path = (deployLibForSystem system).activate.nixos self.nixosConfigurations.${name};
             };
           }
         ) config.deployments.nixos
       );
 
-  flake.checks = builtins.mapAttrs (
-    _system: deployLib: deployLib.deployChecks self.deploy
-  ) inputs.deploy-rs.lib;
+  perSystem =
+    { pkgs, deployLib, ... }:
+
+    {
+      # Why did they only expose this through an overlay, this is so cursed :sob:
+      _module.args.deployLib = (inputs.deploy-rs.overlays.default pkgs pkgs).deploy-rs.lib;
+      checks = deployLib.deployChecks self.deploy;
+    };
+
+  debug = true;
 }

@@ -39,7 +39,7 @@
     attic-client
     copyparty
     curl
-    deploy-rs.deploy-rs
+    deploy-rs
     file
     git
     nil
