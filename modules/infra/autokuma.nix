@@ -494,20 +494,13 @@ in
       }
     ) { } (attrValues cfg.instances);
 
-    systemd.tmpfiles.rules = mapAttrsToList (
-      name: instance:
-      let
-        user = if instance.user != null then instance.user else cfg.defaultUser;
-        group = if instance.group != null then instance.group else cfg.defaultGroup;
-      in
-      "d /run/autokuma/${name} 0750 ${user} ${group} - -"
-    ) cfg.instances;
+    infra.backup.jobs.state.paths = mapAttrsToList (name: _: "/var/lib/autokuma-${name}") cfg.instances;
 
     systemd.services = mapAttrs' (
       name: instance:
       let
         serviceName = "autokuma-${name}";
-        dir = "/run/autokuma/${name}";
+        dir = "/var/lib/autokuma-${name}";
         monitorsDir = "${dir}/monitors";
         monitorsTOML = map ({ name, value }: format.generate "${name}.toml" value) (
           attrsToList (mkMonitorAttrs instance)
@@ -523,6 +516,8 @@ in
         requires = [ "network-online.target" ];
         after = [ "network-online.target" ];
         wantedBy = [ "multi-user.target" ];
+        # This should not be needed, but monitor files should be writable for some reason...
+        # TODO: try to convince autokuma to take in linkFarms
         preStart = ''
           mkdir -p ${monitorsDir} | true
           rm -rf ${monitorsDir}/*

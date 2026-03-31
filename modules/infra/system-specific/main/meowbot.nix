@@ -54,6 +54,8 @@ in
     };
   };
 
+  infra.backup.jobs.state.paths = [ "/var/lib/meowbot" ];
+
   sops.secrets.meowbot-env = {
     format = "binary";
     sopsFile = ../../../../secrets/meowbot.env.secret;

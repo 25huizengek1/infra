@@ -11,4 +11,6 @@
       defaultNetwork.settings.dns_enabled = true;
     };
   };
+
+  infra.backup.jobs.state.paths = [ "/var/lib/containers/storage" ];
 }
