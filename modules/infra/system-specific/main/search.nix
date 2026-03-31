@@ -71,6 +71,7 @@
                       imports = [
                         inputs.sops-nix.nixosModules.sops
                         (import ../../autokuma.nix extraSpecialArgs)
+                        (import ../../backup extraSpecialArgs)
                         (import ../../copyparty.nix extraSpecialArgs)
                       ];
 

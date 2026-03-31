@@ -16,6 +16,7 @@ let
     mkEnableOption
     mkIf
     mkOption
+    tryEval
     types
     # keep-sorted end
     ;
@@ -119,6 +120,21 @@ in
 
   options.infra.backup = {
     enable = mkEnableOption "server backups (push side, configure borg credentials on destination manually)";
+    defaults = {
+      sshKeyFile = mkOption {
+        type = nullOr path;
+        example = "/run/secrets/borg/ssh-key";
+        description = "Default path to the SSH key required to access the remote host";
+        default = null;
+      };
+
+      secretKeyFile = mkOption {
+        type = nullOr path;
+        example = "/run/secrets/borg/borg-secret";
+        description = "Default path to the secret used to encrypt backups in the repository";
+        default = null;
+      };
+    };
     jobs = mkOption {
       description = "Backup jobs to run on a node";
       default = { };
@@ -156,14 +172,14 @@ in
             type = path;
             example = "/run/secrets/borg/ssh-key";
             description = "Path to the SSH key required to access the remote host";
-            default = config.sops.secrets.borg-ssh-key.path;
+            default = cfg.defaults.sshKeyFile;
           };
 
           secretKeyFile = mkOption {
             type = path;
             example = "/run/secrets/borg/borg-secret";
             description = "Path to the secret used to encrypt backups in the repository";
-            default = config.sops.secrets.borg-secret.path;
+            default = cfg.defaults.secretKeyFile;
           };
 
           quota = mkOption {
@@ -207,13 +223,25 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    inherit (nixosModule)
-      assertions
-      programs
-      systemd
-      services
-      environment
-      ;
-  };
+  config = mkIf cfg.enable (
+    let
+      # This is way too cursed. The old solution was better but nix decided not to cooperate
+      # adios(-flake) solves this (callable modules). downside: options harder to document
+      eval = tryEval {
+        assertions = if nixosModule ? assertions then nixosModule.assertions else { };
+        programs = if nixosModule ? programs then nixosModule.programs else { };
+        systemd = if nixosModule ? systemd then nixosModule.systemd else { };
+        services = if nixosModule ? services then nixosModule.services else { };
+        environment = if nixosModule ? environment then nixosModule.environment else { };
+      };
+    in
+    if eval.success then
+      eval.value
+    else
+      {
+        warnings = [
+          "Tried to evaluate the infra.backup module, but it is not enabled (correctly!). Consider disabling, ignore this if importing for documentation purposes."
+        ];
+      }
+  );
 }

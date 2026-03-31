@@ -20,7 +20,6 @@
     ../modules/infra/common.nix
     ../modules/infra/git.nix
     ../modules/infra/networking.nix
-    ../modules/infra/podman.nix
     ../modules/wireguard.nix
     # keep-sorted end
   ];

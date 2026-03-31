@@ -12,9 +12,15 @@ in
 {
   options.infra.backup.enableDefaults = mkEnableOption "defaults";
   config = mkIf enable {
-    infra.backup.enable = mkDefault true;
-    infra.backup.postgres.jobName = mkDefault "state";
-    infra.backup.mysql.jobName = mkDefault "state";
+    infra.backup = {
+      enable = mkDefault true;
+      postgres.jobName = mkDefault "state";
+      mysql.jobName = mkDefault "state";
+      defaults = {
+        sshKeyFile = mkDefault config.sops.secrets.borg-ssh-key.path;
+        secretKeyFile = mkDefault config.sops.secrets.borg-secret.path;
+      };
+    };
 
     sops.secrets.borg-ssh-key = mkDefault {
       format = "binary";
