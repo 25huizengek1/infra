@@ -124,14 +124,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-apple-silicon = {
-      url = "github:tpwrules/nixos-apple-silicon";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-compat.follows = "";
-      };
-    };
-
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
     nixos-mailserver = {
@@ -145,14 +137,6 @@
     };
 
     nixpkgs-lib.url = "github:nix-community/nixpkgs.lib";
-
-    nuschtos-search = {
-      url = "github:NuschtOS/search";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
 
     omeduostuurcentenneef-web = {
       url = "github:bartoostveen/omeduostuurcentenneef-web";
