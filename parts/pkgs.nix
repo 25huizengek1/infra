@@ -53,6 +53,7 @@
       packages.github-readme-stats = pkgs.callPackage ../pkgs/github-readme-stats/package.nix { };
       packages.librepods = pkgs.callPackage ../pkgs/librepods/package.nix { };
       packages.matrix-stickerbook = pkgs.callPackage ../pkgs/matrix-stickerbook/package.nix { };
+      packages.mautrix-telegram-go = pkgs.callPackage ../pkgs/mautrix-telegram-go/package.nix { };
       packages.meshcore-gui = pkgs.callPackage ../pkgs/meshcore-gui/package.nix { };
       packages.meshcore-scan = pkgs.callPackage ../pkgs/meshcore-scan/package.nix { };
       packages.meshcoredecoder = pkgs.callPackage ../pkgs/meshcoredecoder/package.nix { };

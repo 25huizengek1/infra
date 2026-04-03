@@ -8,6 +8,7 @@
     ./continuwuity.nix
     ./element.nix
     ./livekit.nix
+    ./telegram.nix
   ];
 
   infra.matrix = {
