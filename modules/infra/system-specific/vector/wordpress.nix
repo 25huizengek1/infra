@@ -3,10 +3,11 @@
 let
   siteName = "vector.bartoostveen.nl";
   wpVhost = "vector.bartoostveen.nl";
-  wpPackage = pkgs.callPackage "${inputs.nixpkgs}/pkgs/servers/web-apps/wordpress/generic.nix" {
-    version = "6.9.4";
-    hash = "sha256-22EK2fVJ4Ku1rz49XGcpxY2HRDllTN8K/qQlsuqJXzU=";
-  };
+  # wpPackage = pkgs.callPackage "${inputs.nixpkgs}/pkgs/servers/web-apps/wordpress/generic.nix" {
+  #   version = "6.9.4";
+  #   hash = "sha256-22EK2fVJ4Ku1rz49XGcpxY2HRDllTN8K/qQlsuqJXzU=";
+  # };
+  wpPackage = pkgs.wordpress_6_9;
 
   mkWpPlugin =
     {
@@ -55,9 +56,9 @@ let
     stdenv.mkDerivation {
       name = "wp-language-nl";
       src = fetchzip {
-        url = "https://nl.wordpress.org/wordpress-6.9.3-nl_NL.zip";
+        url = "https://nl.wordpress.org/wordpress-${wpPackage.version}-nl_NL.zip";
         name = "wp-${wpPackage.version}-language-nl";
-        hash = "sha256-5OxQDpkBrE1WWwFGL292Z8RQpFFehfbOIwWcmsVhPa4=";
+        hash = "sha256-beU5XYpNX6ISD2y46q8r1Jy813V8zxWBzRK4V9d8L9M=";
       };
       installPhase = "mkdir -p $out; cp -r ./wp-content/languages/* $out/";
     };
