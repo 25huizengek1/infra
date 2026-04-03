@@ -8,9 +8,6 @@
 let
   inherit (lib)
     mapAttrsToList
-    genAttrs'
-    nameValuePair
-    range
     ;
 in
 {
