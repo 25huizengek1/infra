@@ -240,10 +240,13 @@ in
     "prometheus.vitune.app"
   ];
 
-  infra.backup.jobs.state.paths = [
-    "/var/lib/${config.services.prometheus.stateDir}"
-    config.services.grafana.dataDir
-  ];
+  infra.backup.jobs.state = {
+    paths = [
+      "/var/lib/${config.services.prometheus.stateDir}"
+      config.services.grafana.dataDir
+    ];
+    exclude = [ "/var/lib/${config.services.prometheus.stateDir}/data/wal" ];
+  };
 
   sops.secrets.alertmanager-discord-webhook = {
     format = "binary";
