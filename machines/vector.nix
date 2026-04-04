@@ -23,6 +23,7 @@
     ../modules/infra/networking.nix
     ../modules/infra/nginx.nix
     ../modules/infra/nix.nix
+    ../modules/infra/podman.nix
     # keep-sorted end
 
     # keep-sorted start
