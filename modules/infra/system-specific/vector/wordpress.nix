@@ -1,8 +1,7 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 let
-  siteName = "vector.bartoostveen.nl";
-  wpVhost = "vector.bartoostveen.nl";
+  domain = "popkoorklankkleur.nl";
   # wpPackage = pkgs.callPackage "${inputs.nixpkgs}/pkgs/servers/web-apps/wordpress/generic.nix" {
   #   version = "6.9.4";
   #   hash = "sha256-22EK2fVJ4Ku1rz49XGcpxY2HRDllTN8K/qQlsuqJXzU=";
@@ -66,11 +65,11 @@ in
 {
   services.wordpress = {
     webserver = "nginx";
-    sites.${siteName} = {
+    sites.${domain} = {
       settings = {
         WP_DEFAULT_THEME = "twentytwentyfive";
-        WP_SITEURL = "https://${wpVhost}";
-        WP_HOME = "https://${wpVhost}";
+        WP_SITEURL = "https://${domain}";
+        WP_HOME = "https://${domain}";
         WP_DEBUG = true;
         WP_DEBUG_DISPLAY = false;
 
@@ -105,10 +104,10 @@ in
     };
   };
 
-  services.nginx.virtualHosts.${wpVhost} = {
+  services.nginx.virtualHosts.${domain} = {
     enableACME = true;
     forceSSL = true;
   };
 
-  infra.backup.jobs.state.paths = [ "/var/lib/wordpress/${siteName}" ];
+  infra.backup.jobs.state.paths = [ "/var/lib/wordpress/${domain}" ];
 }

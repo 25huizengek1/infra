@@ -8,7 +8,7 @@
   infra.authentik = {
     enable = true;
     environmentFile = config.sops.secrets.authentik-env.path;
-    domain = "auth.vector.bartoostveen.nl";
+    domain = "auth.popkoorklankkleur.nl";
   };
 
   sops.secrets.authentik-env = {

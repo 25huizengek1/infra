@@ -10,9 +10,9 @@ let
   inherit (import "${inputs.nixos-mailserver}/mail-server/common.nix" { inherit config pkgs lib; })
     appendLdapBindPwd
     ;
-  domain = "vector.bartoostveen.nl";
+  domain = "popkoorklankkleur.nl";
 
-  ldapBase = "dc=ldap,dc=vector,dc=bartoostveen,dc=nl";
+  ldapBase = "dc=ldap,dc=popkoorklankkleur,dc=nl";
   ldapPasswordFile = config.sops.secrets.ldap-bind-password.path;
   ldapHost = "${domain}:3389";
   ldapBindDN = "cn=ldapservice,ou=users,${ldapBase}";
@@ -71,7 +71,7 @@ in
     enableSubmission = true; # Enable StartTLS
 
     dkim.domains.${domain}.selectors.mail.keyFile =
-      config.sops.secrets."vector.bartoostveen.nl.mail.key".path;
+      config.sops.secrets."popkoorklankkleur.nl.mail.key".path;
 
     ldap =
       let
@@ -142,7 +142,7 @@ in
             $config['oidc_imap_master_password'] = trim(file_get_contents("${dovecotMasterPasswordFile}"));
             $config['oidc_master_user_separator'] = '${dovecotSeparator}';
             $config['oidc_config_master_user'] = '${dovecotMasterUser}';
-            $config['oidc_url'] = 'https://auth.vector.bartoostveen.nl/application/o/webmail/';
+            $config['oidc_url'] = 'https://auth.popkoorklankkleur.nl/application/o/webmail/';
             $config['oidc_client'] = 'VZITfwq9s64f2JJp6Rdb7EGPWnYrQqRU0S1ZrUw5';
             $config['oidc_secret'] = trim(file_get_contents("${roundcubeClientSecretFile}"));
             $config['oidc_scope'] = 'openid profile roundcube';
@@ -160,7 +160,7 @@ in
     extraConfig = ''
       $config['des_key'] = trim(file_get_contents("${config.sops.secrets.roundcube-des.path}"));
 
-      $config['product_name'] = "Vector test webmail";
+      $config['product_name'] = "Popkoor KlankKleur webmail";
       $config['skin_logo'] = "${builtins.readFile ./logo-base64.txt}";
 
       // always, except when replying to plain text message
@@ -202,13 +202,13 @@ in
   services.phpfpm.pools.roundcube.settings."php_admin_value[open_basedir]" =
     "/run/secrets:/nix/store";
 
-  sops.secrets."vector.bartoostveen.nl.mail.key" = {
+  sops.secrets."popkoorklankkleur.nl.mail.key" = {
     format = "binary";
     owner = "rspamd";
     group = "rspamd";
     mode = "0600";
 
-    sopsFile = ../../../../secrets/vector.bartoostveen.nl.mail.key.secret;
+    sopsFile = ../../../../secrets/popkoorklankkleur.nl.mail.key.secret;
 
     restartUnits = [ "rspamd.service" ];
   };

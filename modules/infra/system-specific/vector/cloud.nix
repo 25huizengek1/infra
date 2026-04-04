@@ -5,7 +5,7 @@
 }:
 
 let
-  domain = "vector.bartoostveen.nl";
+  domain = "popkoorklankkleur.nl";
   fqdn = "cloud.${domain}";
   # TODO: manually change in NextCloud once this changes
   collaboraDomain = "collabora.${fqdn}";

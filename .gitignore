@@ -2,3 +2,4 @@ result
 .lego
 .direnv
 .deploy-gc
+generate-*-invoice.sh
