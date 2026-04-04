@@ -429,11 +429,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1752843107,
-        "narHash": "sha256-TqWlNpQXXSMP4mX7duP+3TfMz0ATp94RY1wHe3xeWDw=",
+        "lastModified": 1775330768,
+        "narHash": "sha256-M0T4YdMXQLvs9YVcnB1Rlz6q1cLvaBlL0LgDq24vF1s=",
         "owner": "bartoostveen",
         "repo": "invoice",
-        "rev": "021a68e22f5917db301b8c8f09fc349aa02e0aa1",
+        "rev": "31277a45b68f448e85eb1edd13c1b6739a417c60",
         "type": "github"
       },
       "original": {
