@@ -105,8 +105,8 @@ in
           antispam-bee
           gutenberg
           opengraph
-          wp-user-avatars
           wordpress-seo
+          wp-user-avatars
           # keep-sorted end
           ;
         inherit (pkgs.local) wp-oidc-roles;
