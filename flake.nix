@@ -25,7 +25,8 @@
     };
 
     authentik = {
-      url = "github:nix-community/authentik-nix";
+      # url = "github:nix-community/authentik-nix";
+      url = "github:bartoostveen/authentik-nix/2026.2.2";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-compat.follows = "";
