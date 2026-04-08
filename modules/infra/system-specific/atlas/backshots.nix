@@ -6,6 +6,6 @@
     path = "/var/lib/borg/main";
     user = "backshots";
     allowSubRepos = true;
-    quota = "100G";
+    quota = "400G";
   };
 }
