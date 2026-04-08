@@ -6,6 +6,7 @@
     ./call.nix
     ./cinny.nix
     ./continuwuity.nix
+    ./discord.nix
     ./element.nix
     ./livekit.nix
     ./signal.nix
