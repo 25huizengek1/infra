@@ -5,7 +5,7 @@
   pkgs,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "tilp";
   version = "1.18";
 
@@ -38,7 +38,7 @@ stdenv.mkDerivation rec {
     fetchFromGitHub {
       owner = "debrouxl";
       repo = "tilp_and_gfm";
-      rev = version;
+      rev = finalAttrs.version;
       hash = "sha256-/XkxEfWzJiOkM5aoenp/GQSkkNg9qoXkFtcj/nenFEw=";
     }
     + "/tilp/trunk";
@@ -51,9 +51,9 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "TILP (formerly GtkTiLink) can transfer data between Texas Instruments graphing calculators and a computer. It works with all link cables (parallel, serial, Black/Gray/Silver/Direct Link) and it supports the TI-Z80 series (73..86), the TI-eZ80 series (83PCE, 84+CE), the TI-68k series (89, 92, 92+, V200, 89T) and the Nspire series (Nspire Clickpad / Touchpad / CX, both CAS and non-CAS";
-    homepage = "https://github.com/debrouxl/tilp_and_gfm/tree/1.18/tilp/trunk";
+    homepage = "https://github.com/debrouxl/tilp_and_gfm/tree/${finalAttrs.version}/tilp/trunk";
     license = lib.licenses.gpl2Only;
     mainProgram = "tilp";
     platforms = lib.platforms.all;
   };
-}
+})

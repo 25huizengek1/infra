@@ -46,7 +46,6 @@
       # keep-sorted start
       packages.alertmanager-matrix = pkgs.callPackage ../pkgs/alertmanager-matrix/package.nix { };
       packages.autokuma = pkgs.callPackage ../pkgs/autokuma/package.nix { };
-      packages.dawn = pkgs.callPackage ../pkgs/dawn/package.nix { };
       packages.fail2ban-prometheus-exporter =
         pkgs.callPackage ../pkgs/fail2ban-prometheus-exporter/package.nix
           { };

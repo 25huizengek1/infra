@@ -5,12 +5,12 @@
 
 python313Packages.buildPythonPackage (finalAttrs: {
   pname = "meshcoredecoder";
-  version = "0.2.3";
+  version = "0.3.2";
   pyproject = true;
 
   src = python313Packages.fetchPypi {
     inherit (finalAttrs) pname version;
-    hash = "sha256-je+J6JluMDRevrsgv/miUGoVUM1wGQiZJl+aq6KXvw8=";
+    hash = "sha256-QF0FZzU5HZ62maUm1sQtT9QglNVUf94ivBLbXUVEqQQ=";
   };
 
   build-system = with python313Packages; [

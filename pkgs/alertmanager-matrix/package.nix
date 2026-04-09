@@ -1,21 +1,21 @@
 {
   lib,
   buildGoModule,
-  fetchFromGitHub,
+  fetchFromGitLab,
 }:
 
 buildGoModule (finalAttrs: {
   pname = "alertmanager-matrix";
-  version = "0.4.2";
+  version = "0.5.0";
 
-  src = fetchFromGitHub {
-    owner = "silkeh";
-    repo = "alertmanager_matrix";
+  src = fetchFromGitLab {
+    owner = "slxh";
+    repo = "matrix/alertmanager_matrix";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-OJkhyfcqdNDw39DJ1TxiR4sgauH1Z2DS6da4vnnYc3Y=";
+    hash = "sha256-/rnsuFaiMEHv19Wd0rHngpmmQk1Ka07gxu7luJa0emQ=";
   };
 
-  vendorHash = "sha256-KwjjB6scg3VmKc9qrdx+lVMj+XLLRqe4yv9DxoMMyi0=";
+  vendorHash = "sha256-10CKNQ0mCa+k3aFQH/5XvG5LYGyU/gm+kr2eYmqU6AU=";
 
   ldflags = [ "-s" ];
 

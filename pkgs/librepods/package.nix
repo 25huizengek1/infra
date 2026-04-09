@@ -3,6 +3,7 @@
   stdenv,
   fetchFromGitHub,
   cmake,
+  pkg-config,
   kdePackages,
   openssl,
   libpulseaudio,
@@ -14,24 +15,26 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "librepods";
-  version = "0.1.0-rc.4";
+  version = "0.2.0-alpha.2";
 
   src = fetchFromGitHub {
     owner = "kavishdevar";
     repo = "librepods";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-FnDYQ3EPx2hpeCCZvbf5PJo+KCj+YO+DNg+++UpZ7Xs=";
+    hash = "sha256-37dLiXC+eO4f5waLKgMMpHXH1m6W54O/l2axJsnyU5M=";
   };
 
   sourceRoot = "source/linux";
 
   nativeBuildInputs = [
     cmake
+    pkg-config
 
     kdePackages.qtbase
     kdePackages.qtconnectivity
     kdePackages.qtdeclarative
     kdePackages.qtmultimedia
+    kdePackages.qttools
 
     openssl
     libpulseaudio
