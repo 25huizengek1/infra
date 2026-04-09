@@ -38,6 +38,12 @@ let
     id = "daggerhart-openid-connect-generic";
     hash = "sha256-/mqGWQz1lHsnA2dpQEZQVCWmqFSmDslFd4rzeEC4PA8=";
   };
+  gutenberg = mkWpPlugin {
+    pname = "gutenberg";
+    version = "22.9.0";
+    id = "gutenberg";
+    hash = "sha256-LyC3nLOWAn2o6MrsbuFAnal6zMCLNNhXEud4hFgTRSM=";
+  };
   gutenberg-carousel = mkWpPlugin {
     pname = "wp-gutenberg-carousel";
     version = "2.1.1";
@@ -49,12 +55,6 @@ let
     version = "1.1.0";
     id = "user-profile-dashboard-fields-control";
     hash = "sha256-f2lALAuTVTWmZB8z+A7fvv87vbwcwiASH7fsrK4WWGI=";
-  };
-  osm = mkWpPlugin {
-    pname = "wp-osm";
-    version = "6.1.16";
-    id = "osm";
-    hash = "sha256-FYmIlSmISwhnWCCcy0kf4wlR9d72nYbY+MbhotYAEUs=";
   };
   view-transitions = mkWpPlugin {
     pname = "wp-view-transitions";
@@ -94,18 +94,16 @@ in
           # keep-sorted start
           contact-form-7
           generic-oidc
+          gutenberg
           gutenberg-carousel
           modify-profile-fields
-          osm
           view-transitions
           # keep-sorted end
           ;
         inherit (pkgs.wordpressPackages.plugins)
           # keep-sorted start
           antispam-bee
-          gutenberg
           opengraph
-          wordpress-seo
           wp-user-avatars
           # keep-sorted end
           ;
