@@ -44,6 +44,8 @@ let
   dovecotMasterPasswordFile = config.sops.secrets.dovecot-master-password.path;
   dovecotMasterPasswdFile = config.sops.secrets.dovecot-master-passwd.path;
   roundcubeClientSecretFile = config.sops.secrets.roundcube-client-secret.path;
+
+  rspamdMetricsPort = 32475;
 in
 {
   imports = [
@@ -130,6 +132,13 @@ in
   systemd.services.postfix.preStart = ''
     ${writeLdapMapFile}
   '';
+
+  services.rspamd.workers.controller.bindSockets = [ "*:${toString rspamdMetricsPort}" ];
+
+  infra.extraScrapeConfigs.rspamd = {
+    port = rspamdMetricsPort;
+    metrics_path = "/metrics";
+  };
 
   services.roundcube = {
     enable = true;

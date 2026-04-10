@@ -7,6 +7,7 @@
 
 let
   domain = "bartoostveen.nl";
+  rspamdMetricsPort = 32475;
 in
 {
   imports = [
@@ -64,13 +65,15 @@ in
     stateVersion = 4; # Do not change this line, unless a new version needs to be migrated to
   };
 
+  services.rspamd.workers.controller.bindSockets = [ "*:${toString rspamdMetricsPort}" ];
+
   services.prometheus = {
     exporters = {
       dovecot.enable = true;
       postfix.enable = true;
-      rspamd.enable = true;
     };
 
+    # TODO: use staticConfigsFor and generalize that module (separate wireguard but use global metadata to keep all modules 'in sync')
     scrapeConfigs = [
       {
         job_name = "dovecot";
@@ -90,9 +93,10 @@ in
       }
       {
         job_name = "rspamd";
+        metrics_path = "/metrics";
         static_configs = [
           {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.rspamd.port}" ];
+            targets = [ "localhost:${toString rspamdMetricsPort}" ];
           }
         ];
       }
