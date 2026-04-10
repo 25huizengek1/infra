@@ -9,7 +9,7 @@
       atlas = {
         sshUser = "root";
         system = "aarch64-linux";
-        ip = "192.168.1.145";
+        ip = "atlas-wg"; # "192.168.1.145";
       };
       vector = {
         sshUser = "root";
