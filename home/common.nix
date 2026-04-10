@@ -47,6 +47,7 @@ in
           btop
           curl
           dust
+          incus
           ffmpeg
           forgejo-cli
           gh
