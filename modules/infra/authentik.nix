@@ -2,6 +2,7 @@
   inputs,
   lib,
   config,
+  pkgs,
   ...
 }:
 
@@ -15,6 +16,22 @@ let
   inherit (types) int str path;
 
   cfg = config.infra.authentik;
+
+  # TODO: remove at next nixos-unstable push
+  authentikScope = (inputs.authentik.lib.mkAuthentikScope { inherit pkgs; }).overrideScope (
+    _final: prev: {
+      generatedGoClient = prev.generatedGoClient.override {
+        openapi-generator-cli = pkgs.openapi-generator-cli.overrideAttrs {
+          patches = [
+            (pkgs.fetchpatch {
+              url = "https://github.com/OpenAPITools/openapi-generator/pull/23326.patch";
+              hash = "sha256-E1VgtaIW1V+8ch2RpW850fVNl5Iqitjog+0b8DKFgZw=";
+            })
+          ];
+        };
+      };
+    }
+  );
 in
 {
   imports = [
@@ -59,6 +76,7 @@ in
     services.authentik = {
       enable = true;
       inherit (cfg) environmentFile;
+      inherit (authentikScope) authentikComponents;
       worker.listenMetrics = "[::1]:${toString cfg.metricsPort}";
       settings = {
         email = {
