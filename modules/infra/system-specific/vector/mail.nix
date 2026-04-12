@@ -101,6 +101,7 @@ in
 
     forwards = {
       "postmaster@${domain}" = "postmaster@bartoostveen.nl";
+      "webmaster@${domain}" = "akadmin@${domain}";
     };
 
     useUTF8FolderNames = true;
