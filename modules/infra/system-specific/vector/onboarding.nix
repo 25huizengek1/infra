@@ -14,7 +14,7 @@ let
     authentik.base_url = "https://${config.infra.authentik.domain}";
     redis.host = "unix://${redisSocket}";
     smtp = {
-      from = "Onboarding <${emailUser}@${config.mailserver.fqdn}>";
+      from = "Popkoor KlankKleur Onboarding <${emailUser}@${config.mailserver.fqdn}>";
       host = config.mailserver.fqdn;
       port = 25;
       user = "${emailUser}@${config.mailserver.fqdn}";
