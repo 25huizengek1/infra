@@ -5,6 +5,7 @@
     enable = true;
     extraFlags = [ "--disable-reporting" ];
   };
+  # TODO: remove hardcoding
   environment.etc."alloy/config.alloy".text = ''
     loki.source.journal "journal" {
       max_age       = "24h0m0s"
@@ -27,7 +28,7 @@
 
     loki.write "default" {
       endpoint {
-        url = "http://127.0.0.1:${toString inputs.self.nixosConfigurations.bart-server.config.services.loki.configuration.server.http_listen_port}/loki/api/v1/push"
+        url = "http://10.0.0.1:${toString inputs.self.nixosConfigurations.bart-server.config.services.loki.configuration.server.http_listen_port}/loki/api/v1/push"
       }
       external_labels = {}
     }

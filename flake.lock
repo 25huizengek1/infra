@@ -698,6 +698,32 @@
         "type": "github"
       }
     },
+    "onboarding": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1776083455,
+        "narHash": "sha256-bdy0E91Avfamf4DsrVnpPsVjRzmkKK7jubsm5P3BaNo=",
+        "owner": "bartoostveen",
+        "repo": "simple-authentik-user-onboarding",
+        "rev": "202567288f98ae0d0e5d91c7f85bb1efd82bc7cb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bartoostveen",
+        "repo": "simple-authentik-user-onboarding",
+        "type": "github"
+      }
+    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -810,6 +836,7 @@
         "nixpkgs-lib": "nixpkgs-lib",
         "nixpkgs-stable": "nixpkgs-stable",
         "omeduostuurcentenneef-web": "omeduostuurcentenneef-web",
+        "onboarding": "onboarding",
         "plasma-manager": "plasma-manager",
         "prismlauncher-nixpkgs": "prismlauncher-nixpkgs",
         "sops-nix": "sops-nix",

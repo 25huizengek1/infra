@@ -149,6 +149,15 @@
       };
     };
 
+    onboarding = {
+      url = "github:bartoostveen/simple-authentik-user-onboarding";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
+
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs = {

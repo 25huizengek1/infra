@@ -103,6 +103,8 @@ in
       listenMetrics = "[::1]:${toString cfg.ldapMetricsPort}";
     };
 
+    # TODO: migrate to infra common monitoring ports
+
     services.prometheus = mkIf cfg.enablePrometheus {
       scrapeConfigs = [
         {
