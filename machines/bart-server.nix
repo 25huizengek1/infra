@@ -27,6 +27,7 @@ in
     ../modules/infra/system-specific/main/attic.nix
     ../modules/infra/system-specific/main/containers/tcs-bot.nix
     ../modules/infra/system-specific/main/containers/web.nix
+    ../modules/infra/system-specific/main/cloud.nix
     ../modules/infra/system-specific/main/ical-proxy.nix
     ../modules/infra/system-specific/main/ircbounce.nix
     ../modules/infra/system-specific/main/mailserver
