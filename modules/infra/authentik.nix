@@ -77,7 +77,7 @@ in
       enable = true;
       inherit (cfg) environmentFile;
       inherit (authentikScope) authentikComponents;
-      worker.listenMetrics = "[::1]:${toString cfg.metricsPort}";
+      worker.listenMetrics = "0.0.0.0:${toString cfg.metricsPort}";
       settings = {
         email = {
           host = cfg.emailHost;
@@ -100,30 +100,12 @@ in
     services.authentik-ldap = {
       enable = true;
       inherit (cfg) environmentFile;
-      listenMetrics = "[::1]:${toString cfg.ldapMetricsPort}";
+      listenMetrics = "0.0.0.0:${toString cfg.ldapMetricsPort}";
     };
 
-    # TODO: migrate to infra common monitoring ports
-
-    services.prometheus = mkIf cfg.enablePrometheus {
-      scrapeConfigs = [
-        {
-          job_name = "authentik";
-          static_configs = [
-            {
-              targets = [ "localhost:${toString cfg.metricsPort}" ];
-            }
-          ];
-        }
-        {
-          job_name = "authentik-ldap";
-          static_configs = [
-            {
-              targets = [ "localhost:${toString cfg.ldapMetricsPort}" ];
-            }
-          ];
-        }
-      ];
+    infra.extraScrapeConfigs = mkIf cfg.enablePrometheus {
+      authentik.port = cfg.metricsPort;
+      authentik-ldap.port = cfg.ldapMetricsPort;
     };
 
     users.users.authentik = {

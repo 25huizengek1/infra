@@ -7,6 +7,7 @@
 
   infra.authentik = {
     enable = true;
+    enablePrometheus = true;
     environmentFile = config.sops.secrets.authentik-env.path;
     domain = "auth.popkoorklankkleur.nl";
   };
