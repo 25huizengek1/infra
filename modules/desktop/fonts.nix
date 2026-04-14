@@ -10,6 +10,7 @@
     packages = with pkgs; [
       nerd-fonts.jetbrains-mono
       scientifica
+      atkinson-hyperlegible
       (scientifica.overrideAttrs (_o: {
         nativeBuildInputs = [ nerd-font-patcher ];
         postInstall = ''

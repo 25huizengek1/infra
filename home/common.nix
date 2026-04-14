@@ -79,6 +79,7 @@ in
           localsend
           mpv
           nerd-fonts.jetbrains-mono
+          nextcloud-client
           pavucontrol
           pdfarranger
           pwvucontrol
@@ -119,6 +120,11 @@ in
         jabref
         kdePackages.plasma-browser-integration
       ];
+    };
+
+    services.nextcloud-client = {
+      enable = lib.mkDefault cfg.gui;
+      startInBackground = lib.mkDefault true;
     };
 
     programs.google-chrome.enable = lib.mkDefault cfg.gui;
