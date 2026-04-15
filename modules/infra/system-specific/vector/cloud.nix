@@ -77,6 +77,9 @@ in
         enable = false;
       };
       security.enable_metrics_unauthenticated = true;
+      remote_font_config = [
+        { url = "https://cloud.popkoorklankkleur.nl/apps/richdocuments/settings/fonts.json"; }
+      ];
     };
   };
 
