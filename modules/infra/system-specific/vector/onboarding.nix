@@ -86,6 +86,11 @@ in
     unixSocketPerm = 770;
   };
 
+  infra.extraScrapeConfigs.onboarding = {
+    port = cfg.port;
+    metrics_path = "/metrics";
+  };
+
   # Proxy provider handles this
   services.nginx.virtualHosts.${config.infra.authentik.domain}.serverAliases = [
     "onboarding.${config.infra.authentik.domain}"
