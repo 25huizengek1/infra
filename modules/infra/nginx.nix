@@ -19,6 +19,7 @@ in
 
   services.nginx = {
     enable = true;
+    enableReload = true;
 
     recommendedBrotliSettings = true;
     recommendedGzipSettings = true;

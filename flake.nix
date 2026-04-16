@@ -127,8 +127,8 @@
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
     nixos-mailserver = {
-      url = "github:bartoostveen/nixos-mailserver/ldap/email";
       # url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      url = "gitlab:bartoostveen/nixos-mailserver/ldap/email";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-compat.follows = "";

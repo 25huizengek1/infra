@@ -10,6 +10,9 @@ let
   inherit (import "${inputs.nixos-mailserver}/mail-server/common.nix" { inherit config pkgs lib; })
     appendLdapBindPwd
     ;
+
+  inherit (lib) concatStringsSep;
+
   domain = "popkoorklankkleur.nl";
 
   ldapBase = "dc=ldap,dc=popkoorklankkleur,dc=nl";
@@ -109,20 +112,29 @@ in
     stateVersion = 4; # Do not change this line, unless a new version needs to be migrated to
   };
 
-  services.dovecot2.extraConfig = ''
-    auth_master_user_separator = ${dovecotSeparator}
+  services.postfix.mapFiles."denied_receipients_additional" =
+    builtins.toFile "denied_receipients_additional"
+      (
+        [
+          "onboarding"
+          "cloud"
+        ]
+        |> map (n: "${n}@${domain} REJECT This account cannot receive emails.")
+        |> concatStringsSep "\n"
+      );
 
-    passdb {
-      driver = passwd-file
-      args = ${dovecotMasterPasswdFile}
-      result_success = continue
-      master = yes
-    }
-
-    plugin {
-      master_user = ${dovecotMasterUser}
-    }
-  '';
+  services.dovecot2.settings = {
+    auth_master_user_separator = dovecotSeparator;
+    passdb = [
+      {
+        driver = "passwd-file";
+        args = "${dovecotMasterPasswdFile}";
+        result_success = "continue";
+        master = "yes";
+      }
+    ];
+    plugin.master_user = dovecotMasterUser;
+  };
 
   services.postfix.settings.main = {
     inet_protocols = "ipv4, ipv6";
