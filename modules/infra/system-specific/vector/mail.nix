@@ -112,9 +112,12 @@ in
     stateVersion = 4; # Do not change this line, unless a new version needs to be migrated to
   };
 
-  services.postfix.mapFiles."denied_receipients_additional" =
-    builtins.toFile "denied_receipients_additional"
-      (
+  services.postfix =
+    let
+      deniedRecipientsFileName = "denied_recipients_additional";
+    in
+    {
+      mapFiles.${deniedRecipientsFileName} = builtins.toFile deniedRecipientsFileName (
         [
           "onboarding"
           "cloud"
@@ -122,6 +125,17 @@ in
         |> map (n: "${n}@${domain} REJECT This account cannot receive emails.")
         |> concatStringsSep "\n"
       );
+
+      settings.main = {
+        inet_protocols = "ipv4, ipv6";
+        bounce_template_file = "${./bounce-template.cf}";
+        virtual_alias_maps = [ "ldap:${ldapGroupsFile}" ];
+
+        smtpd_recipient_restrictions = [
+          "check_recipient_access hash:/var/lib/postfix/conf/${deniedRecipientsFileName}"
+        ];
+      };
+    };
 
   services.dovecot2.settings = {
     auth_master_user_separator = dovecotSeparator;
@@ -134,12 +148,6 @@ in
       }
     ];
     plugin.master_user = dovecotMasterUser;
-  };
-
-  services.postfix.settings.main = {
-    inet_protocols = "ipv4, ipv6";
-    bounce_template_file = "${./bounce-template.cf}";
-    virtual_alias_maps = [ "ldap:${ldapGroupsFile}" ];
   };
 
   systemd.services.postfix.preStart = ''
