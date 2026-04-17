@@ -60,7 +60,7 @@ in
         File containing environment variables to be passed to the mautrix-telegram service,
         in which secret tokens can be specified securely.
 
-        Set env_config_prefix in settings for this environment file to be loaded by
+        Set {option}`settings.env_config_prefix` for this environment file to be loaded by
         mautrix-telegram. This is the prefix for environment variables. All variables with
         this prefix must map to valid config fields. Nesting in variable names is
         represented with a dot (.). If there are no dots in the name, two underscores (__)
