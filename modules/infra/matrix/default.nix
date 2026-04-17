@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, continuwuityPkgs, ... }:
 
 {
   imports = [
@@ -15,6 +15,7 @@
 
   infra.matrix = {
     enable = true;
+    package = continuwuityPkgs.matrix-continuwuity;
     fqdn = "bartoostveen.nl";
     domain = "matrix.bartoostveen.nl";
     livekit = {
