@@ -1,4 +1,9 @@
-{ lib, pkgs, continuwuityPkgs, ... }:
+{
+  lib,
+  pkgs,
+  continuwuityPkgs,
+  ...
+}:
 
 {
   imports = [
