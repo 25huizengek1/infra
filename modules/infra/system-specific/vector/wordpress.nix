@@ -120,6 +120,7 @@ in
   services.nginx.virtualHosts.${domain} = {
     enableACME = true;
     forceSSL = true;
+    serverAliases = [ "www.${domain}" ];
   };
 
   infra.backup.jobs.state.paths = [ "/var/lib/wordpress/${domain}" ];
