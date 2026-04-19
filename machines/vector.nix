@@ -38,7 +38,7 @@
   ];
 
   facter.reportPath = ./vector.json;
-  systemd.network.networks."10-uplink".networkConfig.Address = "2a01:4f8:1c19:1cd2::1/64";
+  systemd.network.networks."10-uplink".networkConfig.Address = "2a01:4f8:1c19:1cd2::1/128";
 
   infra.wireguard.enable = true;
 
