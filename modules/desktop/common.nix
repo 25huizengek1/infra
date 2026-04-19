@@ -108,6 +108,8 @@
     '';
   };
 
+  programs.ente-auth.enable = true;
+
   services.openssh = {
     enable = lib.mkDefault true;
     settings = {
