@@ -125,7 +125,10 @@
   };
 
   systemd.services.nix-daemon.serviceConfig.Slice = "-.slice";
-  environment.variables.NIX_REMOTE = "daemon";
+  environment.variables = {
+    NIX_REMOTE = "daemon";
+    NH_SHOW_ACTIVATION_LOGS = 1;
+  };
 
   services.libinput.enable = lib.mkForce true;
   services.flatpak.enable = lib.mkDefault true;

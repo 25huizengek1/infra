@@ -83,9 +83,12 @@ in
       '';
     };
 
-    environment.systemPackages = with pkgs; [
-      curl
-      wget
-    ];
+    environment = {
+      systemPackages = with pkgs; [
+        curl
+        wget
+      ];
+      variables.NH_SHOW_ACTIVATION_LOGS = 1;
+    };
   };
 }

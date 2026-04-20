@@ -21,9 +21,12 @@
   programs.nh.enable = true;
   isoImage.squashfsCompression = "gzip -Xcompression-level 1";
 
-  environment.systemPackages = with pkgs; [
-    alacritty
-    gh
-    git
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      alacritty
+      gh
+      git
+    ];
+    variables.NH_SHOW_ACTIVATION_LOGS = 1;
+  };
 }
