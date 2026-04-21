@@ -207,6 +207,51 @@ in
                 }
               ];
             }
+            {
+              name = "synapse";
+              rules = [
+                {
+                  expr = "synapse_federation_client_sent_edus_total + 0";
+                  labels.type = "EDU";
+                  record = "synapse_federation_client_sent";
+                }
+                {
+                  expr = "synapse_federation_client_sent_pdu_destinations_count_total + 0";
+                  labels.type = "PDU";
+                  record = "synapse_federation_client_sent";
+                }
+                {
+                  expr = "sum(synapse_federation_client_sent_queries) by (job)";
+                  labels.type = "Query";
+                  record = "synapse_federation_client_sent";
+                }
+                {
+                  expr = "synapse_federation_server_received_edus_total + 0";
+                  labels.type = "EDU";
+                  record = "synapse_federation_server_received";
+                }
+                {
+                  expr = "synapse_federation_server_received_pdus_total + 0";
+                  labels.type = "PDU";
+                  record = "synapse_federation_server_received";
+                }
+                {
+                  expr = "sum(synapse_federation_server_received_queries) by (job)";
+                  labels.type = "Query";
+                  record = "synapse_federation_server_received";
+                }
+                {
+                  expr = "synapse_federation_transaction_queue_pending_edus + 0";
+                  labels.type = "EDU";
+                  record = "synapse_federation_transaction_queue_pending";
+                }
+                {
+                  expr = "synapse_federation_transaction_queue_pending_pdus + 0";
+                  labels.type = "PDU";
+                  record = "synapse_federation_transaction_queue_pending";
+                }
+              ];
+            }
           ];
         }
       ))

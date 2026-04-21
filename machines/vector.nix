@@ -29,6 +29,7 @@
 
     # keep-sorted start
     ../modules/infra/system-specific/vector/auth.nix
+    ../modules/infra/system-specific/vector/chat.nix
     ../modules/infra/system-specific/vector/cloud.nix
     ../modules/infra/system-specific/vector/mail.nix
     ../modules/infra/system-specific/vector/monitoring.nix

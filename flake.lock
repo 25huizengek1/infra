@@ -726,11 +726,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776457271,
-        "narHash": "sha256-ueHrt7ecMExUSb+VwSuqhbBe0my7cMpTl0hsPU8CbgM=",
+        "lastModified": 1776803428,
+        "narHash": "sha256-DGOpipDGi6vJ58MNeFe3i4ngKgl0M/Xp3s/K0B6536Y=",
         "owner": "bartoostveen",
         "repo": "simple-authentik-user-onboarding",
-        "rev": "b5d6f1a1a5ccc432b32ddcf011b3313564862053",
+        "rev": "75b30ba557189c2c2dce32a82b7c29c9a5b5acd4",
         "type": "github"
       },
       "original": {
