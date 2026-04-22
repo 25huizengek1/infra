@@ -28,10 +28,10 @@
 
     shortcuts = {
       "services/Alacritty.desktop"."New" = "Meta+Return";
-      kwin."Window to Desktop 1" = "Alt+Shift+F1";
-      kwin."Window to Desktop 2" = "Alt+Shift+F2";
-      kwin."Window to Desktop 3" = "Alt+Shift+F3";
-      kwin."Window to Desktop 4" = "Alt+Shift+F4";
+      kwin."Window to Desktop 1" = "Ctrl+Shift+F1";
+      kwin."Window to Desktop 2" = "Ctrl+Shift+F2";
+      kwin."Window to Desktop 3" = "Ctrl+Shift+F3";
+      kwin."Window to Desktop 4" = "Ctrl+Shift+F4";
     };
 
     configFile = {
