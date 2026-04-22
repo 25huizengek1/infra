@@ -65,7 +65,4 @@ in
       maxretry = 2
     '';
   };
-
-  # Skip cloudflare when resolving own virtualHosts for some reason
-  networking.hosts."127.0.0.1" = builtins.attrNames config.services.nginx.virtualHosts;
 }

@@ -268,7 +268,7 @@ in
       }
     ]
     ++ (staticConfigsFor {
-      host = "localhost";
+      host = "10.0.0.1";
       name = "bart-server";
     })
     ++ (staticConfigsFor {

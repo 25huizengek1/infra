@@ -19,7 +19,10 @@ let
 
   clientWellKnown = {
     "m.homeserver".base_url = "https://${fqdn}";
-    "io.element.e2ee".force_disable = true;
+    "io.element.e2ee" = {
+      default = false;
+      force_disable = true;
+    };
   };
   clientConfig = staticJSONResponse clientWellKnown;
 

@@ -21,7 +21,6 @@ let
     PORT = toString port;
     HOSTNAME = "https://${domain}";
     ENVIRONMENT = "PRODUCTION";
-    METRICS_PREFIX = "::1";
   };
   pkg = inputs.tcs-bot.packages.${pkgs.stdenv.hostPlatform.system}.default;
   dockerImage = pkgs.dockerTools.streamLayeredImage {
@@ -65,21 +64,15 @@ in
   services.nginx.virtualHosts.${domain} = {
     forceSSL = true;
     enableACME = true;
-    locations."/".proxyPass = "http://localhost:${toString port}";
+    locations = {
+      "/".proxyPass = "http://localhost:${toString port}";
+      "/metrics".extraConfig = "return 404;";
+    };
   };
 
-  services.prometheus.scrapeConfigs = [
-    {
-      job_name = "tcs-bot-auth";
-      metrics_path = "/metrics";
-      scheme = "https";
-      static_configs = [
-        {
-          targets = [ domain ];
-        }
-      ];
-    }
-  ];
+  infra.extraScrapeConfigs.tcs-bot = {
+    inherit port;
+  };
 
   sops.secrets.tcs-bot-env = {
     format = "binary";
