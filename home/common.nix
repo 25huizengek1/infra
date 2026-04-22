@@ -84,6 +84,7 @@ in
           pdfarranger
           pwvucontrol
           signal-desktop
+          teams-for-linux
           telegram-desktop
           thunderbird
           vlc
