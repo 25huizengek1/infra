@@ -121,6 +121,7 @@ in
     enableACME = true;
     forceSSL = true;
     serverAliases = [ "www.${domain}" ];
+    locations."/".proxyWebsockets = true;
   };
 
   infra.backup.jobs.state.paths = [ "/var/lib/wordpress/${domain}" ];
