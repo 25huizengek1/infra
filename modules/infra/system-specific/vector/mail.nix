@@ -187,7 +187,14 @@ in
       "roundcube_oidc"
       "managesieve"
     ];
+    maxAttachmentSize = 256;
     extraConfig = ''
+      $config['smtp_debug'] = true;
+      $config['ldap_debug'] = true;
+      $config['sql_debug'] = true;
+      $config['imap_debug'] = true;
+      $config['debug_level'] = 1;
+
       $config['des_key'] = trim(file_get_contents("${config.sops.secrets.roundcube-des.path}"));
 
       $config['product_name'] = "Popkoor KlankKleur webmail";
@@ -230,7 +237,7 @@ in
   };
 
   services.phpfpm.pools.roundcube.settings."php_admin_value[open_basedir]" =
-    "/run/secrets:/nix/store";
+    "/run/secrets:/nix/store:/tmp";
 
   sops.secrets."popkoorklankkleur.nl.mail.key" = {
     format = "binary";
