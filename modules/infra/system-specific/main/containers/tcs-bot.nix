@@ -45,7 +45,10 @@ in
       imageStream = dockerImage;
       environment = env;
       environmentFiles = [ config.sops.secrets.tcs-bot-env.path ];
-      ports = [ "127.0.0.1:${toString port}:${toString port}" ];
+      ports = [
+        "127.0.0.1:${toString port}:${toString port}"
+        "10.0.0.1:${toString port}:${toString port}"
+      ];
     };
     "${name}-db" = {
       image = "postgres:latest";

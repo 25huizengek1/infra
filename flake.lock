@@ -991,11 +991,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776538855,
-        "narHash": "sha256-awov+ufgmP+R3lfVRaHzfX80uurIDk9tlxmLSj997tc=",
+        "lastModified": 1776928392,
+        "narHash": "sha256-D+qDoXm6E3xBpz1WKJ5rUDpWQbSwNnagoviHjSB8Rc8=",
         "owner": "bartoostveen",
         "repo": "tcs-bot",
-        "rev": "1d5b564e2719599ddc822682ca8d7f30a1153d15",
+        "rev": "cb4fbfce408acc16f117519dea3dc7b2517db096",
         "type": "github"
       },
       "original": {
