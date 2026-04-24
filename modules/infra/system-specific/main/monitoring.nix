@@ -3,6 +3,7 @@
   config,
   inputs,
   lib,
+  wireguard,
   ...
 }:
 
@@ -15,12 +16,15 @@ let
   inherit (lib)
     # keep-sorted start
     attrNames
+    concatMap
     filterAttrs
     mapAttrsToList
     optionals
     removeAttrs
     # keep-sorted end
     ;
+
+  uptimeKumaMetricsPort = 15108;
 
   staticConfigsFor =
     {
@@ -62,19 +66,22 @@ let
       }
     ])
     ++ (
-      config'.infra.extraScrapeConfigs
-      |> mapAttrsToList (
-        name: value:
-        (removeAttrs value [ "port" ])
-        // {
-          job_name = "${hostName}-${name}";
-          static_configs = [
-            {
-              targets = [ "${host}:${toString value.port}" ];
-            }
-          ];
-        }
-      )
+      if config' ? infra && config'.infra ? extraScrapeConfigs then
+        config'.infra.extraScrapeConfigs
+        |> mapAttrsToList (
+          name: value:
+          (removeAttrs value [ "port" ])
+          // {
+            job_name = "${hostName}-${name}";
+            static_configs = [
+              {
+                targets = [ "${host}:${toString value.port}" ];
+              }
+            ];
+          }
+        )
+      else
+        [ ]
     );
 in
 {
@@ -257,28 +264,13 @@ in
       ))
     ];
 
-    scrapeConfigs = [
-      {
-        job_name = "uptime-kuma-anubis";
-        static_configs = [
-          {
-            targets = [ config.services.anubis.instances.uptime-kuma.settings.METRICS_BIND ];
-          }
-        ];
+    scrapeConfigs = concatMap (
+      name:
+      staticConfigsFor {
+        inherit name;
+        host = wireguard.primaryIpOf name;
       }
-    ]
-    ++ (staticConfigsFor {
-      host = "10.0.0.1";
-      name = "bart-server";
-    })
-    ++ (staticConfigsFor {
-      host = "10.0.0.5";
-      name = "vector";
-    })
-    ++ (staticConfigsFor {
-      host = "10.0.0.4";
-      name = "atlas";
-    });
+    ) (builtins.filter (n: inputs.self.nixosConfigurations ? "${n}") (attrNames wireguard.nodes));
   };
 
   services.nginx.virtualHosts.${config.infra.authentik.domain}.serverAliases = [
@@ -321,9 +313,11 @@ in
   services.anubis.instances.uptime-kuma.settings = {
     BIND = "/run/anubis/anubis-uptime-kuma/anubis-uptime-kuma.sock";
     TARGET = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}";
-    METRICS_BIND = "127.0.0.1:15108";
+    METRICS_BIND = "127.0.0.1:${toString uptimeKumaMetricsPort}";
     METRICS_BIND_NETWORK = "tcp";
   };
+
+  infra.extraScrapeConfigs.uptime-kuma-anubis.port = uptimeKumaMetricsPort;
 
   services.nginx.virtualHosts.${kumaVHost} = {
     enableACME = true;

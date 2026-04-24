@@ -67,16 +67,7 @@ in
     METRICS_BIND_NETWORK = "tcp";
   };
 
-  services.prometheus.scrapeConfigs = [
-    {
-      job_name = "attic-anubis";
-      static_configs = [
-        {
-          targets = [ config.services.anubis.instances.attic.settings.METRICS_BIND ];
-        }
-      ];
-    }
-  ];
+  infra.extraScrapeConfigs.attic-anubis.port = metricsPort;
 
   services.nginx.virtualHosts.${vHost} = {
     enableACME = true;

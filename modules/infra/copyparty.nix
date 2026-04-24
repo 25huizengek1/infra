@@ -20,6 +20,8 @@ let
     ;
 
   cfg = config.infra.copyparty;
+
+  metricsPort = 16108;
 in
 {
   imports = [
@@ -163,33 +165,21 @@ in
     services.anubis.instances.copyparty.settings = {
       BIND = "/run/anubis/anubis-copyparty/anubis-copyparty.sock";
       TARGET = "unix://${unixSocket}";
-      METRICS_BIND = "127.0.0.1:16108";
+      METRICS_BIND = "127.0.0.1:${toString metricsPort}";
       METRICS_BIND_NETWORK = "tcp";
     };
 
-    services.prometheus.scrapeConfigs = [
-      {
-        job_name = "copyparty";
+    infra.extraScrapeConfigs = {
+      copyparty = {
+        port = 3923;
         metrics_path = "/.cpr/metrics/";
         basic_auth = {
           inherit username;
           password_file = config.sops.secrets.copyparty-adm-password.path;
         };
-        static_configs = [
-          {
-            targets = [ "127.0.0.1:3923" ];
-          }
-        ];
-      }
-      {
-        job_name = "copyparty-anubis";
-        static_configs = [
-          {
-            targets = [ config.services.anubis.instances.copyparty.settings.METRICS_BIND ];
-          }
-        ];
-      }
-    ];
+      };
+      copyparty-anubis.port = metricsPort;
+    };
 
     sops.secrets.copyparty-adm-password = {
       format = "binary";
@@ -211,9 +201,6 @@ in
       restartUnits = [ "copyparty.service" ];
     };
 
-    # systemd.services.copyparty.serviceConfig.ExecStart =
-    #   lib.mkForce "${lib.getExe pkgs.strace} -Tttyyvfs 1024 -e'!futex,munmap,madvise,newfstatat,read' -o /root/private/fs/copyparty.strace ${lib.getExe pkgs.copyparty-unstable} -c /run/copyparty/copyparty.conf";
-
-    environment.systemPackages = [ pkgs.copyparty ];
+    environment.systemPackages = with pkgs; [ copyparty ];
   };
 }
