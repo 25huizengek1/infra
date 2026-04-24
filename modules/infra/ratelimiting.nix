@@ -17,6 +17,7 @@ let
     ;
 
   reqLimitZoneName = "reqlimit";
+  connLimitZoneName = "connlimit";
 in
 {
   options.services.nginx.virtualHosts = mkOption {
@@ -77,6 +78,11 @@ in
       0 $binary_remote_addr;
       1 "";
     }
+
+    limit_conn_zone      $limit    zone=${connLimitZoneName}:10m;
+    limit_conn           ${connLimitZoneName} 1000;
+    limit_conn_log_level warn;
+    limit_conn_status    429;
 
     limit_req_zone $limit zone=${reqLimitZoneName}:10m rate=20r/s;
     limit_req_log_level warn;

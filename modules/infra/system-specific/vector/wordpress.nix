@@ -52,6 +52,7 @@ in
   services.nginx.virtualHosts.${domain} = {
     enableACME = true;
     forceSSL = true;
+    enableRateLimit = false;
     serverAliases = [ "www.${domain}" ];
     locations."/".proxyWebsockets = true;
   };
