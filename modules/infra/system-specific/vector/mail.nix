@@ -245,7 +245,7 @@ in
     group = "rspamd";
     mode = "0600";
 
-    sopsFile = ../../../../secrets/popkoorklankkleur.nl.mail.key.secret;
+    sopsFile = ../../../../secrets/dkim/popkoorklankkleur.nl.mail.key.secret;
 
     restartUnits = [ "rspamd.service" ];
   };

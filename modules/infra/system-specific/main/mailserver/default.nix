@@ -8,6 +8,8 @@
 let
   domain = "bartoostveen.nl";
   rspamdMetricsPort = 32475;
+
+  inherit (lib) genAttrs' nameValuePair;
 in
 {
   imports = [
@@ -66,42 +68,11 @@ in
   };
 
   services.rspamd.workers.controller.bindSockets = [ "*:${toString rspamdMetricsPort}" ];
-
-  services.prometheus = {
-    exporters = {
-      dovecot.enable = true;
-      postfix.enable = true;
-    };
-
-    # TODO: use staticConfigsFor and generalize that module (separate wireguard but use global metadata to keep all modules 'in sync')
-    scrapeConfigs = [
-      {
-        job_name = "dovecot";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.dovecot.port}" ];
-          }
-        ];
-      }
-      {
-        job_name = "postfix";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.postfix.port}" ];
-          }
-        ];
-      }
-      {
-        job_name = "rspamd";
-        metrics_path = "/metrics";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString rspamdMetricsPort}" ];
-          }
-        ];
-      }
-    ];
+  services.prometheus.exporters = {
+    dovecot.enable = true;
+    postfix.enable = true;
   };
+  infra.extraScrapeConfigs.rspamd.port = rspamdMetricsPort;
 
   services.nginx.virtualHosts."${config.mailserver.fqdn}" = {
     serverName = config.mailserver.fqdn;
@@ -110,49 +81,21 @@ in
     enableACME = true;
   };
 
-  sops.secrets."bartoostveen.nl.mail.key" = {
-    format = "binary";
-    owner = "rspamd";
-    group = "rspamd";
-    mode = "0600";
+  sops.secrets =
+    genAttrs' [ "bartoostveen.nl" "boostveen.nl" "omeduostuurcentenneef.nl" "vitune.app" ]
+      (
+        name:
+        nameValuePair "${name}.mail.key" {
+          format = "binary";
+          owner = "rspamd";
+          group = "rspamd";
+          mode = "0600";
 
-    sopsFile = ../../../../../secrets/bartoostveen.nl.mail.private.secret;
+          sopsFile = ../../../../../secrets/dkim/${name}.mail.private.secret;
 
-    restartUnits = [ "rspamd.service" ];
-  };
-
-  sops.secrets."boostveen.nl.mail.key" = {
-    format = "binary";
-    owner = "rspamd";
-    group = "rspamd";
-    mode = "0600";
-
-    sopsFile = ../../../../../secrets/boostveen.nl.mail.key.secret;
-
-    restartUnits = [ "rspamd.service" ];
-  };
-
-  sops.secrets."omeduostuurcentenneef.nl.mail.key" = {
-    format = "binary";
-    owner = "rspamd";
-    group = "rspamd";
-    mode = "0600";
-
-    sopsFile = ../../../../../secrets/omeduostuurcentenneef.nl.mail.private.secret;
-
-    restartUnits = [ "rspamd.service" ];
-  };
-
-  sops.secrets."vitune.app.mail.key" = {
-    format = "binary";
-    owner = "rspamd";
-    group = "rspamd";
-    mode = "0600";
-
-    sopsFile = ../../../../../secrets/vitune.app.mail.private.secret;
-
-    restartUnits = [ "rspamd.service" ];
-  };
+          restartUnits = [ "rspamd.service" ];
+        }
+      );
 
   services.roundcube = {
     enable = true;

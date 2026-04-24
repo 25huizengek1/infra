@@ -516,8 +516,8 @@ in
         requires = [ "network-online.target" ];
         after = [ "network-online.target" ];
         wantedBy = [ "multi-user.target" ];
+
         # This should not be needed, but monitor files should be writable for some reason...
-        # TODO: try to convince autokuma to take in linkFarms
         preStart = ''
           mkdir -p ${monitorsDir} | true
           rm -rf ${monitorsDir}/*
@@ -579,4 +579,4 @@ in
       }
     ) (filterAttrs (_: value: value.enable) cfg.instances);
   };
-} # TODO: grant systemd service access to specified docker paths
+}

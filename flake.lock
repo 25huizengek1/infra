@@ -221,22 +221,6 @@
         "type": "github"
       }
     },
-    "dns-zones": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1768068849,
-        "narHash": "sha256-bCDgzo/xLPFhizqaArj7M32RKUl8v+ucsUu90TyZ4Lc=",
-        "owner": "bartoostveen",
-        "repo": "dns-zones",
-        "rev": "9fb1112373d45770e889f55456593a94f3c08583",
-        "type": "github"
-      },
-      "original": {
-        "owner": "bartoostveen",
-        "repo": "dns-zones",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -834,7 +818,6 @@
         "copyparty": "copyparty",
         "deploy-rs": "deploy-rs",
         "disko": "disko",
-        "dns-zones": "dns-zones",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",

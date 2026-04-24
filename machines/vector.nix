@@ -12,7 +12,6 @@
 
     ../modules/wireguard.nix
 
-    # ../modules/infra/anubis.nix # TODO: authentik behind anubis
     # keep-sorted start
     ../modules/infra/alloy.nix
     ../modules/infra/autokuma-config.nix

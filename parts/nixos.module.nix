@@ -3,6 +3,7 @@
   lib,
   withSystem,
   config,
+  wireguard,
   ...
 }:
 
@@ -69,50 +70,60 @@ in
     };
   };
 
-  # TODO: clean this shit up wtf
-  config.flake.nixosConfigurations =
-    (mapAttrs (
-      name:
-      { system, ... }@c:
+  config = {
+    _module.args.wireguard = import ../modules/wireguard.meta.nix { inherit lib; };
 
-      let
-        hostname = if c.hostname != null then c.hostname else name;
-      in
-      withSystem system (
-        {
-          pkgs,
-          stablePkgs,
-          continuwuityPkgs,
-          ...
-        }:
+    flake.nixosConfigurations =
+      (mapAttrs (
+        name:
+        { system, ... }@c:
 
-        inputs.nixpkgs.lib.nixosSystem {
-          inherit pkgs system;
+        let
+          hostname = if c.hostname != null then c.hostname else name;
+        in
+        withSystem system (
+          {
+            pkgs,
+            stablePkgs,
+            continuwuityPkgs,
+            ...
+          }:
 
-          specialArgs = { inherit inputs stablePkgs continuwuityPkgs; };
+          inputs.nixpkgs.lib.nixosSystem {
+            inherit pkgs system;
 
-          modules = [
-            inputs.sops-nix.nixosModules.sops
-            { networking.hostName = hostname; }
-            ../machines/${hostname}.nix
-          ];
-        }
-      )
-    ) config.deployments.nixos)
-    // mapAttrs (
-      name:
-      { arch, ... }:
-      withSystem arch (
-        {
-          pkgs,
-          stablePkgs,
-          ...
-        }:
-        inputs.nixpkgs.lib.nixosSystem {
-          inherit pkgs;
-          specialArgs = { inherit inputs stablePkgs; };
-          modules = [ ../images/${name}.nix ];
-        }
-      )
-    ) config.deployments.extraNixOSConfigurations;
+            specialArgs = {
+              inherit
+                inputs
+                stablePkgs
+                continuwuityPkgs
+                wireguard
+                ;
+            };
+
+            modules = [
+              inputs.sops-nix.nixosModules.sops
+              { networking.hostName = hostname; }
+              ../machines/${hostname}.nix
+            ];
+          }
+        )
+      ) config.deployments.nixos)
+      // mapAttrs (
+        name:
+        { arch, ... }:
+        withSystem arch (
+          {
+            pkgs,
+            stablePkgs,
+            ...
+          }:
+          inputs.nixpkgs.lib.nixosSystem {
+            inherit pkgs;
+            specialArgs = { inherit inputs stablePkgs; };
+            modules = [ ../images/${name}.nix ];
+          }
+        )
+      ) config.deployments.extraNixOSConfigurations;
+  };
 }

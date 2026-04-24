@@ -1,13 +1,19 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  wireguard,
+  ...
+}:
 
 let
   inherit (lib)
     mkIf
     nameValuePair
     concatStringsSep
-    splitString
     listToAttrs
     ;
+
+  inherit (wireguard) nodes;
 in
 {
   infra.autokuma.instances.local = mkIf config.infra.wireguard.enable {
@@ -16,10 +22,6 @@ in
       color = "#ffea00";
     };
     monitors =
-      let
-        inherit (import ../../../wireguard.meta.nix) nodes;
-        first = list: builtins.elemAt list 0;
-      in
       map (
         peer:
         nameValuePair "wireguard-${peer.name}" {
@@ -32,7 +34,7 @@ in
           max_retries = 1;
           packet_size = 56;
           notification_name_list = [ "autokuma-matrix" ];
-          hostname = nodes.${peer.name}.ips |> first |> splitString "/" |> first;
+          hostname = wireguard.primaryIpOf peer.name;
           tag_names = [
             {
               name = "autokuma";

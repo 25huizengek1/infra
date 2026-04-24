@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  wireguard,
+  ...
+}:
 
 let
   cfg = config.infra.wireguard;
@@ -12,8 +17,7 @@ let
     attrsToList
     ;
 
-  # TODO: make this suck less
-  inherit (import ./wireguard.meta.nix) listenPort nodes;
+  inherit (wireguard) listenPort nodes;
 
   peersFor =
     hostname:

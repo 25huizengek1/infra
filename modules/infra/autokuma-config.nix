@@ -3,10 +3,9 @@
   lib,
   pkgs,
   inputs,
+  wireguard,
   ...
 }:
-
-# TODO: clean up the fact that (reachability) metadata of other hosts is basically all over the place
 
 let
   inherit (lib) mkDefault genAttrs attrNames;
@@ -22,21 +21,21 @@ in
     defaultEnvFile = config.sops.secrets.autokuma-env.path;
     defaultSettings = {
       kuma = {
-        url = "http://10.0.0.1:${toString inputs.self.nixosConfigurations.bart-server.config.services.uptime-kuma.settings.PORT}";
+        url = "http://${wireguard.primaryIpOf "bart-server"}:${toString inputs.self.nixosConfigurations.bart-server.config.services.uptime-kuma.settings.PORT}";
         username = "adm";
       };
-      tag_name = "Managed by AutoKuma @ ${config.networking.hostName}";
+      tag_name = "Managed by AutoKuma @ ${config.networking.fqdn}";
       tag_color = "#ea2121";
     };
     instances.local = {
       additionalMonitorFiles = [ config.sops.secrets.autokuma-matrix.path ];
       tags = {
         nginx = {
-          name = "nginx @ ${config.networking.hostName}";
+          name = "nginx @ ${config.networking.fqdn}";
           color = "#17964a";
         };
         autokuma = {
-          name = "Managed by AutoKuma @ ${config.networking.hostName}";
+          name = "Managed by AutoKuma @ ${config.networking.fqdn}";
           color = "#ea2121";
         };
       };
@@ -48,7 +47,7 @@ in
           (kumaVHost: {
             type = "http";
             name = kumaVHost;
-            description = "nginx Managed by AutoKuma @ ${config.networking.hostName}";
+            description = "nginx Managed by AutoKuma @ ${config.networking.fqdn}";
             expiry_notification = true;
             url = "https://${kumaVHost}";
             accepted_statuscodes = [ "200-399" ];

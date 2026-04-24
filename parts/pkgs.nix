@@ -47,9 +47,6 @@
       # keep-sorted start
       packages.alertmanager-matrix = pkgs.callPackage ../pkgs/alertmanager-matrix/package.nix { };
       packages.autokuma = pkgs.callPackage ../pkgs/autokuma/package.nix { };
-      packages.fail2ban-prometheus-exporter =
-        pkgs.callPackage ../pkgs/fail2ban-prometheus-exporter/package.nix
-          { };
       packages.github-readme-stats = pkgs.callPackage ../pkgs/github-readme-stats/package.nix { };
       packages.ketesa = pkgs.callPackage ../pkgs/ketesa/package.nix { };
       packages.librepods = pkgs.callPackage ../pkgs/librepods/package.nix { };

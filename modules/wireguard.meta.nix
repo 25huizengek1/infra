@@ -1,5 +1,11 @@
-# TODO: make this suck less
+{ lib, ... }:
 
+let
+  inherit (lib)
+    splitString
+    ;
+  first = list: builtins.elemAt list 0;
+in
 rec {
   listenPort = 51820;
 
@@ -52,4 +58,6 @@ rec {
       ];
     };
   };
+
+  primaryIpOf = name: nodes.${name}.ips |> first |> splitString "/" |> first;
 }
