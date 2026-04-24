@@ -18,6 +18,8 @@ let
     # keep-sorted end
     ;
 
+  inherit (pkgs.callPackage ./lib.nix { }) mkAutokumaMonitor;
+
   inherit (types) listOf str bool;
 in
 {
@@ -150,35 +152,7 @@ in
       config.services.matrix-continuwuity.group
     ];
 
-    infra.autokuma.instances.local = {
-      tags.matrix = {
-        name = "Matrix";
-        color = "#0037ff";
-      };
-      monitors.continuwuity = {
-        type = "json-query";
-        name = "Matrix federation test (${cfg.fqdn}) [federationtester.matrix.org]";
-        description = "Matrix federation for ${cfg.fqdn} Managed by AutoKuma";
-        url = "https://federationtester.matrix.org/api/report?server_name=${cfg.fqdn}";
-        notification_name_list = [ "autokuma-matrix" ];
-        tag_names = [
-          {
-            name = "autokuma";
-            value = "Matrix";
-          }
-          {
-            name = "matrix";
-            value = cfg.fqdn;
-          }
-        ];
-        json_path = "FederationOK";
-        json_path_operator = "==";
-        expected_value = "true";
-        timeout = 60;
-        interval = 120;
-        retry_interval = 120;
-      };
-    };
+    infra.autokuma.instances.local = mkAutokumaMonitor cfg.fqdn;
 
     infra.backup.jobs.state.paths = [
       config.services.matrix-continuwuity.settings.global.database_path

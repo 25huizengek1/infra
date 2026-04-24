@@ -6,6 +6,8 @@
 }:
 
 let
+  inherit (pkgs.callPackage ../../matrix/lib.nix { }) mkAutokumaMonitor;
+
   upstream = "bartoostveen.nl"; # this home server does not provide federation, but we will federate with the administrator, so we call this 'upstream'
 
   domain = "popkoorklankkleur.nl";
@@ -157,42 +159,13 @@ in
     ];
   };
 
-  # TODO: function instantiator (exact copy of continuwuity.nix)
-  infra.autokuma.instances.local = {
-    tags.matrix = {
-      name = "Matrix - vector";
-      color = "#0037ff";
+  infra = {
+    autokuma.instances.local = mkAutokumaMonitor domain;
+    backup.jobs.state.paths = [ config.services.matrix-synapse.dataDir ];
+    extraScrapeConfigs.synapse = {
+      port = metricsPort;
+      metrics_path = "/_synapse/metrics";
     };
-    monitors.synapse = {
-      type = "json-query";
-      name = "Matrix federation test (${domain}) [federationtester.matrix.org]";
-      description = "Matrix federation for ${domain} Managed by AutoKuma";
-      url = "https://federationtester.matrix.org/api/report?server_name=${domain}";
-      notification_name_list = [ "autokuma-matrix" ];
-      tag_names = [
-        {
-          name = "autokuma";
-          value = "Matrix";
-        }
-        {
-          name = "matrix";
-          value = domain;
-        }
-      ];
-      json_path = "FederationOK";
-      json_path_operator = "==";
-      expected_value = "true";
-      timeout = 60;
-      interval = 120;
-      retry_interval = 120;
-    };
-  };
-
-  infra.backup.jobs.state.paths = [ config.services.matrix-synapse.dataDir ];
-
-  infra.extraScrapeConfigs.synapse = {
-    port = metricsPort;
-    metrics_path = "/_synapse/metrics";
   };
 
   sops.secrets.vector-synapse-secrets = {
