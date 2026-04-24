@@ -153,7 +153,6 @@ in
           host = mkOption {
             type = str;
             description = "Hostname of the SSH remote host";
-            default = "10.0.0.4";
           };
 
           hostPublicKey = mkOption {
