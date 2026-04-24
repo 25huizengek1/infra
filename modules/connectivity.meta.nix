@@ -19,6 +19,6 @@ rec {
   };
 
   allRanges = builtins.attrValues _hosts |> builtins.concatLists;
-  rangesFor = host: if _hosts ? "${host}" then _hosts.${host} else [];
+  rangesFor = host: if _hosts ? "${host}" then _hosts.${host} else [ ];
   ipsFor = host: rangesFor host |> map (range: range |> splitString "/" |> first);
 }
