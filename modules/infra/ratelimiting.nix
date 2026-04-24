@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, wireguard, ... }:
 
 let
   inherit (lib)
@@ -6,6 +6,7 @@ let
     types
     mkIf
     mkAfter
+    concatStringsSep
     ;
 
   inherit (types)
@@ -47,6 +48,7 @@ in
       default 0;
       127.0.0.0/24 1;
       10.0.0.0/8 1;
+      ${wireguard.connectivity.allRanges |> map (range: "${range} 1;") |> concatStringsSep "\n"}
     }
 
     map $whitelist $limit {
@@ -55,12 +57,12 @@ in
     }
 
     limit_conn_zone      $limit    zone=${connLimitZoneName}:10m;
-    limit_conn           ${connLimitZoneName} 8;
+    limit_conn           ${connLimitZoneName} 10;
     limit_conn_log_level warn;
-    limit_conn_status    503;
+    limit_conn_status    429;
 
     limit_req_zone $limit zone=${reqLimitZoneName}:10m rate=10r/s;
     limit_req_log_level warn;
-    limit_req_status     503;
+    limit_req_status     429;
   '';
 }

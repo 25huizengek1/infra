@@ -63,7 +63,7 @@ in
   services.anubis.instances.attic.settings = {
     BIND = "/run/anubis/anubis-attic/anubis-attic.sock";
     TARGET = "http://${config.services.atticd.settings.listen}";
-    METRICS_BIND = "127.0.0.1:${toString metricsPort}";
+    METRICS_BIND = "0.0.0.0:${toString metricsPort}";
     METRICS_BIND_NETWORK = "tcp";
   };
 

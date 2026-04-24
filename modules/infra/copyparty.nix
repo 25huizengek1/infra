@@ -102,7 +102,7 @@ in
       package = pkgs.copyparty-unstable;
       settings = {
         inherit (cfg) name;
-        i = "unix:770:${unixSocket},127.1";
+        i = "unix:770:${unixSocket},0.0.0.0";
         no-cfg-cmt-warn = true;
         theme = 2; # Monokai
         ah-alg = "argon2";
@@ -165,7 +165,7 @@ in
     services.anubis.instances.copyparty.settings = {
       BIND = "/run/anubis/anubis-copyparty/anubis-copyparty.sock";
       TARGET = "unix://${unixSocket}";
-      METRICS_BIND = "127.0.0.1:${toString metricsPort}";
+      METRICS_BIND = "0.0.0.0:${toString metricsPort}";
       METRICS_BIND_NETWORK = "tcp";
     };
 

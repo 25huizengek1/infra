@@ -9,6 +9,8 @@ in
 rec {
   listenPort = 51820;
 
+  connectivity = import ./connectivity.meta.nix { inherit lib; };
+
   nodes = {
     bart-server = {
       ips = [
@@ -19,7 +21,7 @@ rec {
         "10.0.0.0/24"
         "fd42:42:42::/64"
       ];
-      endpoint = "78.46.150.107:${toString listenPort}";
+      endpoint = "${connectivity.ipsFor "bart-server" |> first}:${toString listenPort}";
     };
 
     bart-laptop-new = {
@@ -48,7 +50,7 @@ rec {
         "10.0.0.5/32"
         "fd42:42:42::5/128"
       ];
-      endpoint = "46.225.142.85:${toString listenPort}";
+      endpoint = "${connectivity.ipsFor "vector" |> first}:${toString listenPort}";
     };
 
     bart-windows-vm = {

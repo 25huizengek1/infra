@@ -313,7 +313,7 @@ in
   services.anubis.instances.uptime-kuma.settings = {
     BIND = "/run/anubis/anubis-uptime-kuma/anubis-uptime-kuma.sock";
     TARGET = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}";
-    METRICS_BIND = "127.0.0.1:${toString uptimeKumaMetricsPort}";
+    METRICS_BIND = "0.0.0.0:${toString uptimeKumaMetricsPort}";
     METRICS_BIND_NETWORK = "tcp";
   };
 
