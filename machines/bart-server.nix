@@ -50,6 +50,7 @@ in
     ../modules/infra/nginx.nix
     ../modules/infra/nix.nix
     ../modules/infra/podman.nix
+    ../modules/infra/ratelimiting.nix
     # keep-sorted end
   ];
 
