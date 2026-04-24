@@ -143,7 +143,7 @@ in
 
           locations.${if (cfg.cinny.enable && cfg.cinny.replaceContinuwuity) then "/_matrix" else "/"} = {
             proxyPass = socket;
-            rateLimit = false;
+            rateLimit.enable = false;
           };
         };
       };

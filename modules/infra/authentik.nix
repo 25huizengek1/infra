@@ -97,6 +97,11 @@ in
       };
     };
 
+    services.nginx.virtualHosts.${cfg.domain}.locations."/static" = {
+      inherit (config.services.nginx.virtualHosts.${cfg.domain}.locations."/") proxyPass;
+      rateLimit.enable = false;
+    };
+
     services.authentik-ldap = {
       enable = true;
       inherit (cfg) environmentFile;

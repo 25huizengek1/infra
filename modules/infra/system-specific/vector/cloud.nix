@@ -52,6 +52,7 @@ in
     ${fqdn} = {
       forceSSL = true;
       enableACME = true;
+      enableRateLimit = false;
     };
 
     ${collaboraDomain} = {

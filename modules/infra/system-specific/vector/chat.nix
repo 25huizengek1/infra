@@ -134,7 +134,7 @@ in
       }
       // genAttrs [ "/_matrix" "/_synapse" ] (_: {
         proxyPass = "http://[::1]:${toString federationPort}";
-        rateLimit = false;
+        rateLimit.enable = false;
       });
     };
     "admin.${fqdn}" = {
