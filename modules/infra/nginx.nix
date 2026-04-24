@@ -43,9 +43,6 @@ in
 
       access_log /var/log/nginx/access.log main;
       error_log /var/log/nginx/error.log warn;
-
-      limit_req_zone $binary_remote_addr zone=zone:10m rate=10r/s;
-      limit_req_log_level warn;
     '';
   };
 

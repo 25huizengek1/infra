@@ -13,6 +13,9 @@ let
     submodule
     bool
     ;
+
+  reqLimitZoneName = "reqlimit";
+  connLimitZoneName = "connlimit";
 in
 {
   options.services.nginx.virtualHosts = mkOption {
@@ -30,7 +33,7 @@ in
 
               config = mkIf config.rateLimit {
                 extraConfig = mkAfter ''
-                  limit_req zone=zone burst=20 nodelay;
+                  limit_req zone=${reqLimitZoneName} burst=20 nodelay;
                 '';
               };
             }
@@ -39,4 +42,25 @@ in
       };
     });
   };
+  config.services.nginx.commonHttpConfig = ''
+    geo $whitelist {
+      default 0;
+      127.0.0.0/24 1;
+      10.0.0.0/8 1;
+    }
+
+    map $whitelist $limit {
+      0 $binary_remote_addr;
+      1 "";
+    }
+
+    limit_conn_zone      $limit    zone=${connLimitZoneName}:10m;
+    limit_conn           ${connLimitZoneName} 8;
+    limit_conn_log_level warn;
+    limit_conn_status    503;
+
+    limit_req_zone $limit zone=${reqLimitZoneName}:10m rate=10r/s;
+    limit_req_log_level warn;
+    limit_req_status     503;
+  '';
 }
