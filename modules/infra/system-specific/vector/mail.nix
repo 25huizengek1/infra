@@ -58,8 +58,7 @@ in
   mailserver = {
     enable = true;
 
-    fqdn = domain;
-    systemName = domain;
+    fqdn = "mx.${domain}";
     systemDomain = domain;
     x509.useACMEHost = domain;
     domains = [ domain ];
