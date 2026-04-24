@@ -141,10 +141,10 @@ in
           enableACME = true;
           forceSSL = true;
 
-          locations.${
-            if (cfg.cinny.enable && cfg.cinny.replaceContinuwuity) then "/_matrix" else "/"
-          }.proxyPass =
-            socket;
+          locations.${if (cfg.cinny.enable && cfg.cinny.replaceContinuwuity) then "/_matrix" else "/"} = {
+            proxyPass = socket;
+            rateLimit = false;
+          };
         };
       };
 
