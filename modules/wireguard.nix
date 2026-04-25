@@ -71,11 +71,13 @@ in
       };
     };
 
-    sops.secrets.${sopsSecret} = {
-      neededForUsers = true;
-      format = "binary";
-      sopsFile = ../secrets/wireguard/${cfg.host}.private.secret;
-      restartUnits = mkIf config.networking.wireguard.useNetworkd [ "systemd-networkd.service" ];
+    sops = {
+      useSystemdActivation = true;
+      secrets.${sopsSecret} = {
+        format = "binary";
+        sopsFile = ../secrets/wireguard/${cfg.host}.private.secret;
+        restartUnits = mkIf config.networking.wireguard.useNetworkd [ "systemd-networkd.service" ];
+      };
     };
   };
 }
