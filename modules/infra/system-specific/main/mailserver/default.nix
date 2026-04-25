@@ -9,7 +9,14 @@ let
   domain = "bartoostveen.nl";
   rspamdMetricsPort = 32475;
 
-  inherit (lib) genAttrs' nameValuePair;
+  dkimDomains = [
+    "bartoostveen.nl"
+    "boostveen.nl"
+    "omeduostuurcentenneef.nl"
+    "vitune.app"
+  ];
+
+  inherit (lib) genAttrs genAttrs' nameValuePair;
 in
 {
   imports = [
@@ -19,11 +26,11 @@ in
     ./accounts.nix
   ];
 
+  # TODO: generalize
   mailserver = {
     enable = true;
 
-    fqdn = domain;
-    systemName = domain;
+    fqdn = "mx.${domain}";
     systemDomain = domain;
     x509.useACMEHost = domain;
 
@@ -33,13 +40,9 @@ in
       "omeduostuurcentenneef.nl"
     ];
 
-    dkim.domains = {
-      "bartoostveen.nl".selectors.mail.keyFile = config.sops.secrets."bartoostveen.nl.mail.key".path;
-      "boostveen.nl".selectors.mail.keyFile = config.sops.secrets."boostveen.nl.mail.key".path;
-      "omeduostuurcentenneef.nl".selectors.mail.keyFile =
-        config.sops.secrets."omeduostuurcentenneef.nl.mail.key".path;
-      "vitune.app".selectors.mail.keyFile = config.sops.secrets."vitune.app.mail.key".path;
-    };
+    dkim.domains = genAttrs dkimDomains (name: {
+      selectors.mail.keyFile = config.sops.secrets."${name}.mail.key".path;
+    });
 
     # DKIM/DMARC
     dmarcReporting.enable = true;
@@ -74,28 +77,26 @@ in
   };
   infra.extraScrapeConfigs.rspamd.port = rspamdMetricsPort;
 
-  services.nginx.virtualHosts."${config.mailserver.fqdn}" = {
-    serverName = config.mailserver.fqdn;
-    serverAliases = lib.lists.remove config.mailserver.fqdn config.mailserver.domains;
+  services.nginx.virtualHosts."${config.mailserver.systemDomain}" = {
+    serverName = config.mailserver.systemDomain;
+    serverAliases = lib.lists.remove config.mailserver.systemDomain config.mailserver.domains;
     forceSSL = true;
     enableACME = true;
   };
 
-  sops.secrets =
-    genAttrs' [ "bartoostveen.nl" "boostveen.nl" "omeduostuurcentenneef.nl" "vitune.app" ]
-      (
-        name:
-        nameValuePair "${name}.mail.key" {
-          format = "binary";
-          owner = "rspamd";
-          group = "rspamd";
-          mode = "0600";
+  sops.secrets = genAttrs' dkimDomains (
+    name:
+    nameValuePair "${name}.mail.key" {
+      format = "binary";
+      owner = "rspamd";
+      group = "rspamd";
+      mode = "0600";
 
-          sopsFile = ../../../../../secrets/dkim/${name}.mail.private.secret;
+      sopsFile = ../../../../../secrets/dkim/${name}.mail.private.secret;
 
-          restartUnits = [ "rspamd.service" ];
-        }
-      );
+      restartUnits = [ "rspamd.service" ];
+    }
+  );
 
   services.roundcube = {
     enable = true;
