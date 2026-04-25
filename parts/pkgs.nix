@@ -37,6 +37,7 @@
             deploy-rs = prev.deploy-rs // {
               inherit (prev) deploy-rs;
             };
+            inherit (inputs.nixpkgs-rspamd.legacyPackages.${system}) rspamd;
           })
         ];
       };

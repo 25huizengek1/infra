@@ -55,6 +55,8 @@
 
   programs.nix-index-database.comma.enable = lib.mkDefault true;
 
+  services.dbus.implementation = "dbus";
+
   programs.nh = {
     enable = lib.mkDefault true;
     clean = {

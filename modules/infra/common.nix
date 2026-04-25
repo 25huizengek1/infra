@@ -47,6 +47,8 @@ in
     networking.useNetworkd = lib.mkForce true;
     networking.firewall.enable = lib.mkForce true;
 
+    services.dbus.implementation = "dbus";
+
     services.openssh.enable = lib.mkDefault true;
 
     users.users.root.openssh.authorizedKeys.keys = [
