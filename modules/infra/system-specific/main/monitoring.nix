@@ -121,7 +121,7 @@ in
 
     alertmanager = {
       enable = true;
-      listenAddress = "127.0.0.1";
+      listenAddress = wireguard.primaryIpOf config.networking.hostName;
 
       configuration = {
         global = {
