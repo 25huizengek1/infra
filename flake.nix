@@ -18,7 +18,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/1cd347bf3355fce6c64ab37d3967b4a2cb4b878c"; # /nixos-25.11";
     nixpkgs-continuwuity.url = "github:bartoostveen/nixpkgs/continuwuity-0.5.8";
-    nixpkgs-rspamd.url = "github:nixos/nixpkgs/aeaa320f015db69c2879188ee90fcc5009ff8b26"; # TODO: remove at next nixos-unstable bump
     prismlauncher-nixpkgs.url = "github:nixos/nixpkgs/077cb3aa7d111ff4d36e8bd18d906bb4a3d621f9";
 
     home-manager = {
