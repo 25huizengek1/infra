@@ -468,17 +468,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1777065081,
-        "narHash": "sha256-hBDcvwBqA1BHJUSzC3wiW4zioXPDZ+8RVuHNdoppmZM=",
-        "owner": "bartoostveen",
+        "lastModified": 1776611414,
+        "narHash": "sha256-EwXPlYIBcKPlPgioVFtlie4lcIMiH834b6WJYtY2bnI=",
+        "owner": "Cisien",
         "repo": "meshcoretomqtt",
-        "rev": "8ec7912f077f8d90be947a88687f8b08d3ae0853",
+        "rev": "2691923f90ed6d4d94407ec4a08c29b176b3a31c",
         "type": "github"
       },
       "original": {
-        "owner": "bartoostveen",
-        "ref": "fix/nix-build",
+        "owner": "Cisien",
         "repo": "meshcoretomqtt",
+        "rev": "2691923f90ed6d4d94407ec4a08c29b176b3a31c",
         "type": "github"
       }
     },
