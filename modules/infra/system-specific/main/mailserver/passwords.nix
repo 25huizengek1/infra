@@ -9,16 +9,6 @@
     ];
   };
 
-  sops.secrets.alertmanager-email-password = {
-    format = "binary";
-    mode = "0600";
-
-    sopsFile = ../../../../../secrets/email-passwords/alertmanager.secret;
-    restartUnits = [ "alertmanager.service" ];
-    owner = "alertmanager";
-    group = "alertmanager";
-  };
-
   sops.secrets.authentik-email-password-encrypted = {
     format = "binary";
     sopsFile = ../../../../../secrets/email-passwords/auth.enc.secret;

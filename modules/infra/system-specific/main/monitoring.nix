@@ -11,8 +11,6 @@ let
   kumaVHost = "uptime.bartoostveen.nl";
   grafanaVHost = "grafana.vitune.app";
 
-  email = "alerts@${config.mailserver.fqdn}";
-
   inherit (lib)
     # keep-sorted start
     attrNames
@@ -119,56 +117,21 @@ in
     listenAddress = "127.0.0.1";
     port = 7070;
 
-    alertmanager = {
-      enable = true;
-      listenAddress = wireguard.primaryIpOf config.networking.hostName;
-
-      configuration = {
-        global = {
-          smtp_from = "Alerting <${email}>";
-          smtp_smarthost = "${config.mailserver.fqdn}:465";
-          smtp_auth_username = email;
-          smtp_auth_password_file = config.sops.secrets.alertmanager-email-password.path;
-        };
-
-        receivers = [
-          {
-            name = "matrix";
-            webhook_configs = [
-              {
-                url = "http://localhost:4051/!XEut2ilhrx5AFftWSym-qSzEW370UbEYfuxVfOWfY-A";
-              }
-            ];
-          }
-          {
-            name = "email";
-            email_configs = [
-              {
-                to = "root@bartoostveen.nl";
-              }
-            ];
-          }
-        ];
-
-        # give me all destinations pls
-        route = {
-          receiver = (builtins.elemAt config.services.prometheus.alertmanager.configuration.receivers 0).name;
-          routes = map (el: {
-            receiver = el.name;
-            continue = true;
-          }) config.services.prometheus.alertmanager.configuration.receivers;
-        };
-      };
-    };
-
     alertmanagers = [
       {
         scheme = "http";
         static_configs = [
           {
-            targets = [
-              "${config.services.prometheus.alertmanager.listenAddress}:${toString config.services.prometheus.alertmanager.port}"
-            ];
+            targets =
+              inputs.self.nixosConfigurations
+              |> filterAttrs (_: c: c.config.services.prometheus.alertmanager.enable)
+              |> mapAttrsToList (
+                _: c:
+                let
+                  alertmanager = c.config.services.prometheus.alertmanager;
+                in
+                "${alertmanager.listenAddress}:${toString alertmanager.port}"
+              );
           }
         ];
       }
@@ -337,11 +300,5 @@ in
       ];
       storage_config.filesystem.directory = "/tmp/loki/chunks";
     };
-  };
-
-  users.groups.alertmanager = { };
-  users.users.alertmanager = {
-    isSystemUser = true;
-    group = "alertmanager";
   };
 }

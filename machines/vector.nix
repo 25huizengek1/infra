@@ -28,6 +28,7 @@
     # keep-sorted end
 
     # keep-sorted start
+    ../modules/infra/alertmanager.nix
     ../modules/infra/system-specific/vector/auth.nix
     ../modules/infra/system-specific/vector/chat.nix
     ../modules/infra/system-specific/vector/cloud.nix

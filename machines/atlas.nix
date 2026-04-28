@@ -16,6 +16,7 @@
     # keep-sorted end
 
     # keep-sorted start
+    ../modules/infra/alertmanager.nix
     ../modules/infra/alloy.nix
     ../modules/infra/common.nix
     ../modules/infra/git.nix

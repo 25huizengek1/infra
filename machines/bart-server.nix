@@ -37,6 +37,7 @@ in
     # keep-sorted end
 
     # keep-sorted start
+    ../modules/infra/alertmanager.nix
     ../modules/infra/anubis.nix
     ../modules/infra/authentik.nix
     ../modules/infra/autokuma-config.nix
