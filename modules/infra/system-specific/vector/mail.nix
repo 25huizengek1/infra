@@ -111,6 +111,8 @@ in
     stateVersion = 4; # Do not change this line, unless a new version needs to be migrated to
   };
 
+  services.nginx.virtualHosts.${domain}.serverAliases = [ config.mailserver.fqdn ];
+
   services.postfix =
     let
       deniedRecipientsFileName = "denied_recipients_additional";

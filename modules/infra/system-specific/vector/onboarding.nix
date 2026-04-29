@@ -14,10 +14,10 @@ let
     authentik.base_url = "https://${config.infra.authentik.domain}";
     redis.host = "unix://${redisSocket}";
     smtp = {
-      from = "Popkoor KlankKleur Onboarding <${emailUser}@${config.mailserver.fqdn}>";
+      from = "Popkoor KlankKleur Onboarding <${emailUser}@${config.mailserver.systemDomain}>";
       host = config.mailserver.fqdn;
       port = 25;
-      user = "${emailUser}@${config.mailserver.fqdn}";
+      user = "${emailUser}@${config.mailserver.systemDomain}";
     };
     port = 64617;
   };
