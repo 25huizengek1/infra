@@ -97,7 +97,7 @@
     };
 
     hydra = {
-      url = "github:NixOS/hydra/64bb05386ced0b8e1ada737dd72882deaddbac72"; # boost won't compile otherwise
+      url = "github:NixOS/hydra";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         treefmt-nix.follows = "treefmt-nix";
