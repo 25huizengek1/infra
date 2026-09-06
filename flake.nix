@@ -88,7 +88,7 @@
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs-lib";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
     flake-utils = {
@@ -177,8 +177,6 @@
         git-hooks.follows = "";
       };
     };
-
-    nixpkgs-lib.url = "github:nix-community/nixpkgs.lib";
 
     omeduostuurcentenneef-web = {
       url = "git+https://git.bartoostveen.nl/bart/omeduoweb";
