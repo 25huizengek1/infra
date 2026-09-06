@@ -78,6 +78,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-compat.follows = "";
+        utils.inputs.systems.follows = "systems";
       };
     };
 
@@ -110,6 +111,8 @@
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
         treefmt-nix.follows = "treefmt-nix";
+        build-gradle-application.inputs.flake-parts.follows = "flake-parts";
+        build-gradle-application.inputs.systems.follows = "systems";
       };
     };
 
@@ -224,6 +227,7 @@
     winapps = {
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
     };
 
     vert-nix = {
@@ -232,6 +236,9 @@
         nixpkgs.follows = "nixpkgs";
         treefmt-nix.follows = "treefmt-nix";
         flake-parts.follows = "flake-parts";
+        bun2nix.inputs.flake-parts.follows = "flake-parts";
+        bun2nix.inputs.systems.follows = "systems";
+        bun2nix.inputs.treefmt-nix.follows = "treefmt-nix";
       };
     };
   };
