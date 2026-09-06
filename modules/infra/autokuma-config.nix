@@ -23,7 +23,9 @@ let
     # keep-sorted end
     ;
 
-  vhosts = attrNames config.services.nginx.virtualHosts;
+  vhosts =
+    attrNames config.services.nginx.virtualHosts
+    |> builtins.filter (vhost: vhost != "localhost" && !(hasInfix "*." vhost));
   isCinny = s: hasInfix "sable" s || hasInfix "cinny" s;
   hasCinny = any isCinny vhosts;
 in
@@ -97,31 +99,31 @@ in
           ];
         };
       }
-      // genAttrs (builtins.filter (kumaVHost: kumaVHost != "localhost") vhosts) (kumaVHost: {
+      // genAttrs vhosts (vhost: {
         type = "http";
-        name = kumaVHost;
+        name = vhost;
         description = "nginx Managed by AutoKuma @ ${config.networking.fqdn}";
         expiry_notification = true;
-        url = "https://${kumaVHost}";
+        url = "https://${vhost}";
         accepted_statuscodes = [ "200-399" ];
         notification_name_list = [ "autokuma-matrix" ];
         tag_names = [
           {
             name = "nginx";
-            value = kumaVHost;
+            value = vhost;
           }
           {
             name = "autokuma";
             value = "nginx";
           }
         ]
-        ++ optional (isCinny kumaVHost) {
+        ++ optional (isCinny vhost) {
           name = "cinny";
         };
         timeout = 10;
         interval = 20;
         retry_interval = 20;
-        parent_name = if isCinny kumaVHost then "cinny-group" else "nginx-group";
+        parent_name = if isCinny vhost then "cinny-group" else "nginx-group";
       });
     };
   };
