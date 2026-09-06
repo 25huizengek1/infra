@@ -263,7 +263,16 @@ in
       name = "toostveen";
       color = "#ff9900";
     };
-    monitors =
+    monitors = {
+      toostveen-group = {
+        type = "group";
+        name = "toostveen";
+        description = "Virtual hosts for Tom Oostveen";
+        interval = 20;
+        retry_interval = 20;
+      };
+    }
+    //
       # let inherit (inputs.nixpkgs.lib) uniqueStrings filter flatten mapAttrsToList attrNames; in uniqueStrings (filter (d: d != "localhost") (flatten (mapAttrsToList (_: c: attrNames c.config.services.nginx.virtualHosts) nixosConfigurations)))
       genAttrs
         [
@@ -296,6 +305,7 @@ in
           timeout = 10;
           interval = 60;
           retry_interval = 120;
+          parent_name = "toostveen-group";
         });
   };
 

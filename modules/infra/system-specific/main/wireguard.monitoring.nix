@@ -21,7 +21,16 @@ in
       name = "Wireguard";
       color = "#88171a";
     };
-    monitors =
+    monitors = {
+      wireguard-group = {
+        type = "group";
+        name = "Wireguard";
+        description = "All wireguard hosts";
+        interval = 20;
+        retry_interval = 20;
+      };
+    }
+    // (
       map (
         peer:
         nameValuePair "wireguard-${peer.name}" {
@@ -45,8 +54,10 @@ in
               value = peer.name;
             }
           ];
+          parent_name = "wireguard-group";
         }
       ) config.networking.wireguard.interfaces.${config.infra.wireguard.interface}.peers
-      |> listToAttrs;
+      |> listToAttrs
+    );
   };
 }

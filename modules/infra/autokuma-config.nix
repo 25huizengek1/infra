@@ -42,7 +42,16 @@ in
             |> builtins.readFile;
         };
       };
-      monitors =
+      monitors = {
+        nginx-group = {
+          type = "group";
+          name = "NGINX @ ${config.networking.fqdn}";
+          description = "All nginx virtual hosts for ${config.networking.hostName}";
+          interval = 20;
+          retry_interval = 20;
+        };
+      }
+      //
         genAttrs
           (builtins.filter (kumaVHost: kumaVHost != "localhost") (
             attrNames config.services.nginx.virtualHosts
@@ -68,6 +77,7 @@ in
             timeout = 10;
             interval = 20;
             retry_interval = 20;
+            parent_name = "nginx-group";
           });
     };
   };
