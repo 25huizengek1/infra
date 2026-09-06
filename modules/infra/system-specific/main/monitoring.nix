@@ -267,10 +267,13 @@ in
       # let inherit (inputs.nixpkgs.lib) uniqueStrings filter flatten mapAttrsToList attrNames; in uniqueStrings (filter (d: d != "localhost") (flatten (mapAttrsToList (_: c: attrNames c.config.services.nginx.virtualHosts) nixosConfigurations)))
       genAttrs
         [
+          "cal.toostveen.nl"
+          "cs.toostveen.nl"
           "fs.toostveen.nl"
           "git.toostveen.nl"
           "im.toostveen.nl"
           "md.toostveen.nl"
+          "pass.toostveen.nl"
           "prometheus.toostveen.nl"
           "rd.toostveen.nl"
           "rss.toostveen.nl"
