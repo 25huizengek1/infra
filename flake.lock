@@ -68,11 +68,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788653668,
-        "narHash": "sha256-Yuya4+pzmtVSRFrmLPCn/alIfm/HjZ6RQJP5DaXbP84=",
+        "lastModified": 1788710194,
+        "narHash": "sha256-5AmgAeJMRlLlk4BkmROu40/7rwK4a6FILHKZw2etpyY=",
         "ref": "refs/heads/master",
-        "rev": "a2c9788866bbf9340198e7a036674743c134c06f",
-        "revCount": 177,
+        "rev": "7e3939a74bedecb62472065661154d8ba8603813",
+        "revCount": 180,
         "type": "git",
         "url": "https://git.bartoostveen.nl/bart/nix-packages.git"
       },
@@ -590,11 +590,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788080100,
-        "narHash": "sha256-n14luQo3F/ZLfCEHk1QieiI1nGnW92ZQZeZ0UIb0UMQ=",
+        "lastModified": 1788680125,
+        "narHash": "sha256-amGSoDobwmp4CFvCn841ws2iuitus+HUJdD/gKgsrJA=",
         "owner": "nix-community",
         "repo": "nix-index-database",
-        "rev": "dbb978fa87faf13398e90ccbc52c343d21c7dd6d",
+        "rev": "116ad1c2adb642405ef8916f6a94c8626f971344",
         "type": "github"
       },
       "original": {
@@ -670,11 +670,11 @@
     },
     "nixos-small": {
       "locked": {
-        "lastModified": 1788625351,
-        "narHash": "sha256-HuowOcoS6Wquoa0FPdCwRZ9NkXy3kw+gz0gV2sKhBW8=",
+        "lastModified": 1788659161,
+        "narHash": "sha256-rIzUUvgwhfJeWwm7y1ZF+xRo2Gep+QYkxpj9mJbG6cM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8f3889588add43913e8bfbbd42a75345c857cf59",
+        "rev": "de0ba0a81b0f6eed798a97fdec6f03a754b9d966",
         "type": "github"
       },
       "original": {
