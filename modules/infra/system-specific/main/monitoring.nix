@@ -20,6 +20,7 @@ let
     mapAttrsToList
     optionals
     removeAttrs
+    removeSuffix
     # keep-sorted end
     ;
 
@@ -220,10 +221,12 @@ in
     paths = [
       "/var/lib/${config.services.prometheus.stateDir}"
       config.services.grafana.dataDir
+      (config.services.uptime-kuma.settings.DATA_DIR |> removeSuffix "/")
     ];
     exclude = [
       "/var/lib/${config.services.prometheus.stateDir}/data/wal"
       "${config.services.grafana.dataDir}/data/log"
+      "${config.services.uptime-kuma.settings.DATA_DIR}error.log"
     ];
   };
 
