@@ -8,7 +8,24 @@
 }:
 
 let
-  inherit (lib) mkDefault genAttrs attrNames;
+  inherit (builtins)
+    any
+    ;
+
+  inherit (lib)
+    # keep-sorted start
+    attrNames
+    genAttrs
+    hasInfix
+    mkDefault
+    optional
+    optionalAttrs
+    # keep-sorted end
+    ;
+
+  vhosts = attrNames config.services.nginx.virtualHosts;
+  isCinny = s: hasInfix "sable" s || hasInfix "cinny" s;
+  hasCinny = any isCinny vhosts;
 in
 {
   imports = [
@@ -41,7 +58,14 @@ in
               "printf '#%06X' $(( 0x$(printf '%s' '${config.networking.fqdn}' | sha256sum | cut -c1-6) % 0x1000000 )) > $out"
             |> builtins.readFile;
         };
+      }
+      // optionalAttrs hasCinny {
+        cinny = {
+          name = "Cinny @ ${config.networking.fqdn}";
+          color = "#0c67a0";
+        };
       };
+
       monitors = {
         nginx-group = {
           type = "group";
@@ -57,34 +81,48 @@ in
           ];
         };
       }
-      //
-        genAttrs
-          (builtins.filter (kumaVHost: kumaVHost != "localhost") (
-            attrNames config.services.nginx.virtualHosts
-          ))
-          (kumaVHost: {
-            type = "http";
-            name = kumaVHost;
-            description = "nginx Managed by AutoKuma @ ${config.networking.fqdn}";
-            expiry_notification = true;
-            url = "https://${kumaVHost}";
-            accepted_statuscodes = [ "200-399" ];
-            notification_name_list = [ "autokuma-matrix" ];
-            tag_names = [
-              {
-                name = "nginx";
-                value = kumaVHost;
-              }
-              {
-                name = "autokuma";
-                value = "nginx";
-              }
-            ];
-            timeout = 10;
-            interval = 20;
-            retry_interval = 20;
-            parent_name = "nginx-group";
-          });
+      // optionalAttrs hasCinny {
+        cinny-group = {
+          type = "group";
+          name = "cinny @ ${config.networking.fqdn}";
+          description = "All cinny virtual hosts for ${config.networking.hostName}";
+          interval = 20;
+          retry_interval = 20;
+          parent_name = "nginx-group";
+          tag_names = [
+            {
+              name = "autokuma";
+              value = "cinny";
+            }
+          ];
+        };
+      }
+      // genAttrs (builtins.filter (kumaVHost: kumaVHost != "localhost") vhosts) (kumaVHost: {
+        type = "http";
+        name = kumaVHost;
+        description = "nginx Managed by AutoKuma @ ${config.networking.fqdn}";
+        expiry_notification = true;
+        url = "https://${kumaVHost}";
+        accepted_statuscodes = [ "200-399" ];
+        notification_name_list = [ "autokuma-matrix" ];
+        tag_names = [
+          {
+            name = "nginx";
+            value = kumaVHost;
+          }
+          {
+            name = "autokuma";
+            value = "nginx";
+          }
+        ]
+        ++ optional (isCinny kumaVHost) {
+          name = "cinny";
+        };
+        timeout = 10;
+        interval = 20;
+        retry_interval = 20;
+        parent_name = if isCinny kumaVHost then "cinny-group" else "nginx-group";
+      });
     };
   };
 
