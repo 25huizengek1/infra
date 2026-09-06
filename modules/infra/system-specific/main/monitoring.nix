@@ -19,7 +19,6 @@ let
     genAttrs
     mapAttrsToList
     optionals
-    removeAttrs
     removeSuffix
     # keep-sorted end
     ;
