@@ -28,6 +28,12 @@ in
         description = "All wireguard hosts";
         interval = 20;
         retry_interval = 20;
+        tag_names = [
+          {
+            name = "autokuma";
+            value = "Wireguard";
+          }
+        ];
       };
     }
     // (

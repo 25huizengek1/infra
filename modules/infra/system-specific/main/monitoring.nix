@@ -270,6 +270,12 @@ in
         description = "Virtual hosts for Tom Oostveen";
         interval = 20;
         retry_interval = 20;
+        tag_names = [
+          {
+            name = "autokuma";
+            value = "toostveen";
+          }
+        ];
       };
     }
     //
@@ -297,6 +303,10 @@ in
           accepted_statuscodes = [ "200-399" ];
           notification_name_list = [ "autokuma-toostveen" ];
           tag_names = [
+            {
+              name = "autokuma";
+              value = "toostveen";
+            }
             {
               name = "toostveen";
               value = vhost;

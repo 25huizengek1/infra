@@ -49,6 +49,12 @@ in
           description = "All nginx virtual hosts for ${config.networking.hostName}";
           interval = 20;
           retry_interval = 20;
+          tag_names = [
+            {
+              name = "autokuma";
+              value = "nginx";
+            }
+          ];
         };
       }
       //
