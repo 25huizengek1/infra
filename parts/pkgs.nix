@@ -42,6 +42,7 @@
         ./0001-wordpress_6_8-drop.patch
         ./0002-wordpress-7.0.4-7.1.patch
         ./0003-wordpressPackages-update-plugins-and-themes.patch
+        (nixpkgsPr 560492 "sha256-MufUhigV9PrQJ3Wy/PDWvRyYI3J9HeM0lkODfzoD6X0=")
       ];
 
       patchedNixpkgs = patchInput smallPkgs nixpkgsPatches inputs.nixpkgs;
