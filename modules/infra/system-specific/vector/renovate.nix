@@ -37,6 +37,10 @@ in
 
       cacheTtlOverride.datasource-forgejo-tags = 0;
 
+      allowedCommands = [
+        "^echo '.*' > changelog\\.d/.*$"
+      ];
+
       packageRules = [
         {
           matchManagers = [ "github-actions" ];
