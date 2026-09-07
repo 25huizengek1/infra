@@ -1,5 +1,4 @@
 {
-  pkgs,
   continuwuityPkgs,
   ...
 }:
@@ -18,10 +17,7 @@
       alertmanager.enable = false;
       package = continuwuityPkgs.matrix-continuwuity.overrideAttrs {
         patches = [
-          (pkgs.fetchpatch {
-            url = "https://forgejo.ellis.link/continuwuation/continuwuity/pulls/2072.patch";
-            hash = "sha256-F7hlmgHBvQ0z4bF5kOsGjjxR9FEg0QBDSYwrVFwwkxc=";
-          })
+          ./feat-Implement-sketchy-backwards-compatibility-for-invites.patch
         ];
       };
       inherit fqdn;
