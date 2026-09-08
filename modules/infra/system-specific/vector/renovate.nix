@@ -38,7 +38,7 @@ in
       cacheTtlOverride.datasource-forgejo-tags = 0;
 
       allowedCommands = [
-        "^echo '.*' > changelog\\.d/.*$"
+        "^\\.forgejo/scripts/generate-renovate-changelog\\.sh(\\s+.*)?$"
       ];
 
       packageRules = [
