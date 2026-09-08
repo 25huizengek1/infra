@@ -60,6 +60,7 @@ in
       ];
     };
     runtimePackages = with pkgs; [
+      bash
       nix
       git
       gnupg
