@@ -465,11 +465,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788214723,
-        "narHash": "sha256-E49QPFEyY2NJnHLmt2kACOsYmkbdEndObJTXfLI2lVg=",
+        "lastModified": 1788987882,
+        "narHash": "sha256-Z65Z9LRdhZN+/nbTM6EhPOVJY4lh1e+99l/s5VKpojg=",
         "ref": "refs/heads/master",
-        "rev": "8121ff5cfc722db989dbe12ca1f4d3dd952bfa48",
-        "revCount": 110,
+        "rev": "a7d28298e1fa233d2c9c37a6a693b86b3a9e950e",
+        "revCount": 111,
         "type": "git",
         "url": "ssh://forgejo@git.bartoostveen.nl/bart/meowbot.git"
       },
