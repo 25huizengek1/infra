@@ -85,6 +85,7 @@
           persistentKeepalive = 25;
         }
       ];
+      extraOptions.DNS = [ "10.89.149.19" ];
     };
   };
 
