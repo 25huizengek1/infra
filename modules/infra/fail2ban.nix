@@ -1,3 +1,5 @@
+{ wireguard, config, ... }:
+
 {
   services.fail2ban = {
     enable = true;
@@ -7,5 +9,6 @@
   services.prometheus.exporters.fail2ban = {
     enable = true;
     exitOnError = true;
+    host = wireguard.primaryIpOf config.networking.hostName;
   };
 }
